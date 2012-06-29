@@ -60,8 +60,7 @@ enum fxmy_connection_state_t
 struct fxmy_connection_t
 {
     enum fxmy_connection_state_t state;
-    struct fxmy_xfer_buffer_t send_buffer;
-    struct fxmy_xfer_buffer_t recv_buffer;
+    struct fxmy_xfer_buffer_t xfer_buffer;
     int socket_fd;
 };
 
@@ -116,7 +115,7 @@ fxmy_xfer_in_progress(struct fxmy_xfer_buffer_t *buffer)
 static void
 fxmy_begin_send(struct fxmy_connection_t *conn, const void *data, size_t size)
 {
-    struct fxmy_xfer_buffer_t *buffer = &conn->send_buffer;
+    struct fxmy_xfer_buffer_t *buffer = &conn->xfer_buffer;
     const unsigned char *src = data;
     unsigned char *dest;
     size_t i;
@@ -157,7 +156,7 @@ fxmy_begin_send(struct fxmy_connection_t *conn, const void *data, size_t size)
 static int
 fxmy_send(struct fxmy_connection_t *conn)
 {
-    struct fxmy_xfer_buffer_t *buffer = &conn->send_buffer;
+    struct fxmy_xfer_buffer_t *buffer = &conn->xfer_buffer;
     ssize_t rv;
     void *start;
     size_t size;
@@ -194,6 +193,55 @@ fxmy_send(struct fxmy_connection_t *conn)
    * This one is a bit more difficult. The algorithm has to get the header 
      first and see how much it needs to receive.
 */
+
+static void
+fxmy_begin_recv(int fd, struct fxmy_xfer_buffer_t *buffer)
+{
+    unsigned char packet_header[4];
+    ssize_t rv;
+    /* int sequence_number; */
+    size_t packet_size;
+
+    rv = read(fd, packet_header, sizeof packet_header);
+
+    VERIFY(rv == 4);
+
+    /* 
+        TODO: Handle receiving data larger than 16mb. For now this just asserts
+        if the packet size is too large.
+     */
+
+    packet_size = (size_t)(packet_header[0])
+        | ((size_t)(packet_header[1]) << 8)
+        | ((size_t)(packet_header[2]) << 16);
+    /* sequence_number = (int)packet_header[3]; */
+
+    buffer->memory = malloc(packet_size);
+    buffer->size += packet_size;
+
+printf("RECEIVING PACKET: size: %lu\n", packet_size);
+}
+
+static int
+fxmy_recv(struct fxmy_connection_t *conn)
+{
+    struct fxmy_xfer_buffer_t *buffer = &conn->xfer_buffer;
+    ssize_t rv;
+    char *read_ptr;
+    size_t read_size;
+
+    if (!fxmy_xfer_in_progress(buffer))
+        fxmy_begin_recv(conn->socket_fd, buffer);
+
+    read_ptr = (char *)buffer->memory + buffer->cursor;
+    read_size = buffer->size - buffer->cursor;
+    rv = read(conn->socket_fd, read_ptr, read_size);
+
+    VERIFY(rv >= 0 || rv == EAGAIN || rv == EWOULDBLOCK);
+    buffer->cursor += rv;
+
+    return buffer->size == buffer->cursor;
+}
 
 static int
 fxmy_socket_open(int port)
@@ -241,7 +289,10 @@ fxmy_get_handshake_packet(void **ptr, size_t *size)
         1, 0, 0, 0,                     /* thread id */
         0, 0, 0, 0, 0, 0, 0, 0,         /* scramble buf */
         0,                              /* filler, always 0 */
-        0, 0,                           /* server capabilities */
+        0, 0x2,                         /* server capabilities. the 2 (512, in
+                                           little endian) means that this
+                                           server supports the 4.1 protocol
+                                           instead of the 4.0 protocol. */
         0,                              /* server language */
         0, 0,                           /* server status */
         0, 0,                           /* server capabilities, upper two bytes */
@@ -262,7 +313,7 @@ fxmy_get_handshake_packet(void **ptr, size_t *size)
 static int
 fxmy_send_handshake(struct fxmy_connection_t *conn)
 {
-    if (!fxmy_xfer_in_progress(&conn->send_buffer))
+    if (!fxmy_xfer_in_progress(&conn->xfer_buffer))
     {
         void *ptr;
         size_t size;
@@ -280,8 +331,15 @@ fxmy_send_handshake(struct fxmy_connection_t *conn)
 static int
 fxmy_recv_auth_packet(struct fxmy_connection_t *conn)
 {
-    UNUSED(conn);
-    return 1;
+    if (fxmy_recv(conn))
+    {
+        FILE *fp = fopen("dump", "w");
+        fwrite(conn->xfer_buffer.memory, conn->xfer_buffer.size, 1, fp);
+        fclose(fp);
+        return 1;
+    }
+
+    return 0;
 }
 
 static int
@@ -331,27 +389,6 @@ fxmy_handle_connection(int socket_fd)
         ++connections[i].state;
 
     return 0;
-
-    /*
-    static char buffer[128 * 1024];
-    static int count;
-    ssize_t data_read;
-    int fd;
-
-    sprintf(buffer, "connection-%d.dmp", count++);
-    fd = creat(buffer, 0777);
-    VERIFY(fd >= 0);
-
-    do
-    {
-        data_read = read(socket_fd, buffer, sizeof buffer);
-        VERIFY(write(fd, buffer, data_read) >= 0);
-    } while(data_read >= 0);
-
-    close(fd);
-
-    return 1;
-    */
 }
 
 int main(void) 
