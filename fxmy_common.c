@@ -92,10 +92,14 @@ fxmy_get_handshake_packet(void **ptr, size_t *size)
         1, 0, 0, 0,                     /* thread id */
         0, 0, 0, 0, 0, 0, 0, 0,         /* scramble buf */
         0,                              /* filler, always 0 */
-        0, 0x2,                         /* server capabilities. the 2 (512, in
+        0, 0x82,                        /* server capabilities. the 2 (512, in
                                            little endian) means that this
                                            server supports the 4.1 protocol
                                            instead of the 4.0 protocol. */
+                                        /* The 0x80 indicates that we support 4.1
+                                           protocol authentication, enforcing
+                                           that the password is sent to us as
+                                           a 20-byte re-jiggered SHA1. */
         0,                              /* server language */
         0, 0,                           /* server status */
         0, 0,                           /* server capabilities, upper two bytes */

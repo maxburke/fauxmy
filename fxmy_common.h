@@ -14,6 +14,7 @@ struct fxmy_xfer_buffer_t
     #include <Windows.h>
     #include <WinSock2.h>
     #include <MSWSock.h>
+    #include <stdint.h>
     #pragma warning(pop)
     #pragma warning(disable:4514)
 
@@ -21,17 +22,17 @@ struct fxmy_xfer_buffer_t
 
     void 
     fxmy_perror(const char *string);
-
     struct fxmy_connection_t;
-    typedef int (*fxmy_completion_callback)(struct fxmy_connection_t *conn);
 
     struct fxmy_connection_t
     {
         OVERLAPPED overlapped;
-        fxmy_completion_callback callback;
         SOCKET socket;
-        DWORD bytes_transferred;
         struct fxmy_xfer_buffer_t xfer_buffer;
+        uint32_t client_flags;
+        uint32_t max_packet_size;
+        uint32_t charset;
+        char *database;
     };
 
 #else
@@ -54,6 +55,25 @@ struct fxmy_xfer_buffer_t
 #ifndef MIN
 #define MIN(a, b) ((a)<(b)?(a):(b))
 #endif
+
+#define CLIENT_LONG_PASSWORD 1
+#define CLIENT_FOUND_ROWS 2
+#define CLIENT_LONG_FLAG 4
+#define CLIENT_CONNECT_WITH_DB 8
+#define CLIENT_NO_SCHEMA 16
+#define CLIENT_COMPRESS 32
+#define CLIENT_ODBC 64
+#define CLIENT_LOCAL_FILES 128
+#define CLIENT_IGNORE_SPACE 256
+#define CLIENT_PROTOCOL_41 512
+#define CLIENT_INTERACTIVE 1024
+#define CLIENT_SSL 2048
+#define CLIENT_IGNORE_SIGPIPE 4096
+#define CLIENT_TRANSACTIONS 8192
+#define CLIENT_RESERVED 16384
+#define CLIENT_SECURE_CONNECTION 32768
+#define CLIENT_MULTI_STATEMENTS 65536
+#define CLIENT_MULTI_RESULTS 131072
 
 #define UNUSED(x) (void)x
 
