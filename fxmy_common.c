@@ -32,6 +32,7 @@ fxmy_begin_send(struct fxmy_connection_t *conn, const void *data, size_t size)
     unsigned char *dest;
     size_t i;
     size_t alloc_size = size;
+    size_t packet_number = conn->packet_number++;
     size_t num_packets = 0;
 
     if (fxmy_xfer_in_progress(buffer))
@@ -57,7 +58,7 @@ fxmy_begin_send(struct fxmy_connection_t *conn, const void *data, size_t size)
         dest[0] = (unsigned char)(packet_size & 0xFF);
         dest[1] = (unsigned char)((packet_size >> 8) & 0xFF);
         dest[2] = (unsigned char)((packet_size >> 16) & 0xFF);
-        dest[3] = (unsigned char)i;
+        dest[3] = (unsigned char)packet_number;
 
         memcpy(dest + 4, src, packet_size);
         dest += packet_size + 4;

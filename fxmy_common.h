@@ -29,6 +29,7 @@ struct fxmy_xfer_buffer_t
         OVERLAPPED overlapped;
         SOCKET socket;
         struct fxmy_xfer_buffer_t xfer_buffer;
+        uint32_t packet_number;
         uint32_t client_flags;
         uint32_t max_packet_size;
         uint32_t charset;
@@ -56,24 +57,60 @@ struct fxmy_xfer_buffer_t
 #define MIN(a, b) ((a)<(b)?(a):(b))
 #endif
 
-#define CLIENT_LONG_PASSWORD 1
-#define CLIENT_FOUND_ROWS 2
-#define CLIENT_LONG_FLAG 4
-#define CLIENT_CONNECT_WITH_DB 8
-#define CLIENT_NO_SCHEMA 16
-#define CLIENT_COMPRESS 32
-#define CLIENT_ODBC 64
-#define CLIENT_LOCAL_FILES 128
-#define CLIENT_IGNORE_SPACE 256
-#define CLIENT_PROTOCOL_41 512
-#define CLIENT_INTERACTIVE 1024
-#define CLIENT_SSL 2048
-#define CLIENT_IGNORE_SIGPIPE 4096
-#define CLIENT_TRANSACTIONS 8192
-#define CLIENT_RESERVED 16384
-#define CLIENT_SECURE_CONNECTION 32768
-#define CLIENT_MULTI_STATEMENTS 65536
-#define CLIENT_MULTI_RESULTS 131072
+enum fxmy_client_flags_t
+{
+    CLIENT_LONG_PASSWORD        = 1 << 0,
+    CLIENT_FOUND_ROWS           = 1 << 1,
+    CLIENT_LONG_FLAG            = 1 << 2,
+    CLIENT_CONNECT_WITH_DB      = 1 << 3,
+    CLIENT_NO_SCHEMA            = 1 << 4,
+    CLIENT_COMPRESS             = 1 << 5,
+    CLIENT_ODBC                 = 1 << 6,
+    CLIENT_LOCAL_FILES          = 1 << 7,
+    CLIENT_IGNORE_SPACE         = 1 << 8,
+    CLIENT_PROTOCOL_41          = 1 << 9,
+    CLIENT_INTERACTIVE          = 1 << 10,
+    CLIENT_SSL                  = 1 << 11,
+    CLIENT_IGNORE_SIGPIPE       = 1 << 12,
+    CLIENT_TRANSACTIONS         = 1 << 13,
+    CLIENT_RESERVED             = 1 << 14,
+    CLIENT_SECURE_CONNECTION    = 1 << 15,
+    CLIENT_MULTI_STATEMENTS     = 1 << 16,
+    CLIENT_MULTI_RESULTS        = 1 << 17,
+};
+
+enum fxmy_commands_t
+{
+    COM_SLEEP,
+    COM_QUIT,
+    COM_INIT_DB,
+    COM_QUERY,
+    COM_FIELD_LIST,
+    COM_CREATE_DB,
+    COM_DROP_DB,
+    COM_REFRESH,
+    COM_SHUTDOWN,
+    COM_STATISTICS,
+    COM_PROCESS_INFO,
+    COM_CONNECT,
+    COM_PROCESS_KILL,
+    COM_DEBUG,
+    COM_PING,
+    COM_TIME,
+    COM_DELAYED_INSERT,
+    COM_CHANGE_USER,
+    COM_BINLOG_DUMP,
+    COM_TABLE_DUMP,
+    COM_CONNECT_OUT,
+    COM_REGISTER_SLAVE,
+    COM_STMT_PREPARE,
+    COM_STMT_EXECUTE,
+    COM_STMT_SEND_LONG_DATA,
+    COM_STMT_CLOSE,
+    COM_STMT_RESET,
+    COM_SET_OPTION,
+    COM_STMT_FETCH,
+};
 
 #define UNUSED(x) (void)x
 

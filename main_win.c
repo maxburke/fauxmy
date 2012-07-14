@@ -1,24 +1,19 @@
-
 #pragma warning(push, 0)
-#define WIN32_LEAN_AND_MEAN
 #include <stdlib.h>
 #include <stdio.h>
 #pragma warning(pop)
+#pragma warning(disable:4514)
 
 #include "fxmy_common.h"
 
 #pragma comment(lib, "Ws2_32.lib")
 
+#define FXMY_NUM_THREADS 4
 #define FXMY_DEFAULT_PORT 3306
 #define FXMY_DEFAULT_LISTEN_BACKLOG 50
-#define FXMY_POISON_PILL 0xDEADBEEF
-#define FXMY_SOCKET_KEY 1
-#define FXMY_CONNECTION_KEY 2
-#define FXMY_NUM_THREADS 4
 
 static HANDLE fxmy_completion_port;
 static SOCKET fxmy_listen_socket;
-static LPFN_ACCEPTEX AcceptExFn;
 
 void
 fxmy_perror(const char *string)
@@ -70,48 +65,342 @@ int
 fxmy_send(struct fxmy_connection_t *conn)
 {
     struct fxmy_xfer_buffer_t *buffer = &conn->xfer_buffer;
-    BOOL rv;
-    void *start;
-    size_t size;
+    int bytes_written;
 
-    VERIFY(fxmy_xfer_in_progress(buffer));
-    VERIFY(buffer->size > 0);
-    VERIFY(buffer->size > buffer->cursor);
+    bytes_written = send(conn->socket, buffer->memory, buffer->size, 0);
 
-    buffer->cursor += conn->bytes_transferred;
+    VERIFY((size_t)bytes_written == buffer->size);
 
-    memset(&conn->overlapped, 0, sizeof conn->overlapped);
+    fxmy_reset_xfer_buffer(buffer);
 
-    if (buffer->cursor == buffer->size)
-    {
-        fxmy_reset_xfer_buffer(buffer);
-        return 1;
-    }
+    return 0;
+}
 
-    start = (char *)buffer->memory + buffer->cursor;
-    size = buffer->size - buffer->cursor;
-    rv = WriteFile(
-        (HANDLE)conn->socket, 
-        start,
-        size,
-        NULL,
-        &conn->overlapped);
+int
+fxmy_recv(struct fxmy_connection_t *conn)
+{
+    int bytes_read;
 
-    VERIFY(rv == TRUE || (rv == FALSE && GetLastError() == ERROR_IO_PENDING));
-   
-    conn->bytes_transferred = 0;
+    bytes_read = recv(conn->socket, conn->xfer_buffer.memory, (int)conn->xfer_buffer.size, 0);
+    VERIFY((size_t)bytes_read == conn->xfer_buffer.size);
+
     return 0;
 }
 
 static void
-fxmy_socket_open(int port)
+fxmy_begin_recv(struct fxmy_connection_t *conn)
+{
+    unsigned char packet_header[4];
+    int rv;
+    size_t packet_size;
+    size_t packet_number;
+
+    rv = recv(conn->socket, (char *)packet_header, sizeof packet_header, 0);
+    VERIFY(rv == 4);
+
+    packet_size = (size_t)(packet_header[0])
+        | ((size_t)(packet_header[1]) << 8)
+        | ((size_t)(packet_header[2]) << 16);
+    packet_number = (size_t)packet_header[3];
+
+    /* conn->packet_number holds the value of the next packet we operate on
+       so we validate that the packet we've received has the expected ID,
+       then increment it so that it is correct when we send the response. */
+    conn->packet_number = packet_number + 1;
+
+    conn->xfer_buffer.memory = malloc(packet_size);
+    conn->xfer_buffer.size += packet_size;
+}
+
+static uint32_t
+fxmy_read_u32(struct fxmy_xfer_buffer_t *buffer)
+{
+    const uint8_t *ptr = (const uint8_t *)buffer->memory + buffer->cursor;
+    uint32_t value = ((uint32_t)ptr[0])
+        | ((uint32_t)ptr[1] << 8)
+        | ((uint32_t)ptr[2] << 16)
+        | ((uint32_t)ptr[3] << 24);
+    buffer->cursor += 4;
+    VERIFY(buffer->cursor <= buffer->size);
+
+    return value;
+}
+
+static uint8_t
+fxmy_read_u8(struct fxmy_xfer_buffer_t *buffer)
+{
+    const uint8_t *ptr = (const uint8_t *)buffer->memory + buffer->cursor;
+    ++buffer->cursor;
+    VERIFY(buffer->cursor <= buffer->size);
+    
+    return ptr[0];
+}
+
+static uint64_t
+fxmy_read_lcb(struct fxmy_xfer_buffer_t *buffer)
+{
+    const uint8_t *ptr = (const uint8_t *)buffer->memory + buffer->cursor;
+    const uint8_t byte = ptr[0];
+    uint64_t value = 0;
+
+    switch (byte)
+    {
+    case 254:
+        buffer->cursor += 9;
+        value = ((uint64_t)ptr[1])
+            | ((uint64_t)ptr[2] << 8)
+            | ((uint64_t)ptr[3] << 16)
+            | ((uint64_t)ptr[4] << 24)
+            | ((uint64_t)ptr[5] << 32)
+            | ((uint64_t)ptr[6] << 40)
+            | ((uint64_t)ptr[7] << 48)
+            | ((uint64_t)ptr[8] << 56);
+    case 253:
+        buffer->cursor += 4;
+        value = ((uint64_t)ptr[1])
+            | ((uint64_t)ptr[2] << 8)
+            | ((uint64_t)ptr[3] << 16);
+    case 252:
+        buffer->cursor += 3;
+        value = ((uint64_t)ptr[1])
+            | ((uint64_t)ptr[2] << 8);
+    case 251:
+        /* 251 signifies a NULL column value and will never be read. */
+    default:
+        ++buffer->cursor;
+        value = (uint64_t)byte;
+    }
+
+    VERIFY(buffer->cursor <= buffer->size);
+    return value;
+}
+
+static const char *
+fxmy_read_lcs(struct fxmy_xfer_buffer_t *buffer)
+{
+    char *memory;
+    const char *ptr = (const char *)buffer->memory + buffer->cursor;
+    size_t size = (size_t)fxmy_read_lcb(buffer);
+
+    memory = calloc(size + 1, 1);
+    memcpy(buffer->memory, ptr, size);
+    buffer->cursor += size;
+    VERIFY(buffer->cursor <= buffer->size);
+
+    return memory;
+}
+
+static const char *
+fxmy_read_string(struct fxmy_xfer_buffer_t *buffer)
+{
+    const char *ptr = (const char *)buffer->memory + buffer->cursor;
+    size_t size = strlen(ptr) + 1;
+    char *string = calloc(size, 1);
+    memcpy(string, ptr, size);
+
+    buffer->cursor += size;
+    VERIFY(buffer->cursor <= buffer->size);
+
+    return string;
+}
+
+static void
+fxmy_skip_string(struct fxmy_xfer_buffer_t *buffer)
+{
+    const char *ptr = (const char *)buffer->memory + buffer->cursor;
+    size_t size = strlen(ptr) + 1;
+    buffer->cursor += size;
+}
+
+static void
+fxmy_skip_lcs(struct fxmy_xfer_buffer_t *buffer)
+{
+    size_t size = (size_t)fxmy_read_lcb(buffer);
+    buffer->cursor += size;
+}
+
+static void
+fxmy_parse_auth_packet(struct fxmy_connection_t *conn)
+{
+    struct fxmy_xfer_buffer_t *buffer = &conn->xfer_buffer;
+
+    buffer->cursor = 0;
+
+    conn->client_flags = fxmy_read_u32(buffer);
+    conn->max_packet_size = fxmy_read_u32(buffer);
+    conn->charset = fxmy_read_u8(buffer);
+    
+    /* skip over the 23-bytes of padding, as per the MySQL 4.1 wire protocol */
+    buffer->cursor += 23;
+    /* skip over the user name */
+    fxmy_skip_string(buffer);
+    /* skip over the scramble buffer */
+    fxmy_skip_lcs(buffer);
+
+    if (conn->client_flags & CLIENT_CONNECT_WITH_DB)
+    {
+        size_t size = strlen(buffer->memory) + 1;
+        conn->database = calloc(size, 1);
+        memcpy(conn->database, buffer->memory, size);
+    }
+}
+
+static int
+fxmy_recv_auth_packet(struct fxmy_connection_t *conn)
+{
+    fxmy_begin_recv(conn);
+    fxmy_recv(conn);
+    fxmy_parse_auth_packet(conn);
+    return 0;
+}
+
+static void
+fxmy_ensure_buffer_room(struct fxmy_xfer_buffer_t *buffer, size_t size)
+{
+    size_t old_size = buffer->size;
+    size_t headroom = old_size - buffer->cursor;
+    const size_t new_size = (old_size + size + 4095) & (~4095);
+
+    if (size < headroom)
+        return;
+
+    buffer->memory = realloc(buffer->memory, new_size);
+    buffer->size = new_size;
+}
+
+static void
+fxmy_serialize_lcb(struct fxmy_xfer_buffer_t *buffer, uint64_t value)
+{
+    uint8_t *dest;
+
+    fxmy_ensure_buffer_room(buffer, 9);
+    dest = (uint8_t *)buffer->memory + buffer->cursor;
+    
+    if (value <= 250)
+    {
+        *dest = (uint8_t)value;
+
+        buffer->cursor += 1;
+    }
+    else if (value <= ((1 << 16) - 1))
+    {
+        *dest++ = 252;
+        *dest++ = (uint8_t)(value & 0xFF);
+        *dest++ = (uint8_t)((value >> 8) & 0xFF);
+
+        buffer->cursor += 3;
+    }
+    else if (value <= ((1 << 24) - 1))
+    {
+        *dest++ = 253;
+        *dest++ = (uint8_t)(value & 0xFF);
+        *dest++ = (uint8_t)((value >> 8) & 0xFF);
+        *dest++ = (uint8_t)((value >> 16) & 0xFF);
+
+        buffer->cursor += 4;
+    }
+    else
+    {
+        *dest++ = 254;
+        *dest++ = (uint8_t)(value & 0xFF);
+        *dest++ = (uint8_t)((value >> 8) & 0xFF);
+        *dest++ = (uint8_t)((value >> 16) & 0xFF);
+        *dest++ = (uint8_t)((value >> 24) & 0xFF);
+        *dest++ = (uint8_t)((value >> 32) & 0xFF);
+        *dest++ = (uint8_t)((value >> 40) & 0xFF);
+        *dest++ = (uint8_t)((value >> 48) & 0xFF);
+        *dest++ = (uint8_t)((value >> 56) & 0xFF);
+
+        buffer->cursor += 9;
+    }
+}
+
+static void
+fxmy_serialize_u16(struct fxmy_xfer_buffer_t *buffer, uint16_t value)
+{
+    uint8_t *dest;
+
+    fxmy_ensure_buffer_room(buffer, 2);
+    dest = (uint8_t *)buffer->memory + buffer->cursor;
+
+    *dest++ = (uint8_t)(value & 0xFF);
+    *dest++ = (uint8_t)((value >> 8) & 0xFF);
+
+    buffer->cursor += 2;
+}
+
+static void
+fxmy_serialize_u8(struct fxmy_xfer_buffer_t *buffer, uint8_t value)
+{
+    uint8_t *dest;
+
+    fxmy_ensure_buffer_room(buffer, 1);
+    dest = (uint8_t *)buffer->memory + buffer->cursor;
+
+    *dest++ = value;
+
+    buffer->cursor += 1;
+}
+
+static int
+fxmy_send_ok_packet(struct fxmy_connection_t *conn)
+{
+    struct fxmy_xfer_buffer_t *buffer = &conn->xfer_buffer;
+    struct fxmy_xfer_buffer_t temp_buffer = { NULL, 0, 0 };
+    fxmy_reset_xfer_buffer(buffer);
+
+    fxmy_serialize_u8(&temp_buffer, 0);
+    fxmy_serialize_lcb(&temp_buffer, 0);
+    fxmy_serialize_lcb(&temp_buffer, 0);
+    fxmy_serialize_u16(&temp_buffer, 0);
+    fxmy_serialize_u16(&temp_buffer, 0);
+
+    fxmy_begin_send(conn, temp_buffer.memory, temp_buffer.cursor);
+    fxmy_send(conn);
+    fxmy_reset_xfer_buffer(&temp_buffer);
+
+    return 0;
+}
+
+static int
+fxmy_handle_command_packet(struct fxmy_connection_t *conn)
+{
+    uint8_t command;
+    uint8_t *ptr;
+    size_t packet_size_less_command;
+
+    fxmy_begin_recv(conn);
+    fxmy_recv(conn);
+
+    ptr = conn->xfer_buffer.memory;
+    command = *ptr++;
+    packet_size_less_command = conn->xfer_buffer.size - sizeof command;
+
+    switch (command)
+    {
+    case COM_INIT_DB:
+        if (conn->database)
+            free(conn->database);
+        conn->database = calloc(packet_size_less_command + 1, 1);
+        memcpy(conn->database, conn->xfer_buffer.memory, packet_size_less_command);
+        return 0;
+
+    case COM_QUIT:
+        return -1;
+
+    default:
+        abort();
+    }
+
+    return 1;
+}
+
+static void
+fxmy_socket_open(unsigned short port)
 {
     WSADATA wsa_data;
     struct sockaddr_in addr;
     int rv;
-    GUID accept_ex_guid = WSAID_ACCEPTEX;
-    DWORD bytes;
-    HANDLE new_iocp;
 
     rv = WSAStartup(MAKEWORD(2, 2), &wsa_data);
     VERIFY(rv == NO_ERROR);
@@ -119,9 +408,6 @@ fxmy_socket_open(int port)
     fxmy_listen_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     VERIFY(fxmy_listen_socket != INVALID_SOCKET);
 
-    new_iocp = CreateIoCompletionPort((HANDLE)fxmy_listen_socket, fxmy_completion_port, FXMY_SOCKET_KEY, 0);
-    VERIFY(new_iocp == fxmy_completion_port);
-    
     addr.sin_family = AF_INET;
     addr.sin_addr.s_addr = INADDR_ANY;
     addr.sin_port = htons((u_short)port);
@@ -130,18 +416,6 @@ fxmy_socket_open(int port)
     VERIFY(rv != SOCKET_ERROR);
 
     rv = listen(fxmy_listen_socket, FXMY_DEFAULT_LISTEN_BACKLOG);
-    VERIFY(rv != SOCKET_ERROR);
-
-    rv = WSAIoctl(
-        fxmy_listen_socket,
-        SIO_GET_EXTENSION_FUNCTION_POINTER,
-        &accept_ex_guid,
-        sizeof accept_ex_guid,
-        &AcceptExFn,
-        sizeof AcceptExFn,
-        &bytes,
-        NULL,
-        NULL);
     VERIFY(rv != SOCKET_ERROR);
 }
 
@@ -167,46 +441,39 @@ fxmy_worker_thread(LPVOID parameter)
 
         VERIFY(result);
 
-        if (completion_key == FXMY_POISON_PILL)
-            return 0;
-
         conn = (struct fxmy_connection_t *)overlapped;
-        conn->bytes_transferred = num_bytes;
-        conn->callback(conn);
+
+        VERIFY(!fxmy_send_handshake(conn));
+        VERIFY(!fxmy_recv_auth_packet(conn));
+        VERIFY(!fxmy_send_ok_packet(conn));
+
+        for (;;)
+        {
+            int rv = fxmy_handle_command_packet(conn);
+
+            if (!rv)
+            {
+                VERIFY(!fxmy_send_ok_packet(conn));
+            }
+            else if (rv < 0)
+            {
+                break;
+            }
+            else
+            {
+            }
+        }
+
+        CloseHandle((HANDLE)conn->socket);
+        free(conn);
     }
-}
-
-static int
-fxmy_accept_callback(struct fxmy_connection_t *conn)
-{
-    fxmy_reset_xfer_buffer(&conn->xfer_buffer);
-    conn->callback = fxmy_send_handshake;
-
-    return fxmy_send_handshake(conn);
-}
-
-static struct fxmy_connection_t *
-fxmy_create_connection(SOCKET socket)
-{
-    struct fxmy_connection_t *conn;
-    const size_t alloc_size = 2 * (sizeof(struct sockaddr_in) + 16);
-    
-    conn = calloc(sizeof(struct fxmy_connection_t), 1);
-    conn->xfer_buffer.memory = calloc(alloc_size, 1);
-    conn->xfer_buffer.size = alloc_size;
-    conn->socket = socket;
-    conn->callback = fxmy_accept_callback;
-
-    return conn;
 }
 
 int
 main(void)
 {
-    HANDLE thread_handles[FXMY_NUM_THREADS] = {0};
-    WSAEVENT accept_event;
+    HANDLE thread_handles[FXMY_NUM_THREADS];
     int i;
-    int rv;
 
     fxmy_completion_port = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, (ULONG_PTR)0, FXMY_NUM_THREADS);
     VERIFY(fxmy_completion_port != NULL);
@@ -222,53 +489,16 @@ main(void)
             0,
             NULL);
 
-    accept_event = WSACreateEvent();
-    rv = WSAEventSelect(fxmy_listen_socket, accept_event, FD_ACCEPT);
-    VERIFY(rv != SOCKET_ERROR);
-
     for (;;)
     {
-        DWORD bytes;
-        BOOL rv;
-        SOCKET accept_socket;
-        struct fxmy_connection_t *conn;
+        SOCKET new_connection;
+        struct sockaddr_in addr;
+        int size = sizeof addr;
+        struct fxmy_connection_t *conn = calloc(1, sizeof(struct fxmy_connection_t));
 
-        accept_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-        VERIFY(accept_socket != INVALID_SOCKET);
+        new_connection = accept(fxmy_listen_socket, (struct sockaddr *)&addr, &size);
+        conn->socket = new_connection;
 
-        conn = fxmy_create_connection(accept_socket);
-
-        rv = AcceptExFn(
-            fxmy_listen_socket,
-            accept_socket,
-            conn->xfer_buffer.memory,
-            0,
-            sizeof(struct sockaddr_in) + 16,
-            sizeof(struct sockaddr_in) + 16,
-            &bytes,
-            &conn->overlapped);
-
-        if (rv == FALSE)
-        {
-            VERIFY(WSAGetLastError() == ERROR_IO_PENDING);
-
-            if (WSAWaitForMultipleEvents(1, &accept_event, FALSE, INFINITE, FALSE) != WSA_WAIT_TIMEOUT)
-            {
-                WSANETWORKEVENTS event;
-                rv = WSAEnumNetworkEvents(fxmy_listen_socket, accept_event, &event);
-                VERIFY(rv != SOCKET_ERROR);
-
-                if ((event.lNetworkEvents & FD_ACCEPT) && event.iErrorCode[FD_ACCEPT_BIT] == 0)
-                {
-                    CreateIoCompletionPort((HANDLE)conn->socket, fxmy_completion_port, FXMY_CONNECTION_KEY, 0);
-                }
-
-                WSAResetEvent(accept_event);
-            }
-        }
-        else
-        {
-            PostQueuedCompletionStatus(fxmy_completion_port, bytes, FXMY_CONNECTION_KEY, &conn->overlapped);
-        }
+        PostQueuedCompletionStatus(fxmy_completion_port, 0, 1, &conn->overlapped);
     }
 }
