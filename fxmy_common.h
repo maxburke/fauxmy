@@ -17,6 +17,7 @@ struct fxmy_xfer_buffer_t
     #include <stdint.h>
     #pragma warning(pop)
     #pragma warning(disable:4514)
+    #pragma warning(disable:4820)
 
     #define FXMY_PERROR fxmy_perror
 
@@ -34,6 +35,12 @@ struct fxmy_xfer_buffer_t
         uint32_t max_packet_size;
         uint32_t charset;
         char *database;
+        uint16_t multi_statements_off;
+
+        /* Transient state. These values change from one query invocation to the next. */
+        uint64_t affected_rows;
+        uint64_t insert_id;
+        const char *query_message;
     };
 
 #else
