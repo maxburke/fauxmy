@@ -342,18 +342,50 @@ fxmy_serialize_u8(struct fxmy_xfer_buffer_t *buffer, uint8_t value)
     buffer->cursor += 1;
 }
 
+static void
+fxmy_serialize_terminated_string(struct fxmy_xfer_buffer_t *buffer, const char *value)
+{
+    size_t string_bytes;
+    if (value == NULL)
+        return;
+    
+    string_bytes = strlen(value) + 1;
+
+    fxmy_ensure_buffer_room(buffer, string_bytes);
+    memcpy((char *)buffer->memory + buffer->cursor, value, string_bytes);
+    buffer->cursor += string_bytes;
+}
+
+static void
+fxmy_serialize_string(struct fxmy_xfer_buffer_t *buffer, const char *value)
+{
+    size_t string_length;
+
+    if (value == NULL)
+        return;
+
+    string_length = strlen(value);
+
+    fxmy_ensure_buffer_room(buffer, string_length);
+    memcpy((char *)buffer->memory + buffer->cursor, value, string_length);
+    buffer->cursor += string_length;
+}
+
+
+
 static int
-fxmy_send_ok_packet(struct fxmy_connection_t *conn)
+fxmy_send_ok_packet(struct fxmy_connection_t *conn, uint64_t affected_rows, uint64_t insert_id, const char *message)
 {
     struct fxmy_xfer_buffer_t *buffer = &conn->xfer_buffer;
     struct fxmy_xfer_buffer_t temp_buffer = { NULL, 0, 0 };
     fxmy_reset_xfer_buffer(buffer);
 
     fxmy_serialize_u8(&temp_buffer, 0);
-    fxmy_serialize_lcb(&temp_buffer, 0);
-    fxmy_serialize_lcb(&temp_buffer, 0);
+    fxmy_serialize_lcb(&temp_buffer, affected_rows);
+    fxmy_serialize_lcb(&temp_buffer, insert_id);
     fxmy_serialize_u16(&temp_buffer, 0);
     fxmy_serialize_u16(&temp_buffer, 0);
+    fxmy_serialize_string(&temp_buffer, message);
 
     fxmy_begin_send(conn, temp_buffer.memory, temp_buffer.cursor);
     fxmy_send(conn);
@@ -378,6 +410,13 @@ fxmy_handle_command_packet(struct fxmy_connection_t *conn)
 
     switch (command)
     {
+    case COM_SLEEP:
+        abort();
+        return 0;
+
+    case COM_QUIT:
+        return -1;
+
     case COM_INIT_DB:
         if (conn->database)
             free(conn->database);
@@ -385,8 +424,44 @@ fxmy_handle_command_packet(struct fxmy_connection_t *conn)
         memcpy(conn->database, conn->xfer_buffer.memory, packet_size_less_command);
         return 0;
 
-    case COM_QUIT:
-        return -1;
+    case COM_QUERY:
+    case COM_FIELD_LIST:
+    case COM_CREATE_DB:
+    case COM_DROP_DB:
+    case COM_REFRESH:
+    case COM_SHUTDOWN:
+    case COM_STATISTICS:
+    case COM_PROCESS_INFO:
+    case COM_CONNECT:
+    case COM_PROCESS_KILL:
+    case COM_DEBUG:
+    case COM_PING:
+    case COM_TIME:
+    case COM_DELAYED_INSERT:
+    case COM_CHANGE_USER:
+    case COM_BINLOG_DUMP:
+    case COM_TABLE_DUMP:
+    case COM_CONNECT_OUT:
+    case COM_REGISTER_SLAVE:
+    case COM_STMT_PREPARE:
+    case COM_STMT_EXECUTE:
+    case COM_STMT_SEND_LONG_DATA:
+    case COM_STMT_CLOSE:
+    case COM_STMT_RESET:
+        abort();
+        return 0;
+
+    case COM_SET_OPTION:
+        {
+            const uint16_t *option = (const uint16_t *)ptr;
+            conn->multi_statements_off = *option;
+            return 0;
+        }
+
+    case COM_STMT_FETCH:
+        abort();
+        return 0;
+
 
     default:
         abort();
@@ -419,6 +494,14 @@ fxmy_socket_open(unsigned short port)
     VERIFY(rv != SOCKET_ERROR);
 }
 
+static void
+fxmy_reset_transient_state(struct fxmy_connection_t *conn)
+{
+    conn->affected_rows = 0;
+    conn->insert_id = 0;
+    conn->query_message = NULL;
+}
+
 static DWORD WINAPI
 fxmy_worker_thread(LPVOID parameter)
 {
@@ -445,7 +528,7 @@ fxmy_worker_thread(LPVOID parameter)
 
         VERIFY(!fxmy_send_handshake(conn));
         VERIFY(!fxmy_recv_auth_packet(conn));
-        VERIFY(!fxmy_send_ok_packet(conn));
+        VERIFY(!fxmy_send_ok_packet(conn, 0, 0, NULL));
 
         for (;;)
         {
@@ -453,7 +536,8 @@ fxmy_worker_thread(LPVOID parameter)
 
             if (!rv)
             {
-                VERIFY(!fxmy_send_ok_packet(conn));
+                VERIFY(!fxmy_send_ok_packet(conn, conn->affected_rows, conn->insert_id, conn->query_message));
+                fxmy_reset_transient_state(conn);
             }
             else if (rv < 0)
             {
