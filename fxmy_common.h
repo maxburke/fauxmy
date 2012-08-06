@@ -1,6 +1,8 @@
 #ifndef FXMY_COMMON_H
 #define FXMY_COMMON_H
 
+#include <stddef.h>
+
 struct fxmy_xfer_buffer_t
 {
     void *memory;
@@ -137,16 +139,10 @@ fxmy_reset_xfer_buffer(struct fxmy_xfer_buffer_t *buffer);
 int
 fxmy_xfer_in_progress(struct fxmy_xfer_buffer_t *buffer);
 
-void
-fxmy_begin_send(struct fxmy_connection_t *conn, const void *data, size_t size);
-
 int
 fxmy_send_handshake(struct fxmy_connection_t *conn);
 
 void
 fxmy_get_handshake_packet(void **ptr, size_t *size);
-
-int
-fxmy_send(struct fxmy_connection_t *conn);
 
 #endif
