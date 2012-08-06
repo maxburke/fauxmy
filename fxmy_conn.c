@@ -1,4 +1,11 @@
 #include <stdlib.h>
+#include <string.h>
+
+#ifdef _MSC_VER
+	#pragma warning(push, 0)
+	#include <WinSock2.h>
+	#pragma warning(pop)
+#endif
 
 #include "fxmy_common.h"
 #include "fxmy_conn.h"

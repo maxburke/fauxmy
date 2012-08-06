@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 
 #include "fxmy_common.h"
 #include "fxmy_write.h"

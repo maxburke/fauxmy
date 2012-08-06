@@ -1,8 +1,27 @@
+/*
+#ifdef _MSC_VER
+    #pragma warning(push, 0)
+    #define WIN32_LEAN_AND_MEAN
+    #include <Windows.h>
+    #include <WinSock2.h>
+    #include <MSWSock.h>
+    #include <stdint.h>
+    #pragma warning(pop)
+    #pragma warning(disable:4514)
+    #pragma warning(disable:4820)
+*/
+
 #pragma warning(push, 0)
 #include <stdlib.h>
 #include <stdio.h>
+
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
+#include <WinSock2.h>
+#include <MSWSock.h>
 #pragma warning(pop)
 #pragma warning(disable:4514)
+#pragma warning(disable:4127)
 
 #include "fxmy_common.h"
 #include "fxmy_read.h"
@@ -176,6 +195,9 @@ main(void)
     HANDLE thread_handles[FXMY_NUM_THREADS];
     int i;
 
+	VERIFY(sizeof(OVERLAPPED) == OVERLAPPED_SIZE);
+	VERIFY(sizeof(SOCKET) == sizeof(socket_t));
+
     fxmy_completion_port = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, (ULONG_PTR)0, FXMY_NUM_THREADS);
     VERIFY(fxmy_completion_port != NULL);
 
@@ -200,6 +222,6 @@ main(void)
         new_connection = accept(fxmy_listen_socket, (struct sockaddr *)&addr, &size);
         conn->socket = new_connection;
 
-        PostQueuedCompletionStatus(fxmy_completion_port, 0, 1, &conn->overlapped);
+        PostQueuedCompletionStatus(fxmy_completion_port, 0, 1, (LPOVERLAPPED)&conn->overlapped[0]);
     }
 }

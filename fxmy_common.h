@@ -1,7 +1,17 @@
 #ifndef FXMY_COMMON_H
 #define FXMY_COMMON_H
 
+#ifdef _MSC_VER
+#pragma warning(push, 0)
+#endif
+
 #include <stddef.h>
+#include <stdint.h>
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#pragma warning(disable : 4820)
+#endif
 
 struct fxmy_xfer_buffer_t
 {
@@ -10,52 +20,38 @@ struct fxmy_xfer_buffer_t
     size_t cursor;
 };
 
+
 #ifdef _MSC_VER
-    #pragma warning(push, 0)
-    #define WIN32_LEAN_AND_MEAN
-    #include <Windows.h>
-    #include <WinSock2.h>
-    #include <MSWSock.h>
-    #include <stdint.h>
-    #pragma warning(pop)
-    #pragma warning(disable:4514)
-    #pragma warning(disable:4820)
+	#define OVERLAPPED_SIZE 20
+	typedef unsigned int socket_t;
 
-    #define FXMY_PERROR fxmy_perror
+	#define FXMY_PERROR fxmy_perror
 
-    void 
-    fxmy_perror(const char *string);
-    struct fxmy_connection_t;
-
-    struct fxmy_connection_t
-    {
-        OVERLAPPED overlapped;
-        SOCKET socket;
-        struct fxmy_xfer_buffer_t xfer_buffer;
-        uint32_t packet_number;
-        uint32_t client_flags;
-        uint32_t max_packet_size;
-        uint32_t charset;
-        char *database;
-        uint16_t multi_statements_off;
-
-        /* Transient state. These values change from one query invocation to the next. */
-        uint64_t affected_rows;
-        uint64_t insert_id;
-        const char *query_message;
-    };
-
+	void 
+	fxmy_perror(const char *string);
 #else
-    #define FXMY_PERROR perror
-
-    struct fxmy_connection_t
-    {
-        enum fxmy_connection_state_t state;
-        struct fxmy_xfer_buffer_t xfer_buffer;
-        int socket_fd;
-    };
-    
+	typedef int socket_t;
 #endif
+
+struct fxmy_connection_t
+{
+#ifdef _MSC_VER
+    char overlapped[OVERLAPPED_SIZE];
+#endif
+    socket_t socket;
+    struct fxmy_xfer_buffer_t xfer_buffer;
+    uint32_t packet_number;
+    uint32_t client_flags;
+    uint32_t max_packet_size;
+    uint32_t charset;
+    char *database;
+    uint16_t multi_statements_off;
+
+    /* Transient state. These values change from one query invocation to the next. */
+    uint64_t affected_rows;
+    uint64_t insert_id;
+    const char *query_message;
+};
 
 #define VERIFY_impl(x, line) if (!(x)) { FXMY_PERROR(__FILE__ "(" line "): " #x); abort(); } else (void)0
 #define STRINGIZE(x) STRINGIZE2(x)

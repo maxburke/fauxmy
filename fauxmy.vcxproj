@@ -81,7 +81,6 @@
     <ClCompile Include="fxmy_main.c" />
     <ClCompile Include="fxmy_read.c" />
     <ClCompile Include="fxmy_write.c" />
-    <ClCompile Include="windows\fxmy_conn_windows.c" />
     <ClCompile Include="windows\main_win.c" />
   </ItemGroup>
   <ItemGroup>
