@@ -76,7 +76,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="fxmy_common.c" />
-    <ClCompile Include="main_win.c" />
+    <ClCompile Include="windows\main_win.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fxmy_common.h" />
