@@ -33,6 +33,11 @@ struct fxmy_xfer_buffer_t
 	typedef int socket_t;
 #endif
 
+struct fxmy_application_context_t
+{
+	char *connection_string;
+};
+
 struct fxmy_connection_t
 {
 #ifdef _MSC_VER

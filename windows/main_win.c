@@ -109,11 +109,9 @@ fxmy_socket_open(unsigned short port)
 }
 
 static DWORD WINAPI
-fxmy_worker_thread(LPVOID parameter)
+fxmy_worker_thread(LPVOID context)
 {
-	UNUSED(parameter);
-
-	fxmy_worker();
+	fxmy_worker(context);
 
 	return 0;
 }

@@ -7,6 +7,13 @@
 #include "fxmy_conn.h"
 #include "fxmy_main.h"
 
+#define WIN32_LEAN_AND_MEAN
+#pragma warning(push, 0)
+#include <Windows.h>
+#include <sql.h>
+#include <sqlext.h>
+#pragma warning(pop)
+
 static void
 fxmy_parse_auth_packet(struct fxmy_connection_t *conn)
 {
@@ -145,8 +152,15 @@ fxmy_reset_transient_state(struct fxmy_connection_t *conn)
 }
 
 void
-fxmy_worker(void)
+fxmy_worker(const struct fxmy_application_context_t *context)
 {
+	SQLHENV environment_handle = NULL;
+	SQLHDBC database_connection_handle = NULL;
+
+	VERIFY(SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &environment_handle) != SQL_SUCCESS);
+	VERIFY(SQLAllocHandle(SQL_HANDLE_DBC, environment_handle, &database_connection_handle) == SQL_SUCCESS);
+	VERIFY(SQLDriverConnect(database_connection_handle, NULL, context->connection_string, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_NOPROMPT) == SQL_SUCCESS);
+
     for (;;)
     {
         struct fxmy_connection_t *conn = fxmy_conn_create();
@@ -175,4 +189,8 @@ fxmy_worker(void)
 
 		fxmy_conn_dispose(conn);
     }
+
+	SQLDisconnect(database_connection_handle);
+	SQLFreeHandle(SQL_HANDLE_DBC, database_connection_handle);
+	SQLFreeHandle(SQL_HANDLE_ENV, environment_handle);
 }
