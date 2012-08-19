@@ -22,12 +22,12 @@ fxmy_xfer_in_progress(struct fxmy_xfer_buffer_t *buffer)
 int
 fxmy_send_handshake(struct fxmy_connection_t *conn)
 {
-	void *ptr;
-	size_t size;
+    void *ptr;
+    size_t size;
 
-	fxmy_get_handshake_packet(&ptr, &size);
-	if (fxmy_send(conn, ptr, size))
-		return 1;
+    fxmy_get_handshake_packet(&ptr, &size);
+    if (fxmy_send(conn, ptr, size))
+        return 1;
 
     return 0;
 }

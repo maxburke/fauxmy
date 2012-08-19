@@ -154,12 +154,12 @@ fxmy_reset_transient_state(struct fxmy_connection_t *conn)
 void
 fxmy_worker(const struct fxmy_application_context_t *context)
 {
-	SQLHENV environment_handle = NULL;
-	SQLHDBC database_connection_handle = NULL;
+    SQLHENV environment_handle = NULL;
+    SQLHDBC database_connection_handle = NULL;
 
-	VERIFY(SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &environment_handle) != SQL_SUCCESS);
-	VERIFY(SQLAllocHandle(SQL_HANDLE_DBC, environment_handle, &database_connection_handle) == SQL_SUCCESS);
-	VERIFY(SQLDriverConnect(database_connection_handle, NULL, context->connection_string, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_NOPROMPT) == SQL_SUCCESS);
+    VERIFY(SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &environment_handle) != SQL_SUCCESS);
+    VERIFY(SQLAllocHandle(SQL_HANDLE_DBC, environment_handle, &database_connection_handle) == SQL_SUCCESS);
+    VERIFY(SQLDriverConnect(database_connection_handle, NULL, context->connection_string, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_NOPROMPT) == SQL_SUCCESS);
 
     for (;;)
     {
@@ -187,10 +187,10 @@ fxmy_worker(const struct fxmy_application_context_t *context)
             }
         }
 
-		fxmy_conn_dispose(conn);
+        fxmy_conn_dispose(conn);
     }
 
-	SQLDisconnect(database_connection_handle);
-	SQLFreeHandle(SQL_HANDLE_DBC, database_connection_handle);
-	SQLFreeHandle(SQL_HANDLE_ENV, environment_handle);
+    SQLDisconnect(database_connection_handle);
+    SQLFreeHandle(SQL_HANDLE_DBC, database_connection_handle);
+    SQLFreeHandle(SQL_HANDLE_ENV, environment_handle);
 }

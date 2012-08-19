@@ -111,18 +111,18 @@ fxmy_socket_open(unsigned short port)
 static DWORD WINAPI
 fxmy_worker_thread(LPVOID context)
 {
-	fxmy_worker(context);
+    fxmy_worker(context);
 
-	return 0;
+    return 0;
 }
 
 struct fxmy_connection_t *
 fxmy_conn_create(void)
 {
-	BOOL result;
-	DWORD num_bytes;
-	ULONG_PTR completion_key;
-	OVERLAPPED *overlapped;
+    BOOL result;
+    DWORD num_bytes;
+    ULONG_PTR completion_key;
+    OVERLAPPED *overlapped;
 
     result = GetQueuedCompletionStatus(
         fxmy_completion_port,
@@ -131,9 +131,9 @@ fxmy_conn_create(void)
         &overlapped,
         INFINITE);
 
-	VERIFY(result);
+    VERIFY(result);
 
-	return (struct fxmy_connection_t *)overlapped;
+    return (struct fxmy_connection_t *)overlapped;
 }
 
 void
@@ -193,8 +193,8 @@ main(void)
     HANDLE thread_handles[FXMY_NUM_THREADS];
     int i;
 
-	VERIFY(sizeof(OVERLAPPED) == OVERLAPPED_SIZE);
-	VERIFY(sizeof(SOCKET) == sizeof(socket_t));
+    VERIFY(sizeof(OVERLAPPED) == OVERLAPPED_SIZE);
+    VERIFY(sizeof(SOCKET) == sizeof(socket_t));
 
     fxmy_completion_port = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, (ULONG_PTR)0, FXMY_NUM_THREADS);
     VERIFY(fxmy_completion_port != NULL);

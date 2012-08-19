@@ -2,9 +2,9 @@
 #include <string.h>
 
 #ifdef _MSC_VER
-	#pragma warning(push, 0)
-	#include <WinSock2.h>
-	#pragma warning(pop)
+    #pragma warning(push, 0)
+    #include <WinSock2.h>
+    #pragma warning(pop)
 #endif
 
 #include "fxmy_common.h"
@@ -64,7 +64,7 @@ fxmy_send(struct fxmy_connection_t *conn, const void *data, size_t size)
     struct fxmy_xfer_buffer_t *buffer = &conn->xfer_buffer;
     int bytes_written;
 
-	fxmy_begin_send(conn, data, size);
+    fxmy_begin_send(conn, data, size);
 
     bytes_written = send(conn->socket, buffer->memory, buffer->size, 0);
 
@@ -105,7 +105,7 @@ fxmy_recv(struct fxmy_connection_t *conn)
 {
     int bytes_read;
 
-	fxmy_begin_recv(conn);
+    fxmy_begin_recv(conn);
     bytes_read = recv(conn->socket, conn->xfer_buffer.memory, (int)conn->xfer_buffer.size, 0);
     VERIFY((size_t)bytes_read == conn->xfer_buffer.size);
 

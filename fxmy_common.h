@@ -22,20 +22,20 @@ struct fxmy_xfer_buffer_t
 
 
 #ifdef _MSC_VER
-	#define OVERLAPPED_SIZE 20
-	typedef unsigned int socket_t;
+    #define OVERLAPPED_SIZE 20
+    typedef unsigned int socket_t;
 
-	#define FXMY_PERROR fxmy_perror
+    #define FXMY_PERROR fxmy_perror
 
-	void 
-	fxmy_perror(const char *string);
+    void 
+    fxmy_perror(const char *string);
 #else
-	typedef int socket_t;
+    typedef int socket_t;
 #endif
 
 struct fxmy_application_context_t
 {
-	char *connection_string;
+    char *connection_string;
 };
 
 struct fxmy_connection_t
