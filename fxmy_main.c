@@ -152,45 +152,41 @@ fxmy_reset_transient_state(struct fxmy_connection_t *conn)
 }
 
 void
-fxmy_worker(const struct fxmy_application_context_t *context)
+fxmy_worker(const struct fxmy_connection_context_t *context)
 {
     SQLHENV environment_handle = NULL;
     SQLHDBC database_connection_handle = NULL;
+    struct fxmy_connection_t *conn = context->connection;
 
     VERIFY(SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &environment_handle) != SQL_SUCCESS);
     VERIFY(SQLAllocHandle(SQL_HANDLE_DBC, environment_handle, &database_connection_handle) == SQL_SUCCESS);
     VERIFY(SQLDriverConnect(database_connection_handle, NULL, context->connection_string, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_NOPROMPT) == SQL_SUCCESS);
 
+    VERIFY(!fxmy_send_handshake(conn));
+    VERIFY(!fxmy_recv_auth_packet(conn));
+    VERIFY(!fxmy_send_ok_packet(conn, 0, 0, NULL));
+
     for (;;)
     {
-        struct fxmy_connection_t *conn = fxmy_conn_create();
+        int rv = fxmy_handle_command_packet(conn);
 
-        VERIFY(!fxmy_send_handshake(conn));
-        VERIFY(!fxmy_recv_auth_packet(conn));
-        VERIFY(!fxmy_send_ok_packet(conn, 0, 0, NULL));
-
-        for (;;)
+        if (!rv)
         {
-            int rv = fxmy_handle_command_packet(conn);
-
-            if (!rv)
-            {
-                VERIFY(!fxmy_send_ok_packet(conn, conn->affected_rows, conn->insert_id, conn->query_message));
-                fxmy_reset_transient_state(conn);
-            }
-            else if (rv < 0)
-            {
-                break;
-            }
-            else
-            {
-            }
+            VERIFY(!fxmy_send_ok_packet(conn, conn->affected_rows, conn->insert_id, conn->query_message));
+            fxmy_reset_transient_state(conn);
         }
-
-        fxmy_conn_dispose(conn);
+        else if (rv < 0)
+        {
+            break;
+        }
+        else
+        {
+        }
     }
 
     SQLDisconnect(database_connection_handle);
     SQLFreeHandle(SQL_HANDLE_DBC, database_connection_handle);
     SQLFreeHandle(SQL_HANDLE_ENV, environment_handle);
+
+    fxmy_conn_dispose(conn);
 }

@@ -116,84 +116,94 @@ fxmy_worker_thread(LPVOID context)
     return 0;
 }
 
-struct fxmy_connection_t *
-fxmy_conn_create(void)
-{
-    BOOL result;
-    DWORD num_bytes;
-    ULONG_PTR completion_key;
-    OVERLAPPED *overlapped;
-
-    result = GetQueuedCompletionStatus(
-        fxmy_completion_port,
-        &num_bytes,
-        &completion_key,
-        &overlapped,
-        INFINITE);
-
-    VERIFY(result);
-
-    return (struct fxmy_connection_t *)overlapped;
-}
-
 void
 fxmy_conn_dispose(struct fxmy_connection_t *conn)
 {
     CloseHandle((HANDLE)conn->socket);
-    free(conn);
+    conn->done = 1;
 }
 
-/*
-static DWORD WINAPI
-fxmy_worker_thread(LPVOID parameter)
+static void
+fxmy_add_new_connection(struct fxmy_connection_context_t *context, HANDLE thread_handle)
 {
-    UNUSED(parameter);
-
-    for (;;)
+    struct fxmy_connection_thread_info_t 
     {
-        DWORD num_bytes;
-        BOOL result;
-        ULONG_PTR completion_key;
-        OVERLAPPED *overlapped;
-        struct fxmy_connection_t *conn;
+        struct fxmy_connection_context_t *context;
+        HANDLE thread_handle;
+    };
 
-        VERIFY(result);
+    static struct fxmy_connection_thread_info_t *context_array;
+    static size_t num_active_context_array_entries;
+    static size_t num_context_array_entries;
+    size_t i;
 
-        conn = (struct fxmy_connection_t *)overlapped;
-
-        VERIFY(!fxmy_send_handshake(conn));
-        VERIFY(!fxmy_recv_auth_packet(conn));
-        VERIFY(!fxmy_send_ok_packet(conn, 0, 0, NULL));
-
-        for (;;)
+    /*
+     * Scan the list of active connections and see if any are done. If the connection
+     * is done, wait for the thread to exit and then release its context slot.
+     */
+    for (i = 0; i < num_active_context_array_entries; ++i)
+    {
+        struct fxmy_connection_context_t *current_context = context_array[i].context;
+        if (current_context->connection->done)
         {
-            int rv = fxmy_handle_command_packet(conn);
+            WaitForSingleObject(context_array[i].thread_handle, INFINITE);
+            free(current_context->connection);
+            free(current_context);
 
-            if (!rv)
-            {
-                VERIFY(!fxmy_send_ok_packet(conn, conn->affected_rows, conn->insert_id, conn->query_message));
-                fxmy_reset_transient_state(conn);
-            }
-            else if (rv < 0)
-            {
-                break;
-            }
-            else
-            {
-            }
+            memset(&context_array[i], 0, sizeof(struct fxmy_connection_thread_info_t));
+            --num_active_context_array_entries;
         }
-
     }
+
+    /*
+     * Realloc the array if there aren't enough entries in it
+     */
+    if (num_active_context_array_entries + 1 > num_context_array_entries)
+    {
+        const size_t ALLOCATION_DELTA = 10;
+        const size_t new_num_entries = num_context_array_entries + ALLOCATION_DELTA;
+        context_array = realloc(context_array, new_num_entries * sizeof(struct fxmy_connection_thread_info_t));
+
+        /*
+         * The code below that inserts the connection into the connection array
+         * assumes that an available slot has its struct fxmy_connection_t * 
+         * member as NULL and the thread handle is invalid. This memset ensures
+         * that the memory returned by realloc is initialized properly.
+         */
+        memset(&context_array[num_active_context_array_entries], 0, ALLOCATION_DELTA * sizeof(struct fxmy_connection_thread_info_t));
+        num_context_array_entries = new_num_entries;
+    }
+
+    for (i = 0; i < num_context_array_entries; ++i)
+    {
+        if (context_array[i].context == NULL)
+        {
+            VERIFY(context_array[i].thread_handle == NULL);
+            context_array[i].context = context;
+            context_array[i].thread_handle = thread_handle;
+            ++num_active_context_array_entries;
+
+            return;
+        }
+    }
+
+    VERIFY(0);
 }
 
-*/
+static struct fxmy_connection_context_t *
+fxmy_create_connection_context(SOCKET new_connection)
+{
+    struct fxmy_connection_t *conn = calloc(1, sizeof(struct fxmy_connection_t));
+    struct fxmy_connection_context_t *context = calloc(1, sizeof(struct fxmy_connection_context_t));
+    conn->socket = new_connection;
+    context->connection = conn;
+
+    return context;
+}
+
 int
 main(void)
 {
-    HANDLE thread_handles[FXMY_NUM_THREADS];
-    int i;
-
-    VERIFY(sizeof(OVERLAPPED) == OVERLAPPED_SIZE);
     VERIFY(sizeof(SOCKET) == sizeof(socket_t));
 
     fxmy_completion_port = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, (ULONG_PTR)0, FXMY_NUM_THREADS);
@@ -201,25 +211,24 @@ main(void)
 
     fxmy_socket_open(FXMY_DEFAULT_PORT);
 
-    for (i = 0; i < FXMY_NUM_THREADS; ++i)
-        thread_handles[i] = CreateThread(
-            NULL,
-            0,
-            fxmy_worker_thread,
-            NULL,
-            0,
-            NULL);
-
     for (;;)
     {
         SOCKET new_connection;
         struct sockaddr_in addr;
-        int size = sizeof addr;
-        struct fxmy_connection_t *conn = calloc(1, sizeof(struct fxmy_connection_t));
+        int size = (int)(sizeof addr);
+        struct fxmy_connection_context_t *context;
+        HANDLE thread_handle;
 
         new_connection = accept(fxmy_listen_socket, (struct sockaddr *)&addr, &size);
-        conn->socket = new_connection;
+        context = fxmy_create_connection_context(new_connection);
+        
+        thread_handle = CreateThread(NULL,
+            0,
+            fxmy_worker_thread,
+            context,
+            0,
+            NULL);
 
-        PostQueuedCompletionStatus(fxmy_completion_port, 0, 1, (LPOVERLAPPED)&conn->overlapped[0]);
+        fxmy_add_new_connection(context, thread_handle);
     }
 }

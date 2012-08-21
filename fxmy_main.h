@@ -4,7 +4,7 @@
 struct fxmy_connection_t;
 
 void
-fxmy_worker(const struct fxmy_application_context_t *context);
+fxmy_worker(const struct fxmy_connection_context_t *context);
 
 struct fxmy_connection_t *
 fxmy_conn_create(void);

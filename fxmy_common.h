@@ -22,7 +22,6 @@ struct fxmy_xfer_buffer_t
 
 
 #ifdef _MSC_VER
-    #define OVERLAPPED_SIZE 20
     typedef unsigned int socket_t;
 
     #define FXMY_PERROR fxmy_perror
@@ -33,17 +32,10 @@ struct fxmy_xfer_buffer_t
     typedef int socket_t;
 #endif
 
-struct fxmy_application_context_t
-{
-    char *connection_string;
-};
-
 struct fxmy_connection_t
 {
-#ifdef _MSC_VER
-    char overlapped[OVERLAPPED_SIZE];
-#endif
     socket_t socket;
+    int done;
     struct fxmy_xfer_buffer_t xfer_buffer;
     uint32_t packet_number;
     uint32_t client_flags;
@@ -56,6 +48,12 @@ struct fxmy_connection_t
     uint64_t affected_rows;
     uint64_t insert_id;
     const char *query_message;
+};
+
+struct fxmy_connection_context_t
+{
+    wchar_t *connection_string;
+    struct fxmy_connection_t *connection;
 };
 
 #define VERIFY_impl(x, line) if (!(x)) { FXMY_PERROR(__FILE__ "(" line "): " #x); abort(); } else (void)0
