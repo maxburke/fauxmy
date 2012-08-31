@@ -158,7 +158,7 @@ fxmy_worker(const struct fxmy_connection_context_t *context)
     SQLHDBC database_connection_handle = NULL;
     struct fxmy_connection_t *conn = context->connection;
 
-    VERIFY(SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &environment_handle) != SQL_SUCCESS);
+    VERIFY(SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &environment_handle) == SQL_SUCCESS);
     VERIFY(SQLAllocHandle(SQL_HANDLE_DBC, environment_handle, &database_connection_handle) == SQL_SUCCESS);
     VERIFY(SQLDriverConnect(database_connection_handle, NULL, context->connection_string, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_NOPROMPT) == SQL_SUCCESS);
 
