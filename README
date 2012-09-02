@@ -1,0 +1,3 @@
+* Configure ODBC driver for correct server.
+* Set connection string to point to ODBC name.
+* Remember to configure both 32 and 64-bit ODBC driver managers on Windows. By default the ODBC manager available in the start menu is the 64-bit one, which means you need to run the 32-bit version manually. It is located here: C:\Windows\SysWOW64\odbcad32.exe
