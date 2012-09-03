@@ -52,7 +52,7 @@ struct fxmy_connection_t
 
 struct fxmy_connection_context_t
 {
-    wchar_t *connection_string;
+    const char *connection_string;
     struct fxmy_connection_t *connection;
 };
 

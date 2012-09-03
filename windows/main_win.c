@@ -35,7 +35,6 @@
 #define FXMY_DEFAULT_PORT 3306
 #define FXMY_DEFAULT_LISTEN_BACKLOG 50
 
-static HANDLE fxmy_completion_port;
 static SOCKET fxmy_listen_socket;
 
 void
@@ -191,12 +190,13 @@ fxmy_add_new_connection(struct fxmy_connection_context_t *context, HANDLE thread
 }
 
 static struct fxmy_connection_context_t *
-fxmy_create_connection_context(SOCKET new_connection)
+fxmy_create_connection_context(SOCKET new_connection, const char *connection_string)
 {
     struct fxmy_connection_t *conn = calloc(1, sizeof(struct fxmy_connection_t));
     struct fxmy_connection_context_t *context = calloc(1, sizeof(struct fxmy_connection_context_t));
     conn->socket = new_connection;
     context->connection = conn;
+    context->connection_string = connection_string;
 
     return context;
 }
@@ -204,10 +204,13 @@ fxmy_create_connection_context(SOCKET new_connection)
 int
 main(void)
 {
-    VERIFY(sizeof(SOCKET) == sizeof(socket_t));
+    /*
+     * TODO: Use ini files for the connection string
+     */
 
-    fxmy_completion_port = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, (ULONG_PTR)0, FXMY_NUM_THREADS);
-    VERIFY(fxmy_completion_port != NULL);
+    const char connection_string[] = "Driver={SQL Server Native Client 11.0};Server=.\\SQLEXPRESS;UID=max;PWD=W0zixege";
+
+    VERIFY(sizeof(SOCKET) == sizeof(socket_t));
 
     fxmy_socket_open(FXMY_DEFAULT_PORT);
 
@@ -220,7 +223,7 @@ main(void)
         HANDLE thread_handle;
 
         new_connection = accept(fxmy_listen_socket, (struct sockaddr *)&addr, &size);
-        context = fxmy_create_connection_context(new_connection);
+        context = fxmy_create_connection_context(new_connection, connection_string);
         
         thread_handle = CreateThread(NULL,
             0,
