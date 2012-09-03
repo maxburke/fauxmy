@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "fxmy_common.h"
 #include "fxmy_read.h"
@@ -151,6 +152,40 @@ fxmy_reset_transient_state(struct fxmy_connection_t *conn)
     conn->query_message = NULL;
 }
 
+static void
+VERIFY_ODBC(SQLRETURN return_code, SQLSMALLINT handle_type, SQLHANDLE handle)
+{
+    SQLCHAR sql_state_code[6];
+    SQLINTEGER native_error;
+    SQLCHAR message_text[1024];
+    SQLSMALLINT text_length;
+    SQLSMALLINT i = 1;
+
+    if (return_code == SQL_SUCCESS)
+        return;
+
+    while (SQLGetDiagRecA(
+        handle_type,
+        handle,
+        i,
+        sql_state_code,
+        &native_error,
+        message_text,
+        sizeof message_text,
+        &text_length) == SQL_SUCCESS)
+    {
+        ++i;
+        sql_state_code[5] = 0;
+        message_text[1023] = 0;
+        fprintf(stderr, "[fxmy] (%s) %s\n", sql_state_code, message_text);
+    }
+
+    if (return_code == SQL_ERROR)
+    {
+        __debugbreak();
+    }
+}
+
 void
 fxmy_worker(const struct fxmy_connection_context_t *context)
 {
@@ -158,9 +193,10 @@ fxmy_worker(const struct fxmy_connection_context_t *context)
     SQLHDBC database_connection_handle = NULL;
     struct fxmy_connection_t *conn = context->connection;
 
-    VERIFY(SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &environment_handle) != SQL_SUCCESS);
-    VERIFY(SQLAllocHandle(SQL_HANDLE_DBC, environment_handle, &database_connection_handle) == SQL_SUCCESS);
-    VERIFY(SQLDriverConnect(database_connection_handle, NULL, context->connection_string, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_NOPROMPT) == SQL_SUCCESS);
+    VERIFY_ODBC(SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &environment_handle), SQL_HANDLE_ENV, environment_handle);
+    VERIFY_ODBC(SQLSetEnvAttr(environment_handle, SQL_ATTR_ODBC_VERSION, (SQLPOINTER)SQL_OV_ODBC3, SQL_IS_UINTEGER), SQL_HANDLE_ENV, environment_handle);
+    VERIFY_ODBC(SQLAllocHandle(SQL_HANDLE_DBC, environment_handle, &database_connection_handle), SQL_HANDLE_ENV, environment_handle);
+    VERIFY_ODBC(SQLDriverConnectA(database_connection_handle, NULL, (SQLCHAR *)context->connection_string, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_NOPROMPT), SQL_HANDLE_DBC, database_connection_handle);
 
     VERIFY(!fxmy_send_handshake(conn));
     VERIFY(!fxmy_recv_auth_packet(conn));
