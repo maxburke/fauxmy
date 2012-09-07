@@ -33,6 +33,7 @@ struct fxmy_xfer_buffer_t
 #endif
 
 struct fxmy_odbc_t;
+struct fxmy_status_t;
 
 #define FXMY_OK ((uint64_t)0)
 #define FXMY_ERROR ((uint64_t)(int64_t)-1)
@@ -53,9 +54,7 @@ struct fxmy_connection_t
     uint64_t column_count_error_code;
     uint64_t affected_rows;
     uint64_t insert_id;
-    uint16_t error_code;
-    char sql_state[6];
-    char message[512];
+    const struct fxmy_status_t *status;
 
     struct fxmy_odbc_t *odbc;
     const char *connection_string;

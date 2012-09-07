@@ -11,6 +11,7 @@
 #include "fxmy_write.h"
 #include "fxmy_conn.h"
 #include "fxmy_main.h"
+#include "fxmy_error.h"
 
 #ifdef _MSC_VER
 #define WIN32_LEAN_AND_MEAN
@@ -82,6 +83,9 @@ fxmy_connect(struct fxmy_connection_t *conn)
     VERIFY(conn->database != 0 && strlen(conn->database) > 0);
     _snprintf(connection_string, sizeof connection_string, "%s%sDatabase=%s;", conn->connection_string, (has_trailing_semicolon ? "" : ";"), conn->database);
 
+    /* 
+     * If the database doesn't exist the driver should return error code 1049 and sql status "42000"
+     */
     if (!fxmy_verify_and_log_odbc(SQLDriverConnectA(odbc->database_connection_handle, NULL, (SQLCHAR *)connection_string, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_NOPROMPT), SQL_HANDLE_DBC, odbc->database_connection_handle))
     {
         odbc->connected = 1;
@@ -129,39 +133,6 @@ fxmy_recv_auth_packet(struct fxmy_connection_t *conn)
     return fxmy_parse_auth_packet(conn);
 }
 
-/*
-static int
-fxmy_send_err_packet(struct fxmy_connection_t *conn)
-{
-    struct fxmy_xfer_buffer_t *buffer = &conn->xfer_buffer;
-    struct fxmy_xfer_buffer_t temp_buffer = { NULL, 0, 0 };
-    fxmy_reset_xfer_buffer(buffer);
-
-    fxmy_serialize_u8(&temp_buffer, 0xff);
-
-
-}
-
-static int
-fxmy_send_ok_packet(struct fxmy_connection_t *conn, uint64_t affected_rows, uint64_t insert_id, const char *message)
-{
-    struct fxmy_xfer_buffer_t *buffer = &conn->xfer_buffer;
-    struct fxmy_xfer_buffer_t temp_buffer = { NULL, 0, 0 };
-    fxmy_reset_xfer_buffer(buffer);
-
-    fxmy_serialize_u8(&temp_buffer, 0);
-    fxmy_serialize_lcb(&temp_buffer, affected_rows);
-    fxmy_serialize_lcb(&temp_buffer, insert_id);
-    fxmy_serialize_u16(&temp_buffer, 0);
-    fxmy_serialize_u16(&temp_buffer, 0);
-    fxmy_serialize_string(&temp_buffer, message);
-
-    fxmy_send(conn, temp_buffer.memory, temp_buffer.cursor);
-    fxmy_reset_xfer_buffer(&temp_buffer);
-
-    return 0;
-}*/
-
 static int
 fxmy_send_result(struct fxmy_connection_t *conn)
 {
@@ -174,23 +145,23 @@ fxmy_send_result(struct fxmy_connection_t *conn)
         /* 
          * success
          */
-        fxmy_serialize_u8(&temp_buffer, 0);                     /* OK header */
-        fxmy_serialize_lcb(&temp_buffer, conn->affected_rows);  /* affected rows */
-        fxmy_serialize_lcb(&temp_buffer, conn->insert_id);      /* insert id */
-        fxmy_serialize_u16(&temp_buffer, 0);                    /* status flags */
-        fxmy_serialize_u16(&temp_buffer, 0);                    /* warnings */
-        fxmy_serialize_string(&temp_buffer, conn->message);     /* info  */
+        fxmy_serialize_u8(&temp_buffer, conn->status->header);          /* OK header */
+        fxmy_serialize_lcb(&temp_buffer, conn->affected_rows);          /* affected rows */
+        fxmy_serialize_lcb(&temp_buffer, conn->insert_id);              /* insert id */
+        fxmy_serialize_u16(&temp_buffer, 0);                            /* status flags */
+        fxmy_serialize_u16(&temp_buffer, 0);                            /* warnings */
+        fxmy_serialize_string(&temp_buffer, conn->status->message);     /* info  */
     }
     else if (conn->column_count_error_code == FXMY_ERROR)
     {
         /*
          * error
          */
-        fxmy_serialize_u8(&temp_buffer, 0xFF);                  /* error header */
-        fxmy_serialize_u16(&temp_buffer, conn->error_code);     /* MySQL error code */
-        fxmy_serialize_string(&temp_buffer, "#");               /* sql state marker */
-        fxmy_serialize_string(&temp_buffer, conn->sql_state);   /* sql state (see ANSI SQL) */
-        fxmy_serialize_string(&temp_buffer, conn->message);     /* error message */
+        fxmy_serialize_u8(&temp_buffer, conn->status->header);          /* error header */
+        fxmy_serialize_u16(&temp_buffer, conn->status->status_code);    /* MySQL error code */
+        fxmy_serialize_string(&temp_buffer, "#");                       /* sql state marker */
+        fxmy_serialize_string(&temp_buffer, conn->status->sql_state);   /* sql state (see ANSI SQL) */
+        fxmy_serialize_string(&temp_buffer, conn->status->message);     /* error message */
     }
     else
     {
@@ -288,9 +259,7 @@ fxmy_reset_transient_state(struct fxmy_connection_t *conn)
     conn->column_count_error_code = 0;
     conn->affected_rows = 0;
     conn->insert_id = 0;
-    conn->error_code = 0;
-    memset(conn->sql_state, 0, sizeof conn->sql_state);
-    memset(conn->message, 0, sizeof conn->message);
+    conn->status = fxmy_get_status(FXMY_STATUS_OK);
 }
 
 void
