@@ -1,3 +1,7 @@
+#ifdef _MSC_VER
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -8,14 +12,88 @@
 #include "fxmy_conn.h"
 #include "fxmy_main.h"
 
+#ifdef _MSC_VER
 #define WIN32_LEAN_AND_MEAN
 #pragma warning(push, 0)
-#include <Windows.h>
+#include <WTypes.h>
 #include <sql.h>
 #include <sqlext.h>
 #pragma warning(pop)
+#endif
 
-static void
+struct fxmy_odbc_t
+{
+    SQLHENV environment_handle;
+    SQLHDBC database_connection_handle;
+    int connected;
+};
+
+static int
+fxmy_verify_and_log_odbc(SQLRETURN return_code, SQLSMALLINT handle_type, SQLHANDLE handle)
+{
+    SQLCHAR sql_state_code[6];
+    SQLINTEGER native_error;
+    SQLCHAR message_text[1024];
+    SQLSMALLINT text_length;
+    SQLSMALLINT i = 1;
+
+    if (return_code == SQL_SUCCESS)
+        return 0;
+
+    while (SQLGetDiagRecA(
+        handle_type,
+        handle,
+        i,
+        sql_state_code,
+        &native_error,
+        message_text,
+        sizeof message_text,
+        &text_length) == SQL_SUCCESS)
+    {
+        ++i;
+        sql_state_code[5] = 0;
+        message_text[1023] = 0;
+        fprintf(stderr, "[fxmy] (%s) %s\n", sql_state_code, message_text);
+    }
+
+    return return_code == SQL_ERROR;
+}
+
+#define VERIFY_ODBC(x, y, z) if (fxmy_verify_and_log_odbc(x, y, z)) { __debugbreak(); } else (void)0
+
+static int
+fxmy_connect(struct fxmy_connection_t *conn)
+{
+    struct fxmy_odbc_t *odbc = conn->odbc;
+    char connection_string[512];
+    size_t connection_string_length;
+    int has_trailing_semicolon;
+
+    if (odbc->connected)
+        return 0;
+
+    /*
+     * connection_string[length - 1] == 0
+     * connection_string[length - 2] == ';' || something else
+     */
+    connection_string_length = strlen(conn->connection_string);
+    has_trailing_semicolon = conn->connection_string[connection_string_length - 2] == ';';
+
+    VERIFY(conn->database != 0 && strlen(conn->database) > 0);
+    _snprintf(connection_string, sizeof connection_string, "%s%sDatabase=%s;", conn->connection_string, (has_trailing_semicolon ? "" : ";"), conn->database);
+
+    if (!fxmy_verify_and_log_odbc(SQLDriverConnectA(odbc->database_connection_handle, NULL, (SQLCHAR *)connection_string, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_NOPROMPT), SQL_HANDLE_DBC, odbc->database_connection_handle))
+    {
+        odbc->connected = 1;
+        return 0;
+    }
+    else
+    {
+        return 1;
+    }
+}
+
+static int
 fxmy_parse_auth_packet(struct fxmy_connection_t *conn)
 {
     struct fxmy_xfer_buffer_t *buffer = &conn->xfer_buffer;
@@ -38,15 +116,30 @@ fxmy_parse_auth_packet(struct fxmy_connection_t *conn)
         size_t size = strlen(buffer->memory) + 1;
         conn->database = calloc(size, 1);
         memcpy(conn->database, buffer->memory, size);
+        return fxmy_connect(conn);
     }
+
+    return 0;
 }
 
 static int
 fxmy_recv_auth_packet(struct fxmy_connection_t *conn)
 {
     fxmy_recv(conn);
-    fxmy_parse_auth_packet(conn);
-    return 0;
+    return fxmy_parse_auth_packet(conn);
+}
+
+/*
+static int
+fxmy_send_err_packet(struct fxmy_connection_t *conn)
+{
+    struct fxmy_xfer_buffer_t *buffer = &conn->xfer_buffer;
+    struct fxmy_xfer_buffer_t temp_buffer = { NULL, 0, 0 };
+    fxmy_reset_xfer_buffer(buffer);
+
+    fxmy_serialize_u8(&temp_buffer, 0xff);
+
+
 }
 
 static int
@@ -62,6 +155,48 @@ fxmy_send_ok_packet(struct fxmy_connection_t *conn, uint64_t affected_rows, uint
     fxmy_serialize_u16(&temp_buffer, 0);
     fxmy_serialize_u16(&temp_buffer, 0);
     fxmy_serialize_string(&temp_buffer, message);
+
+    fxmy_send(conn, temp_buffer.memory, temp_buffer.cursor);
+    fxmy_reset_xfer_buffer(&temp_buffer);
+
+    return 0;
+}*/
+
+static int
+fxmy_send_result(struct fxmy_connection_t *conn)
+{
+    struct fxmy_xfer_buffer_t *buffer = &conn->xfer_buffer;
+    struct fxmy_xfer_buffer_t temp_buffer = { NULL, 0, 0 };
+    fxmy_reset_xfer_buffer(buffer);
+
+    if (conn->column_count_error_code == FXMY_OK)
+    {
+        /* 
+         * success
+         */
+        fxmy_serialize_u8(&temp_buffer, 0);                     /* OK header */
+        fxmy_serialize_lcb(&temp_buffer, conn->affected_rows);  /* affected rows */
+        fxmy_serialize_lcb(&temp_buffer, conn->insert_id);      /* insert id */
+        fxmy_serialize_u16(&temp_buffer, 0);                    /* status flags */
+        fxmy_serialize_u16(&temp_buffer, 0);                    /* warnings */
+        fxmy_serialize_string(&temp_buffer, conn->message);     /* info  */
+    }
+    else if (conn->column_count_error_code == FXMY_ERROR)
+    {
+        /*
+         * error
+         */
+        fxmy_serialize_u8(&temp_buffer, 0xFF);                  /* error header */
+        fxmy_serialize_u16(&temp_buffer, conn->error_code);     /* MySQL error code */
+        fxmy_serialize_string(&temp_buffer, "#");               /* sql state marker */
+        fxmy_serialize_string(&temp_buffer, conn->sql_state);   /* sql state (see ANSI SQL) */
+        fxmy_serialize_string(&temp_buffer, conn->message);     /* error message */
+    }
+    else
+    {
+        /* need to return columns here */
+        __debugbreak();
+    }
 
     fxmy_send(conn, temp_buffer.memory, temp_buffer.cursor);
     fxmy_reset_xfer_buffer(&temp_buffer);
@@ -95,10 +230,13 @@ fxmy_handle_command_packet(struct fxmy_connection_t *conn)
         if (conn->database)
             free(conn->database);
         conn->database = calloc(packet_size_less_command + 1, 1);
-        memcpy(conn->database, conn->xfer_buffer.memory, packet_size_less_command);
-        return 0;
+        memcpy(conn->database, ptr, packet_size_less_command);
+        return fxmy_connect(conn);
 
     case COM_QUERY:
+        __debugbreak();
+        return 0;
+
     case COM_FIELD_LIST:
     case COM_CREATE_DB:
     case COM_DROP_DB:
@@ -147,60 +285,35 @@ fxmy_handle_command_packet(struct fxmy_connection_t *conn)
 static void
 fxmy_reset_transient_state(struct fxmy_connection_t *conn)
 {
+    conn->column_count_error_code = 0;
     conn->affected_rows = 0;
     conn->insert_id = 0;
-    conn->query_message = NULL;
-}
-
-static void
-VERIFY_ODBC(SQLRETURN return_code, SQLSMALLINT handle_type, SQLHANDLE handle)
-{
-    SQLCHAR sql_state_code[6];
-    SQLINTEGER native_error;
-    SQLCHAR message_text[1024];
-    SQLSMALLINT text_length;
-    SQLSMALLINT i = 1;
-
-    if (return_code == SQL_SUCCESS)
-        return;
-
-    while (SQLGetDiagRecA(
-        handle_type,
-        handle,
-        i,
-        sql_state_code,
-        &native_error,
-        message_text,
-        sizeof message_text,
-        &text_length) == SQL_SUCCESS)
-    {
-        ++i;
-        sql_state_code[5] = 0;
-        message_text[1023] = 0;
-        fprintf(stderr, "[fxmy] (%s) %s\n", sql_state_code, message_text);
-    }
-
-    if (return_code == SQL_ERROR)
-    {
-        __debugbreak();
-    }
+    conn->error_code = 0;
+    memset(conn->sql_state, 0, sizeof conn->sql_state);
+    memset(conn->message, 0, sizeof conn->message);
 }
 
 void
-fxmy_worker(const struct fxmy_connection_context_t *context)
+fxmy_worker(struct fxmy_connection_t *conn)
 {
-    SQLHENV environment_handle = NULL;
-    SQLHDBC database_connection_handle = NULL;
-    struct fxmy_connection_t *conn = context->connection;
+    struct fxmy_odbc_t odbc_storage;
+    struct fxmy_odbc_t *odbc = &odbc_storage;
 
-    VERIFY_ODBC(SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &environment_handle), SQL_HANDLE_ENV, environment_handle);
-    VERIFY_ODBC(SQLSetEnvAttr(environment_handle, SQL_ATTR_ODBC_VERSION, (SQLPOINTER)SQL_OV_ODBC3, SQL_IS_UINTEGER), SQL_HANDLE_ENV, environment_handle);
-    VERIFY_ODBC(SQLAllocHandle(SQL_HANDLE_DBC, environment_handle, &database_connection_handle), SQL_HANDLE_ENV, environment_handle);
-    VERIFY_ODBC(SQLDriverConnectA(database_connection_handle, NULL, (SQLCHAR *)context->connection_string, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_NOPROMPT), SQL_HANDLE_DBC, database_connection_handle);
+    conn->odbc = odbc;
+
+    memset(odbc, 0, sizeof *odbc);
+
+    VERIFY_ODBC(SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &odbc->environment_handle), SQL_HANDLE_ENV, odbc->environment_handle);
+    VERIFY_ODBC(SQLSetEnvAttr(odbc->environment_handle, SQL_ATTR_ODBC_VERSION, (SQLPOINTER)SQL_OV_ODBC3, SQL_IS_UINTEGER), SQL_HANDLE_ENV, odbc->environment_handle);
+    VERIFY_ODBC(SQLAllocHandle(SQL_HANDLE_DBC, odbc->environment_handle, &odbc->database_connection_handle), SQL_HANDLE_ENV, odbc->environment_handle);
 
     VERIFY(!fxmy_send_handshake(conn));
     VERIFY(!fxmy_recv_auth_packet(conn));
-    VERIFY(!fxmy_send_ok_packet(conn, 0, 0, NULL));
+
+    ASSERT(conn->affected_rows == 0);
+    ASSERT(conn->insert_id == 0);
+
+    VERIFY(!fxmy_send_result(conn));
 
     for (;;)
     {
@@ -208,7 +321,7 @@ fxmy_worker(const struct fxmy_connection_context_t *context)
 
         if (!rv)
         {
-            VERIFY(!fxmy_send_ok_packet(conn, conn->affected_rows, conn->insert_id, conn->query_message));
+            VERIFY(!fxmy_send_result(conn));
             fxmy_reset_transient_state(conn);
         }
         else if (rv < 0)
@@ -220,9 +333,10 @@ fxmy_worker(const struct fxmy_connection_context_t *context)
         }
     }
 
-    SQLDisconnect(database_connection_handle);
-    SQLFreeHandle(SQL_HANDLE_DBC, database_connection_handle);
-    SQLFreeHandle(SQL_HANDLE_ENV, environment_handle);
+    SQLDisconnect(odbc->database_connection_handle);
+    SQLFreeHandle(SQL_HANDLE_DBC, odbc->database_connection_handle);
+    SQLFreeHandle(SQL_HANDLE_ENV, odbc->environment_handle);
 
+    conn->odbc = NULL;
     fxmy_conn_dispose(conn);
 }
