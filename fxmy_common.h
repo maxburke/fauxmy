@@ -32,6 +32,11 @@ struct fxmy_xfer_buffer_t
     typedef int socket_t;
 #endif
 
+struct fxmy_odbc_t;
+
+#define FXMY_OK ((uint64_t)0)
+#define FXMY_ERROR ((uint64_t)(int64_t)-1)
+
 struct fxmy_connection_t
 {
     socket_t socket;
@@ -45,21 +50,27 @@ struct fxmy_connection_t
     uint16_t multi_statements_off;
 
     /* Transient state. These values change from one query invocation to the next. */
+    uint64_t column_count_error_code;
     uint64_t affected_rows;
     uint64_t insert_id;
-    const char *query_message;
-};
+    uint16_t error_code;
+    char sql_state[6];
+    char message[512];
 
-struct fxmy_connection_context_t
-{
+    struct fxmy_odbc_t *odbc;
     const char *connection_string;
-    struct fxmy_connection_t *connection;
 };
 
 #define VERIFY_impl(x, line) if (!(x)) { FXMY_PERROR(__FILE__ "(" line "): " #x); abort(); } else (void)0
 #define STRINGIZE(x) STRINGIZE2(x)
 #define STRINGIZE2(x) #x
-#define VERIFY(x) VERIFY_impl(x, STRINGIZE(__LINE__)) 
+#define VERIFY(x) VERIFY_impl(x, STRINGIZE(__LINE__))
+
+#ifndef NDEBUG
+#define ASSERT(x) VERIFY(x)
+#else
+#define ASSERT(x)
+#endif
 
 #ifndef MIN
 #define MIN(a, b) ((a)<(b)?(a):(b))
