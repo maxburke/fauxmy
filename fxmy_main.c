@@ -66,6 +66,31 @@ static int
 fxmy_connect(struct fxmy_connection_t *conn)
 {
     struct fxmy_odbc_t *odbc = conn->odbc;
+    SQLRETURN rv;
+
+    rv = SQLDriverConnectA(
+        odbc->database_connection_handle,
+        NULL,
+        (SQLCHAR *)conn->connection_string,
+        SQL_NTS,
+        NULL,
+        0,
+        NULL,
+        SQL_DRIVER_NOPROMPT);
+    
+    if (!fxmy_verify_and_log_odbc(rv, SQL_HANDLE_DBC, odbc->database_connection_handle)) 
+    {
+        odbc->connected = 1;
+        conn->status = fxmy_get_status(FXMY_STATUS_OK);
+        return 0;
+    }
+
+    __debugbreak();
+    return 1;
+    
+
+#if 0
+    struct fxmy_odbc_t *odbc = conn->odbc;
     char connection_string[512];
     size_t connection_string_length;
     int has_trailing_semicolon;
@@ -95,6 +120,7 @@ fxmy_connect(struct fxmy_connection_t *conn)
     {
         return 1;
     }
+#endif
 }
 
 static int
@@ -282,6 +308,7 @@ fxmy_worker(struct fxmy_connection_t *conn)
     ASSERT(conn->affected_rows == 0);
     ASSERT(conn->insert_id == 0);
 
+    conn->status = fxmy_get_status(FXMY_STATUS_OK);
     VERIFY(!fxmy_send_result(conn));
 
     for (;;)
