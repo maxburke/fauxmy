@@ -8,6 +8,8 @@
 #pragma warning(pop)
 #endif
 
+#define UNUSED(x) (void)x
+
 FXMY_EXPORT
 BOOL WINAPI SQLDataSourceToDriver(
     UDWORD option,
@@ -21,6 +23,17 @@ BOOL WINAPI SQLDataSourceToDriver(
     SDWORD error_msg_max,
     SDWORD *error_msg_bytes)
 {
+    UNUSED(option);
+    UNUSED(sql_type);
+    UNUSED(value_in);
+    UNUSED(value_in_length);
+    UNUSED(value_out);
+    UNUSED(value_out_max);
+    UNUSED(value_out_size);
+    UNUSED(error_msg);
+    UNUSED(error_msg_max);
+    UNUSED(error_msg_bytes);
+
     return TRUE;
 }
 
@@ -37,5 +50,17 @@ BOOL WINAPI SQLDriverToDataSource(
     SDWORD error_msg_max,
     SDWORD *error_msg_bytes)
 {
+    UNUSED(option);
+    UNUSED(sql_type);
+    UNUSED(value_in);
+    UNUSED(value_in_length);
+    UNUSED(value_out);
+    UNUSED(value_out_max);
+    UNUSED(value_out_size);
+    UNUSED(error_msg);
+    UNUSED(error_msg_max);
+    UNUSED(error_msg_bytes);
+
     return TRUE;
 }
+
