@@ -50,7 +50,10 @@ struct fxmy_connection_t
     char *database;
     uint16_t multi_statements_off;
 
-    /* Transient state. These values change from one query invocation to the next. */
+    /*
+     * Transient state. These values change from one query invocation to the
+     * next.
+     */
     uint64_t column_count_error_code;
     uint64_t affected_rows;
     uint64_t insert_id;

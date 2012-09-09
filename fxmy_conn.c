@@ -11,10 +11,10 @@
 #include "fxmy_conn.h"
 
 /* 
-   Before the data can be sent it has to be broken up into packets that are
-   no bigger than (1 << 24) - 1 bytes long. There can be at most 256 packets.
-   The packet header consists of a little endian 24-bit number expressing the
-   size of the data following the packet header plus an 8-bit packet ID number.
+ * Before the data can be sent it has to be broken up into packets that are
+ * no bigger than (1 << 24) - 1 bytes long. There can be at most 256 packets.
+ * The packet header consists of a little endian 24-bit number expressing the
+ * size of the data following the packet header plus an 8-bit packet ID number.
 */
 static void
 fxmy_begin_send(struct fxmy_connection_t *conn, const void *data, size_t size)
@@ -91,23 +91,43 @@ fxmy_begin_recv(struct fxmy_connection_t *conn)
         | ((size_t)(packet_header[2]) << 16);
     packet_number = (size_t)packet_header[3];
 
-    /* conn->packet_number holds the value of the next packet we operate on
-       so we validate that the packet we've received has the expected ID,
-       then increment it so that it is correct when we send the response. */
+    /* 
+     * conn->packet_number holds the value of the next packet we operate on
+     * so we validate that the packet we've received has the expected ID,
+     * then increment it so that it is correct when we send the response. 
+     */
     conn->packet_number = packet_number + 1;
 
-    conn->xfer_buffer.memory = malloc(packet_size);
-    conn->xfer_buffer.size += packet_size;
+    /*
+     * The xfer_buffer is overallocated by one byte. Query strings are sent as
+     * length-encoded strings which is a pain to handle in Fauxmy because they
+     * are not null terminated, so by doing this we ensure that there will 
+     * always be a null terminator and we can (relatively) safely use the C
+     * string operators.
+     */
+    conn->xfer_buffer.memory = malloc(packet_size + 1);
+    conn->xfer_buffer.size = packet_size;
 }
 
 int
 fxmy_recv(struct fxmy_connection_t *conn)
 {
     int bytes_read;
+    char *buffer_ptr;
+    size_t buffer_size;
 
     fxmy_begin_recv(conn);
-    bytes_read = recv(conn->socket, conn->xfer_buffer.memory, (int)conn->xfer_buffer.size, 0);
-    VERIFY((size_t)bytes_read == conn->xfer_buffer.size);
+
+    buffer_ptr = conn->xfer_buffer.memory;
+    buffer_size = conn->xfer_buffer.size;
+    bytes_read = recv(conn->socket, buffer_ptr, (int)buffer_size, 0);
+    VERIFY((size_t)bytes_read == buffer_size);
+
+    /*
+     * The buffer is overallocated by one byte (see fxmy_begin_recv) for a null
+     * terminator. This enforces that the zero terminator is always in place.
+     */
+    buffer_ptr[buffer_size] = 0;
 
     return 0;
 }
