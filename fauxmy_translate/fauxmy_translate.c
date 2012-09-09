@@ -10,6 +10,12 @@
 
 #define UNUSED(x) (void)x
 
+/*
+ * This module handles the character set conversion between the driver
+ * and the data source. Currently it's unimplemented because MSSQL does
+ * not handle this functionality.
+ */
+
 FXMY_EXPORT
 BOOL WINAPI SQLDataSourceToDriver(
     UDWORD option,
@@ -33,6 +39,8 @@ BOOL WINAPI SQLDataSourceToDriver(
     UNUSED(error_msg);
     UNUSED(error_msg_max);
     UNUSED(error_msg_bytes);
+
+    __debugbreak();
 
     return TRUE;
 }
@@ -60,6 +68,8 @@ BOOL WINAPI SQLDriverToDataSource(
     UNUSED(error_msg);
     UNUSED(error_msg_max);
     UNUSED(error_msg_bytes);
+
+    __debugbreak();
 
     return TRUE;
 }
