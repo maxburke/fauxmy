@@ -60,16 +60,22 @@ fxmy_verify_and_log_odbc(SQLRETURN return_code, SQLSMALLINT handle_type, SQLHAND
     return return_code == SQL_ERROR;
 }
 
-#define VERIFY_ODBC(x, y, z) if (fxmy_verify_and_log_odbc(x, y, z)) { __debugbreak(); } else (void)0
+#define VERIFY_ODBC(return_value, handle_type, handle)                  \
+    if (fxmy_verify_and_log_odbc(return_value, handle_type, handle))    \
+    {                                                                   \
+        __debugbreak();                                                 \
+    }                                                                   \
+    else (void)0
 
 static int
 fxmy_connect(struct fxmy_connection_t *conn)
 {
     struct fxmy_odbc_t *odbc = conn->odbc;
+    SQLHDBC database_connection_handle = odbc->database_connection_handle;
     SQLRETURN rv;
 
     rv = SQLDriverConnectA(
-        odbc->database_connection_handle,
+        database_connection_handle,
         NULL,
         (SQLCHAR *)conn->connection_string,
         SQL_NTS,
@@ -78,10 +84,12 @@ fxmy_connect(struct fxmy_connection_t *conn)
         NULL,
         SQL_DRIVER_NOPROMPT);
     
-    if (!fxmy_verify_and_log_odbc(rv, SQL_HANDLE_DBC, odbc->database_connection_handle)) 
+    if (!fxmy_verify_and_log_odbc(rv, SQL_HANDLE_DBC, database_connection_handle)) 
     {
         odbc->connected = 1;
         conn->status = fxmy_get_status(FXMY_STATUS_OK);
+
+        VERIFY_ODBC(SQLSetConnectAttr(database_connection_handle, SQL_ATTR_TRANSLATE_LIB, "fauxmy_translate.dll", SQL_NTS), SQL_HANDLE_DBC, database_connection_handle);
         return 0;
     }
 
