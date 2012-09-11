@@ -176,7 +176,7 @@ fxmy_add_new_connection(struct fxmy_connection_t *conn, HANDLE thread_handle)
 }
 
 static struct fxmy_connection_t *
-fxmy_create_connection(SOCKET new_connection, const char *connection_string)
+fxmy_create_connection(SOCKET new_connection, const fxmy_char *connection_string)
 {
     struct fxmy_connection_t *conn = calloc(1, sizeof(struct fxmy_connection_t));
     conn->socket = new_connection;
@@ -192,7 +192,7 @@ main(void)
      * TODO: Use ini files for the connection string
      */
 
-    const char connection_string[] = "Driver={SQL Server Native Client 11.0};Server=.\\SQLEXPRESS;UID=max;PWD=W0zixege";
+    const fxmy_char connection_string[] = C("Driver={SQL Server Native Client 11.0};Server=.\\SQLEXPRESS;UID=max;PWD=W0zixege");
 
     VERIFY(sizeof(SOCKET) == sizeof(socket_t));
 

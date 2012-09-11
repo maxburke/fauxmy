@@ -37,7 +37,7 @@ fxmy_get_handshake_packet(void **ptr, size_t *size)
 {
     static char handshake_packet[] = {
         0xa,                            /* protocol version */
-        '4', '.', '1', '.', '1', 0,     /* server version (null terminated) */
+        '5', '.', '0', '.', '0', 0,     /* server version (null terminated) */
         1, 0, 0, 0,                     /* thread id */
         0, 0, 0, 0, 0, 0, 0, 0,         /* scramble buf */
         0,                              /* filler, always 0 */

@@ -81,6 +81,7 @@
     <ClCompile Include="fxmy_error.c" />
     <ClCompile Include="fxmy_main.c" />
     <ClCompile Include="fxmy_read.c" />
+    <ClCompile Include="fxmy_string.c" />
     <ClCompile Include="fxmy_write.c" />
     <ClCompile Include="windows\main_win.c" />
   </ItemGroup>
@@ -90,6 +91,8 @@
     <ClInclude Include="fxmy_main.h" />
     <ClInclude Include="fxmy_read.h" />
     <ClInclude Include="fxmy_common.h" />
+    <ClInclude Include="fxmy_string.h" />
+    <ClInclude Include="fxmy_string_type.h" />
     <ClInclude Include="fxmy_write.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

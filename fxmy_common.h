@@ -8,6 +8,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "fxmy_string_type.h"
+
 #ifdef _MSC_VER
 #pragma warning(pop)
 #pragma warning(disable : 4820)
@@ -47,7 +49,7 @@ struct fxmy_connection_t
     uint32_t client_flags;
     uint32_t max_packet_size;
     uint32_t charset;
-    char *database;
+    fxmy_char *database;
     uint16_t multi_statements_off;
 
     /*
@@ -60,7 +62,7 @@ struct fxmy_connection_t
     const struct fxmy_status_t *status;
 
     struct fxmy_odbc_t *odbc;
-    const char *connection_string;
+    const fxmy_char *connection_string;
 };
 
 #define VERIFY_impl(x, line) if (!(x)) { FXMY_PERROR(__FILE__ "(" line "): " #x); abort(); } else (void)0

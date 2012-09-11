@@ -3,7 +3,6 @@
 #endif
 
 #include <stdlib.h>
-#include <string.h>
 #include <stdio.h>
 
 #include "fxmy_common.h"
@@ -12,9 +11,11 @@
 #include "fxmy_conn.h"
 #include "fxmy_main.h"
 #include "fxmy_error.h"
+#include "fxmy_string.h"
 
 #ifdef _MSC_VER
 #define WIN32_LEAN_AND_MEAN
+#define snprintf _snprintf
 #pragma warning(push, 0)
 #include <WTypes.h>
 #include <sql.h>
@@ -73,62 +74,46 @@ fxmy_connect(struct fxmy_connection_t *conn)
     struct fxmy_odbc_t *odbc = conn->odbc;
     SQLHDBC database_connection_handle = odbc->database_connection_handle;
     SQLRETURN rv;
+    fxmy_char connection_string_out[4096];
+    SQLSMALLINT connection_string_out_length;
+    fxmy_char *database_start;
+    fxmy_char *database_end;
 
-    rv = SQLDriverConnectA(
+    VERIFY(conn->database && (fxmy_strlen(conn->database) > 0));
+
+    rv = SQLBrowseConnect(
         database_connection_handle,
-        NULL,
-        (SQLCHAR *)conn->connection_string,
+        (fxmy_char *)conn->connection_string,
         SQL_NTS,
-        NULL,
-        0,
-        NULL,
-        SQL_DRIVER_NOPROMPT);
-    
-    if (!fxmy_verify_and_log_odbc(rv, SQL_HANDLE_DBC, database_connection_handle)) 
-    {
-        odbc->connected = 1;
-        conn->status = fxmy_get_status(FXMY_STATUS_OK);
-
-        VERIFY_ODBC(SQLSetConnectAttr(database_connection_handle, SQL_ATTR_TRANSLATE_LIB, "fauxmy_translate.dll", SQL_NTS), SQL_HANDLE_DBC, database_connection_handle);
-        return 0;
-    }
-
-    __debugbreak();
-    return 1;
-    
-
-#if 0
-    struct fxmy_odbc_t *odbc = conn->odbc;
-    char connection_string[512];
-    size_t connection_string_length;
-    int has_trailing_semicolon;
-
-    if (odbc->connected)
-        return 0;
+        connection_string_out,
+        (sizeof connection_string_out) / (sizeof connection_string_out[0]),
+        &connection_string_out_length);
 
     /*
-     * connection_string[length - 1] == 0
-     * connection_string[length - 2] == ';' || something else
+     * Parse the returned connection string for the database that we are supposed
+     * to connect to.
      */
-    connection_string_length = strlen(conn->connection_string);
-    has_trailing_semicolon = conn->connection_string[connection_string_length - 2] == ';';
 
-    VERIFY(conn->database != 0 && strlen(conn->database) > 0);
-    _snprintf(connection_string, sizeof connection_string, "%s%sDatabase=%s;", conn->connection_string, (has_trailing_semicolon ? "" : ";"), conn->database);
+    database_start = fxmy_strstr(connection_string_out, C("DATABASE:Database={"));
 
-    /* 
-     * If the database doesn't exist the driver should return error code 1049 and sql status "42000"
-     */
-    if (!fxmy_verify_and_log_odbc(SQLDriverConnectA(odbc->database_connection_handle, NULL, (SQLCHAR *)connection_string, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_NOPROMPT), SQL_HANDLE_DBC, odbc->database_connection_handle))
-    {
-        odbc->connected = 1;
-        return 0;
-    }
-    else
-    {
-        return 1;
-    }
-#endif
+    if (database_start == NULL)
+        goto CONNECT_UNKNOWN_DATABASE;
+
+    database_end = fxmy_strstr(database_start, C("}"));
+    *database_end = 0;
+
+    if (fxmy_strstr(database_start, conn->database) == NULL)
+        goto CONNECT_UNKNOWN_DATABASE;
+
+    goto CONNECT_SUCCESS;
+
+
+CONNECT_UNKNOWN_DATABASE:
+    conn->status = fxmy_get_status(FXMY_STATUS_UNKNOWN_DATABASE);
+
+CONNECT_SUCCESS:
+    __debugbreak();
+    return 0;
 }
 
 static int
@@ -142,18 +127,26 @@ fxmy_parse_auth_packet(struct fxmy_connection_t *conn)
     conn->max_packet_size = fxmy_read_u32(buffer);
     conn->charset = fxmy_read_u8(buffer);
     
-    /* skip over the 23-bytes of padding, as per the MySQL 4.1 wire protocol */
+    /* 
+     * skip over the 23-bytes of padding, as per the MySQL 4.1 wire protocol
+     */
     buffer->cursor += 23;
-    /* skip over the user name */
+
+    /*
+     * skip over the user name
+     */
     fxmy_skip_string(buffer);
-    /* skip over the scramble buffer */
+
+    /*
+     * skip over the scramble buffer
+     */
     fxmy_skip_lcs(buffer);
 
     if (conn->client_flags & CLIENT_CONNECT_WITH_DB)
     {
         size_t size = strlen(buffer->memory) + 1;
-        conn->database = calloc(size, 1);
-        memcpy(conn->database, buffer->memory, size);
+        conn->database = calloc(size, sizeof(fxmy_char));
+        fxmy_strfromchar(conn->database, buffer->memory, size);
         return fxmy_connect(conn);
     }
 
@@ -210,6 +203,21 @@ fxmy_send_result(struct fxmy_connection_t *conn)
 }
 
 static int
+fxmy_handle_query(struct fxmy_connection_t *conn, uint8_t *query_string, size_t query_string_length)
+{
+    /* 
+     * Query strings are guaranteed to be null terminated by fxmy_recv.
+     */
+
+    UNUSED(conn);
+    UNUSED(query_string);
+    UNUSED(query_string_length);
+
+    __debugbreak();
+    return 0;
+}
+
+static int
 fxmy_handle_command_packet(struct fxmy_connection_t *conn)
 {
     uint8_t command;
@@ -234,13 +242,12 @@ fxmy_handle_command_packet(struct fxmy_connection_t *conn)
     case COM_INIT_DB:
         if (conn->database)
             free(conn->database);
-        conn->database = calloc(packet_size_less_command + 1, 1);
-        memcpy(conn->database, ptr, packet_size_less_command);
+        conn->database = calloc(packet_size_less_command + 1, sizeof(fxmy_char));
+        fxmy_strfromchar(conn->database, (const char *)ptr, packet_size_less_command);
         return fxmy_connect(conn);
 
     case COM_QUERY:
-        __debugbreak();
-        return 0;
+        return fxmy_handle_query(conn, ptr, packet_size_less_command);
 
     case COM_FIELD_LIST:
     case COM_CREATE_DB:
@@ -278,7 +285,6 @@ fxmy_handle_command_packet(struct fxmy_connection_t *conn)
     case COM_STMT_FETCH:
         abort();
         return 0;
-
 
     default:
         abort();
@@ -337,9 +343,9 @@ fxmy_worker(struct fxmy_connection_t *conn)
         }
     }
 
-    SQLDisconnect(odbc->database_connection_handle);
-    SQLFreeHandle(SQL_HANDLE_DBC, odbc->database_connection_handle);
-    SQLFreeHandle(SQL_HANDLE_ENV, odbc->environment_handle);
+    VERIFY_ODBC(SQLDisconnect(odbc->database_connection_handle), SQL_HANDLE_DBC, odbc->database_connection_handle);
+    VERIFY_ODBC(SQLFreeHandle(SQL_HANDLE_DBC, odbc->database_connection_handle), SQL_HANDLE_DBC, odbc->database_connection_handle);
+    VERIFY_ODBC(SQLFreeHandle(SQL_HANDLE_ENV, odbc->environment_handle), SQL_HANDLE_ENV, odbc->environment_handle);
 
     conn->odbc = NULL;
     fxmy_conn_dispose(conn);

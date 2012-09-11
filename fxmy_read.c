@@ -57,7 +57,9 @@ fxmy_read_lcb(struct fxmy_xfer_buffer_t *buffer)
         value = ((uint64_t)ptr[1])
             | ((uint64_t)ptr[2] << 8);
     case 251:
-        /* 251 signifies a NULL column value and will never be read. */
+        /*
+         * 251 signifies a NULL column value and will never be read.
+         */
     default:
         ++buffer->cursor;
         value = (uint64_t)byte;
