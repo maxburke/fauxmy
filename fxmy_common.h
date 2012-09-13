@@ -1,6 +1,8 @@
 #ifndef FXMY_COMMON_H
 #define FXMY_COMMON_H
 
+#pragma once
+
 #ifdef _MSC_VER
 #pragma warning(push, 0)
 #endif

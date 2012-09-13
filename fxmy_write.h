@@ -1,6 +1,8 @@
 #ifndef FXMY_WRITE_H
 #define FXMY_WRITE_H
 
+#pragma once
+
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable:4668)

@@ -1,6 +1,8 @@
 #ifndef FXMY_MAIN_H
 #define FXMY_MAIN_H
 
+#pragma once
+
 struct fxmy_connection_t;
 
 void

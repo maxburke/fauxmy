@@ -1,6 +1,8 @@
 #ifndef FXMY_STRING_TYPE_H
 #define FXMY_STRING_TYPE_H
 
+#pragma once
+
 /*
  * This file defines the Fauxmy character type. On Windows this is a wide
  * character as MSSQL performs some funky character set conversion unless

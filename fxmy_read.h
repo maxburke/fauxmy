@@ -1,6 +1,8 @@
 #ifndef FXMY_READ_H
 #define FXMY_READ_H
 
+#pragma once
+
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable:4668)

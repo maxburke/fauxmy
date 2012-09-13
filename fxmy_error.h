@@ -1,6 +1,8 @@
 #ifndef FXMY_ERROR_H
 #define FXMY_ERROR_H
 
+#pragma once
+
 enum fxmy_status_code_t
 {
     FXMY_STATUS_OK,

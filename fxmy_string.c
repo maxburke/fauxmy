@@ -41,17 +41,30 @@ fxmy_utf8_to_ucs2(const char *input, const char **output)
 }
 
 fxmy_char *
-fxmy_strfromchar(fxmy_char *dest, const char *src, size_t num_chars)
+fxmy_strfromchar(fxmy_char *dest, const char *src, size_t size)
 {
-    const char * const end = src + num_chars;
+    const char * const end = src + size;
     size_t i;
 
-    memset(dest, 0, num_chars * sizeof(fxmy_char));
+    memset(dest, 0, size * sizeof(fxmy_char));
 
     for (i = 0; src < end; ++i) 
         dest[i] = fxmy_utf8_to_ucs2(src, &src);
     
     return dest;
 }
+
+size_t
+fxmy_strlenfromchar(const char *src, size_t size)
+{
+    const char * const end = src + size;
+    size_t i;
+
+    for (i = 0; src < end; ++i)
+        fxmy_utf8_to_ucs2(src, &src);
+
+    return i;
+}
+
 
 #endif

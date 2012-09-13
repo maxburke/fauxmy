@@ -80,6 +80,7 @@
     <ClCompile Include="fxmy_conn.c" />
     <ClCompile Include="fxmy_error.c" />
     <ClCompile Include="fxmy_main.c" />
+    <ClCompile Include="fxmy_query.c" />
     <ClCompile Include="fxmy_read.c" />
     <ClCompile Include="fxmy_string.c" />
     <ClCompile Include="fxmy_write.c" />
@@ -89,6 +90,8 @@
     <ClInclude Include="fxmy_conn.h" />
     <ClInclude Include="fxmy_error.h" />
     <ClInclude Include="fxmy_main.h" />
+    <ClInclude Include="fxmy_odbc.h" />
+    <ClInclude Include="fxmy_query.h" />
     <ClInclude Include="fxmy_read.h" />
     <ClInclude Include="fxmy_common.h" />
     <ClInclude Include="fxmy_string.h" />
