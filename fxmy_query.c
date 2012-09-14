@@ -51,6 +51,69 @@ fxmy_destroy_query_string(fxmy_char *query)
 
 #endif
 
+enum fxmy_sql_token_t
+{
+    FXMY_TOKEN_INVALID,
+    FXMY_TOKEN_SEMICOLON,
+    FXMY_TOKEN_SET,
+    FXMY_TOKEN_DESCRIBE
+};
+
+static const char *
+fxmy_stristr(const char *haystack, const char * const needle)
+{
+    char haystack_char;
+    const char *needle_ptr;
+    const char *haystack_ptr;
+    char h;
+    char n;
+
+    if (haystack == NULL || needle == NULL)
+        return NULL;
+
+    do
+    {
+        haystack_ptr = haystack;
+        needle_ptr = needle;
+        h = *haystack_ptr;
+        n = *needle_ptr;
+
+        while (tolower(h) == tolower(n))
+        {
+            /*
+             * the n == 0 case here is implied as the inner body of the loop is
+             * only entered if h == n.
+             */
+            if (h == 0)
+                break;
+
+            h = *++haystack_ptr;
+            n = *++needle_ptr;
+        }
+
+        if (*needle_ptr == 0)
+            return haystack;
+    }
+    while (*haystack++ != 0);
+
+    return NULL;
+}
+
+static int
+fxmy_is_whitespace(char c)
+{
+    return c == ' ' || c == '\n' || c == '\r' || c == 't';
+}
+
+static const char *
+fxmy_consume_whitespace(const char *ptr)
+{
+    while (fxmy_is_whitespace(*ptr))
+        ++ptr;
+
+    return ptr;
+}
+
 int
 fxmy_handle_query(struct fxmy_connection_t *conn, uint8_t *query_bytes, size_t query_num_bytes)
 {
@@ -61,7 +124,9 @@ fxmy_handle_query(struct fxmy_connection_t *conn, uint8_t *query_bytes, size_t q
      * Query strings are guaranteed to be null terminated by fxmy_recv.
      */
 
-    if (stristr
+    
+    /* FML, Windows doesn't have stristr in its C stdlib. */
+
 
     __debugbreak();
 
