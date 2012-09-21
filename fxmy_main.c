@@ -24,7 +24,7 @@
 #pragma warning(pop)
 #endif
 
-static int
+int
 fxmy_verify_and_log_odbc(SQLRETURN return_code, SQLSMALLINT handle_type, SQLHANDLE handle)
 {
     SQLCHAR sql_state_code[6];
@@ -55,57 +55,46 @@ fxmy_verify_and_log_odbc(SQLRETURN return_code, SQLSMALLINT handle_type, SQLHAND
     return return_code == SQL_ERROR;
 }
 
-#define VERIFY_ODBC(return_value, handle_type, handle)                  \
-    if (fxmy_verify_and_log_odbc(return_value, handle_type, handle))    \
-    {                                                                   \
-        __debugbreak();                                                 \
-    }                                                                   \
-    else (void)0
-
 static int
 fxmy_connect(struct fxmy_connection_t *conn)
 {
-    struct fxmy_odbc_t *odbc = conn->odbc;
-    SQLHDBC database_connection_handle = odbc->database_connection_handle;
+    struct fxmy_odbc_t *odbc;
+
+    SQLHDBC database_connection_handle;
     SQLRETURN rv;
-    fxmy_char connection_string_out[4096];
     SQLSMALLINT connection_string_out_length;
-    fxmy_char *database_start;
-    fxmy_char *database_end;
+    SQLHANDLE query_handle;
 
-    VERIFY(conn->database && (fxmy_strlen(conn->database) > 0));
+    fxmy_char use_db_string[4096];
 
-    rv = SQLBrowseConnect(
+    odbc = conn->odbc;
+    database_connection_handle = odbc->database_connection_handle;
+    rv = SQLDriverConnect(
         database_connection_handle,
+        NULL,
         (fxmy_char *)conn->connection_string,
         SQL_NTS,
-        connection_string_out,
-        (sizeof connection_string_out) / (sizeof connection_string_out[0]),
-        &connection_string_out_length);
+        NULL,
+        0,
+        &connection_string_out_length,
+        SQL_DRIVER_NOPROMPT);
 
-    /*
-     * Parse the returned connection string for the database that we are supposed
-     * to connect to.
-     */
+    if (fxmy_verify_and_log_odbc(rv, SQL_HANDLE_DBC, database_connection_handle))
+    {
+        conn->status = fxmy_get_status(FXMY_STATUS_BAD_PASSWORD);
+        return 0;
+    }
 
-    database_start = fxmy_strstr(connection_string_out, C("DATABASE:Database={"));
+    fxmy_snprintf(use_db_string, 4096, C("USE %s;"), conn->database);
 
-    if (database_start == NULL)
-        goto CONNECT_UNKNOWN_DATABASE;
+    VERIFY_ODBC(SQLAllocHandle(SQL_HANDLE_STMT, database_connection_handle, &query_handle), SQL_HANDLE_DBC, database_connection_handle);
+    rv = SQLExecDirect(query_handle, use_db_string, SQL_NTS);
 
-    database_end = fxmy_strstr(database_start, C("}"));
-    *database_end = 0;
+    if (fxmy_verify_and_log_odbc(rv, SQL_HANDLE_STMT, query_handle))
+        conn->status = fxmy_get_status(FXMY_STATUS_UNKNOWN_DATABASE);
 
-    if (fxmy_strstr(database_start, conn->database) == NULL)
-        goto CONNECT_UNKNOWN_DATABASE;
+    VERIFY_ODBC(SQLFreeHandle(SQL_HANDLE_DBC, query_handle), SQL_HANDLE_DBC, database_connection_handle);
 
-    goto CONNECT_SUCCESS;
-
-CONNECT_UNKNOWN_DATABASE:
-    conn->status = fxmy_get_status(FXMY_STATUS_UNKNOWN_DATABASE);
-
-CONNECT_SUCCESS:
-    __debugbreak();
     return 0;
 }
 
