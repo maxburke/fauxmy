@@ -18,4 +18,14 @@ struct fxmy_odbc_t
     int connected;
 };
 
+int
+fxmy_verify_and_log_odbc(SQLRETURN return_code, SQLSMALLINT handle_type, SQLHANDLE handle);
+
+#define VERIFY_ODBC(return_value, handle_type, handle)                  \
+    if (fxmy_verify_and_log_odbc(return_value, handle_type, handle))    \
+    {                                                                   \
+        __debugbreak();                                                 \
+    }                                                                   \
+    else (void)0
+
 #endif
