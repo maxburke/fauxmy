@@ -5,10 +5,11 @@
 
 static const struct fxmy_status_t fxmy_status[] = 
 {
-    { 0,    0,      "",     "OK" },                         /* FXMY_STATUS_OK */
+    { 0,    0,      "",      "OK" },                        /* FXMY_STATUS_OK */
     { 0xFF, 1045,   "28000", "Bad password" },              /* FXMY_STATUS_BAD_PASSWORD */
     { 0xFF, 1046,   "3D000", "Database not selected" },     /* FXMY_STATUS_DATABASE_NOT_SELECTED */
     { 0xFF, 1049,   "42000", "Unknown database" },          /* FXMY_STATUS_UNKNOWN_DATABASE */
+    { 0xFF, 1146,   "42S02", "Object not found" },          /* FXMY_STATUS_OBJECT_NOT_FOUND */
 };
 
 const struct fxmy_status_t *
