@@ -10,7 +10,7 @@
 #ifdef _MSC_VER
     #define fxmy_strstr wcsstr
     #define fxmy_strlen wcslen
-    #define stristr StrStrI
+    #define fxmy_snprintf _snwprintf
 
     fxmy_char *
     fxmy_strfromchar(fxmy_char *dest, const char *src, size_t num_chars);
@@ -21,6 +21,7 @@
     #define fxmy_strstr strstr
     #define fxmy_strlen strlen
     #define fxmy_strfromchar memcpy
+    #define fxmy_snprintf snprintf
 
     size_t
     fxmy_strlenfromchar(const char *src, size_t size);
