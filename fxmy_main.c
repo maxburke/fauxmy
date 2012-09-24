@@ -24,17 +24,21 @@
 #pragma warning(pop)
 #endif
 
-int
+const struct fxmy_status_t *
 fxmy_verify_and_log_odbc(SQLRETURN return_code, SQLSMALLINT handle_type, SQLHANDLE handle)
 {
     SQLCHAR sql_state_code[6];
     SQLINTEGER native_error;
     SQLCHAR message_text[1024];
     SQLSMALLINT text_length;
-    SQLSMALLINT i = 1;
+    SQLSMALLINT i;
+    const struct fxmy_status_t *sql_status;
+
+    i = 1;
+    sql_status = NULL;
 
     if (return_code == SQL_SUCCESS)
-        return 0;
+        return fxmy_get_status(FXMY_OK);
 
     while (SQLGetDiagRecA(
         handle_type,
@@ -50,9 +54,18 @@ fxmy_verify_and_log_odbc(SQLRETURN return_code, SQLSMALLINT handle_type, SQLHAND
         sql_state_code[5] = 0;
         message_text[1023] = 0;
         fprintf(stderr, "[fxmy] (%s) %s\n", sql_state_code, message_text);
+        sql_status = fxmy_get_status(native_error);
     }
 
-    return return_code == SQL_ERROR;
+    /*
+     * If SQL_SUCCESS_WITH_INFO is returned we still want to log the messages
+     * we want to report that the operation succeeded to the client.
+     */
+
+    if (return_code == SQL_SUCCESS_WITH_INFO)
+        sql_status = fxmy_get_status(FXMY_OK);
+
+    return sql_status;
 }
 
 static int
@@ -79,19 +92,17 @@ fxmy_connect(struct fxmy_connection_t *conn)
         &connection_string_out_length,
         SQL_DRIVER_NOPROMPT);
 
-    if (fxmy_verify_and_log_odbc(rv, SQL_HANDLE_DBC, database_connection_handle))
-    {
-        conn->status = fxmy_get_status(FXMY_STATUS_BAD_PASSWORD);
+    conn->status = fxmy_verify_and_log_odbc(rv, SQL_HANDLE_DBC, database_connection_handle);
+
+    if (FXMY_SUCCEEDED(conn->status))
         return 0;
-    }
 
     fxmy_snprintf(use_db_string, 4096, C("USE %s;"), conn->database);
 
     VERIFY_ODBC(SQLAllocHandle(SQL_HANDLE_STMT, database_connection_handle, &query_handle), SQL_HANDLE_DBC, database_connection_handle);
     rv = SQLExecDirect(query_handle, use_db_string, SQL_NTS);
 
-    if (fxmy_verify_and_log_odbc(rv, SQL_HANDLE_STMT, query_handle))
-        conn->status = fxmy_get_status(FXMY_STATUS_UNKNOWN_DATABASE);
+    conn->status = fxmy_verify_and_log_odbc(rv, SQL_HANDLE_STMT, query_handle);
 
     VERIFY_ODBC(SQLFreeHandle(SQL_HANDLE_DBC, query_handle), SQL_HANDLE_DBC, database_connection_handle);
 
@@ -266,7 +277,7 @@ fxmy_reset_transient_state(struct fxmy_connection_t *conn)
     conn->column_count_error_code = 0;
     conn->affected_rows = 0;
     conn->insert_id = 0;
-    conn->status = fxmy_get_status(FXMY_STATUS_OK);
+    conn->status = fxmy_get_status(FXMY_OK);
 }
 
 void
@@ -289,7 +300,7 @@ fxmy_worker(struct fxmy_connection_t *conn)
     ASSERT(conn->affected_rows == 0);
     ASSERT(conn->insert_id == 0);
 
-    conn->status = fxmy_get_status(FXMY_STATUS_OK);
+    conn->status = fxmy_get_status(FXMY_OK);
     VERIFY(!fxmy_send_result(conn));
 
     for (;;)

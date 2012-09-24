@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "fxmy_error.h"
+
 #ifdef _MSC_VER
 #define WIN32_LEAN_AND_MEAN
 #pragma warning(push, 0)
@@ -18,14 +20,14 @@ struct fxmy_odbc_t
     int connected;
 };
 
-int
+const struct fxmy_status_t *
 fxmy_verify_and_log_odbc(SQLRETURN return_code, SQLSMALLINT handle_type, SQLHANDLE handle);
 
-#define VERIFY_ODBC(return_value, handle_type, handle)                  \
-    if (fxmy_verify_and_log_odbc(return_value, handle_type, handle))    \
-    {                                                                   \
-        __debugbreak();                                                 \
-    }                                                                   \
+#define VERIFY_ODBC(return_value, handle_type, handle)                              \
+    if (FXMY_FAILED(fxmy_verify_and_log_odbc(return_value, handle_type, handle)))   \
+    {                                                                               \
+        __debugbreak();                                                             \
+    }                                                                               \
     else (void)0
 
 #endif

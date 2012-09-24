@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "fxmy_common.h"
 #include "fxmy_query.h"
 #include "fxmy_odbc.h"
@@ -62,7 +64,6 @@ enum fxmy_sql_token_t
 static const char *
 fxmy_stristr(const char *haystack, const char * const needle)
 {
-    char haystack_char;
     const char *needle_ptr;
     const char *haystack_ptr;
     char h;
@@ -115,20 +116,55 @@ fxmy_consume_whitespace(const char *ptr)
 }
 
 int
-fxmy_handle_query(struct fxmy_connection_t *conn, uint8_t *query_bytes, size_t query_num_bytes)
+fxmy_handle_query(struct fxmy_connection_t *conn, uint8_t *query_string, size_t query_num_bytes)
 {
-    size_t query_length;
-    fxmy_char *query;
+    const char *query;
+    struct fxmy_odbc_t *odbc;
 
     /* 
      * Query strings are guaranteed to be null terminated by fxmy_recv.
      */
 
-    
-    /* FML, Windows doesn't have stristr in its C stdlib. */
+    query = (const char *)query_string;
+    odbc = conn->odbc;
 
+    UNUSED(conn);
+    UNUSED(query_num_bytes);
 
-    __debugbreak();
+    if (fxmy_stristr(query, "SET NAMES") != NULL)
+    {
+        VERIFY(fxmy_stristr(query, "utf8") != NULL);
+        return 0;
+    }
+    else if (fxmy_stristr(query, "DESCRIBE") != NULL)
+    {
+        __debugbreak();
+        return 0;
+    }
+    else
+    {
+        SQLHANDLE query_handle;
+        fxmy_char *wide_query;
+        const struct fxmy_status_t *status;
+
+        wide_query = calloc(query_num_bytes + 1, sizeof(fxmy_char));
+        fxmy_strfromchar(wide_query, query, query_num_bytes);
+
+        VERIFY_ODBC(SQLAllocHandle(SQL_HANDLE_STMT, odbc->database_connection_handle, &query_handle), SQL_HANDLE_DBC, odbc->database_connection_handle);
+        status = fxmy_verify_and_log_odbc(SQLExecDirect(query_handle, wide_query, SQL_NTS), SQL_HANDLE_STMT, query_handle);
+
+        if (FXMY_FAILED(status))
+        {
+            conn->status = status;
+        }
+        else
+        {
+            __debugbreak();
+        }
+
+        VERIFY_ODBC(SQLFreeHandle(SQL_HANDLE_STMT, query_handle), SQL_HANDLE_DBC, odbc->database_connection_handle);
+        free(wide_query);
+    }
 
     /*
     query = fxmy_create_query_string(query_bytes, query_num_bytes);
