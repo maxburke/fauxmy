@@ -1,3 +1,6 @@
+select * from master.sys.sysmessages;
+
+
 error       description
 ----------- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 21          Warning: Fatal error %d occurred at %S_DATE. Note the error and time, and contact your system administrator.
