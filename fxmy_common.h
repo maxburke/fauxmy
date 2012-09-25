@@ -39,9 +39,6 @@ struct fxmy_xfer_buffer_t
 struct fxmy_odbc_t;
 struct fxmy_status_t;
 
-#define FXMY_OK ((uint64_t)0)
-#define FXMY_ERROR ((uint64_t)(int64_t)-1)
-
 struct fxmy_connection_t
 {
     socket_t socket;
@@ -66,21 +63,6 @@ struct fxmy_connection_t
     struct fxmy_odbc_t *odbc;
     const fxmy_char *connection_string;
 };
-
-#define VERIFY_impl(x, line) if (!(x)) { FXMY_PERROR(__FILE__ "(" line "): " #x); abort(); } else (void)0
-#define STRINGIZE(x) STRINGIZE2(x)
-#define STRINGIZE2(x) #x
-#define VERIFY(x) VERIFY_impl(x, STRINGIZE(__LINE__))
-
-#ifndef NDEBUG
-#define ASSERT(x) VERIFY(x)
-#else
-#define ASSERT(x)
-#endif
-
-#ifndef MIN
-#define MIN(a, b) ((a)<(b)?(a):(b))
-#endif
 
 enum fxmy_client_flags_t
 {
@@ -136,8 +118,6 @@ enum fxmy_commands_t
     COM_SET_OPTION,
     COM_STMT_FETCH,
 };
-
-#define UNUSED(x) (void)x
 
 enum fxmy_connection_state_t
 {

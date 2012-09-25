@@ -1,8 +1,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "fxmy_read.h"
 #include "fxmy_common.h"
+#include "fxmy_core.h"
+#include "fxmy_read.h"
 
 uint8_t
 fxmy_read_u8(struct fxmy_xfer_buffer_t *buffer)

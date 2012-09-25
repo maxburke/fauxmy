@@ -6,14 +6,15 @@
 #include <stdio.h>
 
 #include "fxmy_common.h"
-#include "fxmy_read.h"
-#include "fxmy_write.h"
 #include "fxmy_conn.h"
-#include "fxmy_main.h"
+#include "fxmy_core.h"
 #include "fxmy_error.h"
-#include "fxmy_string.h"
-#include "fxmy_query.h"
+#include "fxmy_main.h"
 #include "fxmy_odbc.h"
+#include "fxmy_query.h"
+#include "fxmy_read.h"
+#include "fxmy_string.h"
+#include "fxmy_write.h"
 
 #ifdef _MSC_VER
 #define WIN32_LEAN_AND_MEAN

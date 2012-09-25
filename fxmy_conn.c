@@ -9,6 +9,7 @@
 
 #include "fxmy_common.h"
 #include "fxmy_conn.h"
+#include "fxmy_core.h"
 
 /* 
  * Before the data can be sent it has to be broken up into packets that are

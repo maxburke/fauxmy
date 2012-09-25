@@ -2,6 +2,7 @@
 
 #include "fxmy_common.h"
 #include "fxmy_conn.h"
+#include "fxmy_core.h"
 
 void
 fxmy_reset_xfer_buffer(struct fxmy_xfer_buffer_t *buffer)

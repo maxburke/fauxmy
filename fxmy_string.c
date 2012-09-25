@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
 #include "fxmy_common.h"
+#include "fxmy_core.h"
 #include "fxmy_string.h"
 
 #ifdef _MSC_VER

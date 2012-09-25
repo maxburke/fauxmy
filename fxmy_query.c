@@ -1,8 +1,9 @@
 #include <stdlib.h>
 
 #include "fxmy_common.h"
-#include "fxmy_query.h"
+#include "fxmy_core.h"
 #include "fxmy_odbc.h"
+#include "fxmy_query.h"
 #include "fxmy_string.h"
 
 #ifdef _MSC_VER
@@ -109,10 +110,78 @@ fxmy_is_whitespace(char c)
 static const char *
 fxmy_consume_whitespace(const char *ptr)
 {
+    if (*ptr == 0)
+        return ptr;
+
     while (fxmy_is_whitespace(*ptr))
         ++ptr;
 
     return ptr;
+}
+
+static const char *
+fxmy_find_end_of_string(const char *start, char string_char)
+{
+    char c;
+    while ((c = *++start) != 0)
+    {
+        if (c == string_char)
+            return start;
+    }
+
+    return NULL;
+}
+
+static const char *
+fxmy_next_token(const char **end_ptr, const char *str)
+{
+    const char *start;
+    const char *end;
+    char c;
+
+    start = fxmy_consume_whitespace(str);
+    end = NULL;
+
+    if (start[0] == '-' && start[1] == '-')
+    {
+        while (*start && *start != '\n')
+            ++start;
+    }
+
+    start = fxmy_consume_whitespace(str);
+    end = start;
+    c = *start;
+
+    if (c == 0)
+        goto NO_TOKEN;
+
+    if (c == '\'' || c == '"')
+    {
+        end = fxmy_find_end_of_string(start, c);
+        goto GOT_TOKEN;
+    }
+
+    for (;;)
+    {
+        c = *++end;
+        if (fxmy_is_whitespace(c) || c == ';' || c == 0)
+            goto GOT_TOKEN;
+    }
+    
+GOT_TOKEN:
+    *end_ptr = end;
+    return start;
+
+NO_TOKEN:
+    *end_ptr = NULL;
+    return NULL;
+}
+
+static int
+fxmy_describe(const char *query)
+{
+    UNUSED(query);
+    return 0;
 }
 
 int
@@ -138,8 +207,7 @@ fxmy_handle_query(struct fxmy_connection_t *conn, uint8_t *query_string, size_t 
     }
     else if (fxmy_stristr(query, "DESCRIBE") != NULL)
     {
-        __debugbreak();
-        return 0;
+        return fxmy_describe(query);
     }
     else
     {

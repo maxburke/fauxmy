@@ -11,10 +11,11 @@
 #pragma warning(disable:4127)
 
 #include "fxmy_common.h"
+#include "fxmy_conn.h"
+#include "fxmy_core.h"
+#include "fxmy_main.h"
 #include "fxmy_read.h"
 #include "fxmy_write.h"
-#include "fxmy_conn.h"
-#include "fxmy_main.h"
 
 #pragma comment(lib, "Ws2_32.lib")
 
