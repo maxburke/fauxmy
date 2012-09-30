@@ -48,7 +48,7 @@ static const struct fxmy_status_t fxmy_error_table[] = {
 const struct fxmy_status_t *
 fxmy_get_status(int native_error)
 {
-    const size_t num_error_table_entries = FXMY_ARRAY_SIZEOF(fxmy_error_table);
+    const size_t num_error_table_entries = FXMY_ARRAY_COUNT(fxmy_error_table);
     size_t i;
 
     for (i = 0; i < num_error_table_entries; ++i)

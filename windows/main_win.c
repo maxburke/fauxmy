@@ -25,52 +25,6 @@
 
 static SOCKET fxmy_listen_socket;
 
-void
-fxmy_perror(const char *string)
-{
-    DWORD error;
-    DWORD wsa_error;
-    size_t string_length;
-    size_t i;
-    static TCHAR buffer[1024];
-    
-    fprintf(stderr, "%s\n", string);
-    string_length = strlen(string);
-    for (i = 0; i < string_length; ++i)
-        fprintf(stderr, "-");
-    fprintf(stderr, "\n");
-
-    error = GetLastError();
-    if (error != NO_ERROR)
-    {
-        FormatMessage(
-            FORMAT_MESSAGE_FROM_SYSTEM,
-            NULL,
-            error,
-            0,
-            buffer,
-            1024,
-            NULL);
-
-        fwprintf(stderr, L"%s\n", buffer);
-    }
-
-    wsa_error = WSAGetLastError();
-    if (wsa_error != error && wsa_error != NO_ERROR)
-    {
-        FormatMessage(
-            FORMAT_MESSAGE_FROM_SYSTEM,
-            NULL,
-            wsa_error,
-            0,
-            buffer,
-            1024,
-            NULL);
-
-        fwprintf(stderr, L"%s\n", buffer);
-    }
-}
-
 static void
 fxmy_socket_open(unsigned short port)
 {
@@ -101,13 +55,6 @@ fxmy_worker_thread(LPVOID context)
     fxmy_worker(context);
 
     return 0;
-}
-
-void
-fxmy_conn_dispose(struct fxmy_connection_t *conn)
-{
-    CloseHandle((HANDLE)conn->socket);
-    conn->done = 1;
 }
 
 static void

@@ -14,7 +14,7 @@
 #include <Windows.h>
 #pragma warning(pop)
 
-static fxmy_char *
+fxmy_char *
 fxmy_create_query_string(uint8_t *query_bytes, size_t query_num_bytes)
 {
     LPVOID memory;
@@ -33,7 +33,7 @@ fxmy_create_query_string(uint8_t *query_bytes, size_t query_num_bytes)
     return string;
 }
 
-static void
+void
 fxmy_destroy_query_string(fxmy_char *query)
 {
     VirtualFree(query, 0, MEM_RELEASE);
@@ -62,7 +62,7 @@ enum fxmy_sql_token_t
     FXMY_TOKEN_DESCRIBE
 };
 
-static const char *
+const char *
 fxmy_stristr(const char *haystack, const char * const needle)
 {
     const char *needle_ptr;
@@ -101,13 +101,13 @@ fxmy_stristr(const char *haystack, const char * const needle)
     return NULL;
 }
 
-static int
+int
 fxmy_is_whitespace(char c)
 {
     return c == ' ' || c == '\n' || c == '\r' || c == 't';
 }
 
-static const char *
+const char *
 fxmy_consume_whitespace(const char *ptr)
 {
     if (*ptr == 0)
@@ -119,7 +119,7 @@ fxmy_consume_whitespace(const char *ptr)
     return ptr;
 }
 
-static const char *
+const char *
 fxmy_find_end_of_string(const char *start, char string_char)
 {
     char c;
@@ -132,7 +132,7 @@ fxmy_find_end_of_string(const char *start, char string_char)
     return NULL;
 }
 
-static const char *
+const char *
 fxmy_next_token(const char **end_ptr, const char *str)
 {
     const char *start;

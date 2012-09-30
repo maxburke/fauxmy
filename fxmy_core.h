@@ -1,10 +1,6 @@
 #ifndef FXMY_CORE_H
 #define FXMY_CORE_H
 
-#ifndef FXMY_STATIC
-#define FXMY_STATIC static
-#endif
-
 #define VERIFY_impl(x, line) if (!(x)) { FXMY_PERROR(__FILE__ "(" line "): " #x); abort(); } else (void)0
 #define STRINGIZE(x) STRINGIZE2(x)
 #define STRINGIZE2(x) #x
@@ -20,7 +16,7 @@
 #define MIN(a, b) ((a)<(b)?(a):(b))
 #endif
 
-#define FXMY_ARRAY_SIZEOF(x) (sizeof(x) / sizeof(x[0]))
+#define FXMY_ARRAY_COUNT(x) (sizeof(x) / sizeof(x[0]))
 
 #define UNUSED(x) (void)x
 
