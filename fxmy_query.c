@@ -104,7 +104,7 @@ fxmy_stristr(const char *haystack, const char * const needle)
 int
 fxmy_is_whitespace(char c)
 {
-    return c == ' ' || c == '\n' || c == '\r' || c == 't';
+    return c == ' ' || c == '\n' || c == '\r' || c == '\t';
 }
 
 const char *
@@ -164,7 +164,7 @@ fxmy_next_token(const char **end_ptr, const char *str)
     for (;;)
     {
         c = *++end;
-        if (fxmy_is_whitespace(c) || c == ';' || c == 0)
+        if (fxmy_is_whitespace(c) || c == ';' || c == ',' || c == 0)
             goto GOT_TOKEN;
     }
     
