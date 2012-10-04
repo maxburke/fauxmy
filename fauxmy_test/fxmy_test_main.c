@@ -83,6 +83,9 @@ fxmy_test_report(int result, const char *file, int line, const char *message)
 void
 test_query(void);
 
+void
+test_string(void);
+
 int
 main(void)
 {
@@ -90,6 +93,7 @@ main(void)
         fxmy_test_set_break_on_fail(1);
 
     test_query();
+    test_string();
 
     fxmy_test_print("%d / %d failed\n", fxmy_num_tests_failed, fxmy_num_tests_run);
 

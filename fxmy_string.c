@@ -1,8 +1,45 @@
 #include <stdlib.h>
+#include <ctype.h>
 
 #include "fxmy_common.h"
 #include "fxmy_core.h"
 #include "fxmy_string.h"
+
+#define FXMY_STRISTR_BODY(type, lower_func) \
+    const type *needle_ptr;     \
+    const type *haystack_ptr;   \
+    type h;                     \
+    type n;                     \
+                                \
+    if (haystack == NULL || needle == NULL) \
+        return NULL;            \
+                                \
+    do                          \
+    {                           \
+        haystack_ptr = haystack;\
+        needle_ptr = needle;    \
+        h = *haystack_ptr;      \
+        n = *needle_ptr;        \
+                                \
+        while (lower_func(h) == lower_func(n))    \
+        {                       \
+            /*                  \
+             * the n == 0 case here is implied as the inner body of the loop is \
+             * only entered if h == n.  \
+             */                 \
+            if (h == 0)         \
+                break;          \
+                                \
+            h = *++haystack_ptr;\
+            n = *++needle_ptr;  \
+        }                       \
+                                \
+        if (*needle_ptr == 0)   \
+            return haystack;    \
+    }                           \
+    while (*haystack++ != 0);   \
+                                \
+    return NULL;                \
 
 #ifdef _MSC_VER
 
@@ -42,7 +79,7 @@ fxmy_utf8_to_ucs2(const char *input, const char **output)
 }
 
 fxmy_char *
-fxmy_strfromchar(fxmy_char *dest, const char *src, size_t size)
+fxmy_fstrfromchar(fxmy_char *dest, const char *src, size_t size)
 {
     const char * const end = src + size;
     size_t i;
@@ -51,12 +88,12 @@ fxmy_strfromchar(fxmy_char *dest, const char *src, size_t size)
 
     for (i = 0; src < end; ++i) 
         dest[i] = fxmy_utf8_to_ucs2(src, &src);
-    
+
     return dest;
 }
 
 size_t
-fxmy_strlenfromchar(const char *src, size_t size)
+fxmy_fstrlenfromchar(const char *src, size_t size)
 {
     const char * const end = src + size;
     size_t i;
@@ -67,5 +104,42 @@ fxmy_strlenfromchar(const char *src, size_t size)
     return i;
 }
 
+fxmy_char *
+fxmy_fstrncatfromchar(fxmy_char *dest, size_t size, const char *src, size_t num_chars)
+{
+    fxmy_char *p;
+    size_t i;
+    size_t amount_to_copy;
+
+    for (i = 0, p = dest; i < (size - 1) && *p != 0; ++i, ++p)
+        ;
+
+    if (i == (size - 1))
+    {
+        dest[size - 1] = 0;
+        return NULL;
+    }
+
+    amount_to_copy = MIN(size - i, num_chars);
+
+    p = fxmy_fstrfromchar(dest + i, src, amount_to_copy);
+
+    dest[size - 1] = 0;
+    return p;
+}
+
+const fxmy_char *
+fxmy_fstristr(const fxmy_char *haystack, const fxmy_char * const needle)
+{
+    FXMY_STRISTR_BODY(fxmy_char, towlower)
+}
+
 
 #endif
+
+const char *
+fxmy_stristr(const char *haystack, const char * const needle)
+{
+    FXMY_STRISTR_BODY(char, tolower)
+}
+

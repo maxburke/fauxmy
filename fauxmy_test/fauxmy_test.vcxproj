@@ -67,6 +67,7 @@
   <ItemGroup>
     <ClCompile Include="fxmy_test_main.c" />
     <ClCompile Include="fxmy_test_query.c" />
+    <ClCompile Include="fxmy_test_string.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fxmy_test.h" />

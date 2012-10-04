@@ -29,12 +29,6 @@ void
 fxmy_destroy_query_string(fxmy_char *query);
 
 const char *
-fxmy_stristr(const char *haystack, const char * const needle);
-
-int
-fxmy_is_whitespace(char c);
-
-const char *
 fxmy_consume_whitespace(const char *ptr);
 
 const char *
