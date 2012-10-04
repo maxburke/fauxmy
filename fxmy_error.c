@@ -4,21 +4,13 @@
 #include "fxmy_core.h"
 #include "fxmy_error.h"
 
-struct fxmy_error_table_t
-{
-    int mssql_error_code;
-    int mysql_error_code;
-    const char *mysql_sql_state;
-};
-
 /* 
  * I'm thinking that 1149/42000 (syntax error) may be a good fallback.
  */
 
-#define FXMY_DEFAULT_ERROR 208
-
 static const struct fxmy_status_t fxmy_error_table[] = {
-    { 0, 0, 0, "", "OK" },
+    { FXMY_OK, 0, 0, "", "OK" },
+    { FXMY_ERROR_NO_DATA, 0xFF, 0, "", "NO DATA" },
     { 102, 0xFF, 1149, "42000", "ERROR" },
     { 109, 0xFF, 1136, "21S01", "ERROR" },
     { 110, 0xFF, 1136, "21S01", "ERROR" },
@@ -59,5 +51,5 @@ fxmy_get_status(int native_error)
 
     __debugbreak();
 
-    return fxmy_get_status(FXMY_DEFAULT_ERROR);
+    return fxmy_get_status(FXMY_ERROR_DEFAULT);
 }

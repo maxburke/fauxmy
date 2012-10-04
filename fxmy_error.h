@@ -5,18 +5,6 @@
 
 #include <stdint.h>
 
-/*
-enum fxmy_status_code_t
-{
-    FXMY_STATUS_OK,
-    FXMY_STATUS_BAD_PASSWORD,
-    FXMY_STATUS_DATABASE_NOT_SELECTED,
-    FXMY_STATUS_UNKNOWN_DATABASE,
-    FXMY_STATUS_OBJECT_NOT_FOUND,
-    FXMY_LAST_STATUS_CODE
-};
-*/
-
 struct fxmy_status_t
 {
     int native_error_code;
@@ -29,7 +17,19 @@ struct fxmy_status_t
 const struct fxmy_status_t *
 fxmy_get_status(int native_error);
 
+enum fxmy_error_code_t
+{
+    /*
+     * Negative error codes are internal to Fauxmy. Positive error codes
+     * are what MSSQL returns.
+     */
+    FXMY_ERROR_NO_DATA = -100,
+    FXMY_ERROR_UNKNOWN_OBJECT = 208,
+    FXMY_ERROR_DEFAULT = 208
+};
+
 #define FXMY_SUCCEEDED(x) ((x)->header == 0)
 #define FXMY_FAILED(x) ((x)->header != 0)
+#define FXMY_EMPTY_SET(x) ((x)->native_error_code == FXMY_ERROR_NO_DATA)
 
 #endif

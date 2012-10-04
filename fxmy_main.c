@@ -1,7 +1,3 @@
-#ifdef _MSC_VER
-#define _CRT_SECURE_NO_WARNINGS
-#endif
-
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -98,6 +94,9 @@ fxmy_verify_and_log_odbc(SQLRETURN return_code, SQLSMALLINT handle_type, SQLHAND
     if (return_code == SQL_SUCCESS)
         return fxmy_get_status(FXMY_OK);
 
+    if (return_code == SQL_NO_DATA)
+        return fxmy_get_status(FXMY_ERROR_NO_DATA);
+
     while (SQLGetDiagRecA(
         handle_type,
         handle,
@@ -155,7 +154,7 @@ fxmy_connect(struct fxmy_connection_t *conn)
     if (FXMY_SUCCEEDED(conn->status))
         return 0;
 
-    fxmy_snprintf(use_db_string, 4096, C("USE %s;"), conn->database);
+    fxmy_fsnprintf(use_db_string, 4096, C("USE %s;"), conn->database);
 
     VERIFY_ODBC(SQLAllocHandle(SQL_HANDLE_STMT, database_connection_handle, &query_handle), SQL_HANDLE_DBC, database_connection_handle);
     rv = SQLExecDirect(query_handle, use_db_string, SQL_NTS);
@@ -197,7 +196,7 @@ fxmy_parse_auth_packet(struct fxmy_connection_t *conn)
     {
         size_t size = strlen(buffer->memory) + 1;
         conn->database = calloc(size, sizeof(fxmy_char));
-        fxmy_strfromchar(conn->database, buffer->memory, size);
+        fxmy_fstrfromchar(conn->database, buffer->memory, size);
         return fxmy_connect(conn);
     }
 
@@ -279,7 +278,7 @@ fxmy_handle_command_packet(struct fxmy_connection_t *conn)
         if (conn->database)
             free(conn->database);
         conn->database = calloc(packet_size_less_command + 1, sizeof(fxmy_char));
-        fxmy_strfromchar(conn->database, (const char *)ptr, packet_size_less_command);
+        fxmy_fstrfromchar(conn->database, (const char *)ptr, packet_size_less_command);
         return fxmy_connect(conn);
 
     case COM_QUERY:
