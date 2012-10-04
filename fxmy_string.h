@@ -25,6 +25,11 @@
     const fxmy_char *
     fxmy_fstristr(const fxmy_char *haystack, const fxmy_char * const needle);
 
+    const fxmy_char *
+    fxmy_fnext_token(const fxmy_char **end_ptr, const fxmy_char *str);
+
+    int
+    fxmy_fstrnicmp(const fxmy_char *a, const fxmy_char *b, size_t length);
 #else
     #define fxmy_strstr strstr
     #define fxmy_strlen strlen
@@ -43,14 +48,23 @@
     /* #define fxmy_strncatfromchar strncat */
 
     #define fxmy_snprintf snprintf
+    #define fxmy_fstristr fxmy_stristr
+    #define fxmy_fnext_token fxmy_next_token
 
     size_t
     fxmy_strlenfromchar(const char *src, size_t size);
-
-    #define fxmy_fstristr fxmy_stristr
 #endif
 
 const char *
 fxmy_stristr(const char *haystack, const char * const needle);
+
+const char *
+fxmy_consume_whitespace(const char *ptr);
+
+const char *
+fxmy_find_end_of_string(const char *start, char string_char);
+
+const char *
+fxmy_next_token(const char **end_ptr, const char *str);
 
 #endif
