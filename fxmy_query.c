@@ -121,7 +121,29 @@ column_query_failed:
 static void
 fxmy_rearrange_limit(fxmy_char *query)
 {
-    UNUSED(query);
+    const fxmy_char *limit_begin;
+    const fxmy_char *limit_end;
+    const fxmy_char *num_begin;
+    const fxmy_char *num_end;
+    const fxmy_char top[] = C("TOP  ");
+
+    limit_begin = query;
+
+    for (;;)
+    {
+        limit_begin = fxmy_fnext_token(&limit_end, limit_begin);
+        if (fxmy_fstrnicmp(limit_begin, C("LIMIT"), 5) == 0)
+        {
+            break;
+        }
+        limit_begin = limit_end;
+    }
+
+    limit_begin = fxmy_fstristr(query, C("LIMIT"));
+    memcpy((fxmy_char *)limit_begin, top, sizeof top - sizeof(fxmy_char));
+
+    limit_begin = fxmy_fnext_token(&num_begin, limit_begin);
+    num_begin = fxmy_fnext_token(&num_end, num_begin);
 }
 
 int
