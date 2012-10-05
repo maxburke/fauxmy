@@ -37,6 +37,7 @@ fxmy_find_end_of_string(const char *start, char string_char);
 const char *
 fxmy_next_token(const char **end_ptr, const char *str);
 
-
+void
+fxmy_rearrange_limit(fxmy_char *query);
 
 #endif

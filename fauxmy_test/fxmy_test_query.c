@@ -66,8 +66,16 @@ test_next_token(void)
     }
 }
 
+static void
+test_rearrange_limit(void)
+{
+    const char *test_query = "SELECT option_name, option_value FROM wp_options WHERE autoload = 'yes' LIMIT 100";
+
+}
+
 void
 test_query(void)
 {
     test_next_token();
+    test_rearrange_limit();
 }

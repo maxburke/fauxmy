@@ -118,7 +118,7 @@ column_query_failed:
     return 0;
 }
 
-static void
+void
 fxmy_rearrange_limit(fxmy_char *query)
 {
     const fxmy_char *limit_begin;
