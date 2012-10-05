@@ -1,12 +1,16 @@
 #ifndef FXMY_COMMON_H
 #define FXMY_COMMON_H
 
+#pragma once
+
 #ifdef _MSC_VER
 #pragma warning(push, 0)
 #endif
 
 #include <stddef.h>
 #include <stdint.h>
+
+#include "fxmy_string_type.h"
 
 #ifdef _MSC_VER
 #pragma warning(pop)
@@ -32,6 +36,9 @@ struct fxmy_xfer_buffer_t
     typedef int socket_t;
 #endif
 
+struct fxmy_odbc_t;
+struct fxmy_status_t;
+
 struct fxmy_connection_t
 {
     socket_t socket;
@@ -41,29 +48,21 @@ struct fxmy_connection_t
     uint32_t client_flags;
     uint32_t max_packet_size;
     uint32_t charset;
-    char *database;
+    fxmy_char *database;
     uint16_t multi_statements_off;
 
-    /* Transient state. These values change from one query invocation to the next. */
+    /*
+     * Transient state. These values change from one query invocation to the
+     * next.
+     */
+    uint64_t column_count_error_code;
     uint64_t affected_rows;
     uint64_t insert_id;
-    const char *query_message;
+    const struct fxmy_status_t *status;
+
+    struct fxmy_odbc_t *odbc;
+    const fxmy_char *connection_string;
 };
-
-struct fxmy_connection_context_t
-{
-    wchar_t *connection_string;
-    struct fxmy_connection_t *connection;
-};
-
-#define VERIFY_impl(x, line) if (!(x)) { FXMY_PERROR(__FILE__ "(" line "): " #x); abort(); } else (void)0
-#define STRINGIZE(x) STRINGIZE2(x)
-#define STRINGIZE2(x) #x
-#define VERIFY(x) VERIFY_impl(x, STRINGIZE(__LINE__)) 
-
-#ifndef MIN
-#define MIN(a, b) ((a)<(b)?(a):(b))
-#endif
 
 enum fxmy_client_flags_t
 {
@@ -119,8 +118,6 @@ enum fxmy_commands_t
     COM_SET_OPTION,
     COM_STMT_FETCH,
 };
-
-#define UNUSED(x) (void)x
 
 enum fxmy_connection_state_t
 {

@@ -1,0 +1,3613 @@
+Because updates are frequent, it is possible that those files will
+contain additional error information not listed here.
+
+   *  Error: `1000' SQLSTATE: `HY000' (`ER_HASHCHK')
+
+     Message: hashchk
+
+   *  Error: `1001' SQLSTATE: `HY000' (`ER_NISAMCHK')
+
+     Message: isamchk
+
+   *  Error: `1002' SQLSTATE: `HY000' (`ER_NO')
+
+     Message: NO
+
+   *  Error: `1003' SQLSTATE: `HY000' (`ER_YES')
+
+     Message: YES
+
+   *  Error: `1004' SQLSTATE: `HY000' (`ER_CANT_CREATE_FILE')
+
+     Message: Can't create file '%s' (errno: %d)
+
+   *  Error: `1005' SQLSTATE: `HY000' (`ER_CANT_CREATE_TABLE')
+
+     Message: Can't create table '%s' (errno: %d)
+
+   *  Error: `1006' SQLSTATE: `HY000' (`ER_CANT_CREATE_DB')
+
+     Message: Can't create database '%s' (errno: %d)
+
+   *  Error: `1007' SQLSTATE: `HY000' (`ER_DB_CREATE_EXISTS')
+
+     Message: Can't create database '%s'; database exists
+
+   *  Error: `1008' SQLSTATE: `HY000' (`ER_DB_DROP_EXISTS')
+
+     Message: Can't drop database '%s'; database doesn't exist
+
+   *  Error: `1009' SQLSTATE: `HY000' (`ER_DB_DROP_DELETE')
+
+     Message: Error dropping database (can't delete '%s', errno: %d)
+
+   *  Error: `1010' SQLSTATE: `HY000' (`ER_DB_DROP_RMDIR')
+
+     Message: Error dropping database (can't rmdir '%s', errno: %d)
+
+   *  Error: `1011' SQLSTATE: `HY000' (`ER_CANT_DELETE_FILE')
+
+     Message: Error on delete of '%s' (errno: %d)
+
+   *  Error: `1012' SQLSTATE: `HY000' (`ER_CANT_FIND_SYSTEM_REC')
+
+     Message: Can't read record in system table
+
+   *  Error: `1013' SQLSTATE: `HY000' (`ER_CANT_GET_STAT')
+
+     Message: Can't get status of '%s' (errno: %d)
+
+   *  Error: `1014' SQLSTATE: `HY000' (`ER_CANT_GET_WD')
+
+     Message: Can't get working directory (errno: %d)
+
+   *  Error: `1015' SQLSTATE: `HY000' (`ER_CANT_LOCK')
+
+     Message: Can't lock file (errno: %d)
+
+   *  Error: `1016' SQLSTATE: `HY000' (`ER_CANT_OPEN_FILE')
+
+     Message: Can't open file: '%s' (errno: %d)
+
+   *  Error: `1017' SQLSTATE: `HY000' (`ER_FILE_NOT_FOUND')
+
+     Message: Can't find file: '%s' (errno: %d)
+
+   *  Error: `1018' SQLSTATE: `HY000' (`ER_CANT_READ_DIR')
+
+     Message: Can't read dir of '%s' (errno: %d)
+
+   *  Error: `1019' SQLSTATE: `HY000' (`ER_CANT_SET_WD')
+
+     Message: Can't change dir to '%s' (errno: %d)
+
+   *  Error: `1020' SQLSTATE: `HY000' (`ER_CHECKREAD')
+
+     Message: Record has changed since last read in table '%s'
+
+   *  Error: `1021' SQLSTATE: `HY000' (`ER_DISK_FULL')
+
+     Message: Disk full (%s); waiting for someone to free some space...
+
+   *  Error: `1022' SQLSTATE: `23000' (`ER_DUP_KEY')
+
+     Message: Can't write; duplicate key in table '%s'
+
+   *  Error: `1023' SQLSTATE: `HY000' (`ER_ERROR_ON_CLOSE')
+
+     Message: Error on close of '%s' (errno: %d)
+
+   *  Error: `1024' SQLSTATE: `HY000' (`ER_ERROR_ON_READ')
+
+     Message: Error reading file '%s' (errno: %d)
+
+   *  Error: `1025' SQLSTATE: `HY000' (`ER_ERROR_ON_RENAME')
+
+     Message: Error on rename of '%s' to '%s' (errno: %d)
+
+   *  Error: `1026' SQLSTATE: `HY000' (`ER_ERROR_ON_WRITE')
+
+     Message: Error writing file '%s' (errno: %d)
+
+   *  Error: `1027' SQLSTATE: `HY000' (`ER_FILE_USED')
+
+     Message: '%s' is locked against change
+
+   *  Error: `1028' SQLSTATE: `HY000' (`ER_FILSORT_ABORT')
+
+     Message: Sort aborted
+
+   *  Error: `1029' SQLSTATE: `HY000' (`ER_FORM_NOT_FOUND')
+
+     Message: View '%s' doesn't exist for '%s'
+
+   *  Error: `1030' SQLSTATE: `HY000' (`ER_GET_ERRNO')
+
+     Message: Got error %d from storage engine
+
+   *  Error: `1031' SQLSTATE: `HY000' (`ER_ILLEGAL_HA')
+
+     Message: Table storage engine for '%s' doesn't have this option
+
+   *  Error: `1032' SQLSTATE: `HY000' (`ER_KEY_NOT_FOUND')
+
+     Message: Can't find record in '%s'
+
+   *  Error: `1033' SQLSTATE: `HY000' (`ER_NOT_FORM_FILE')
+
+     Message: Incorrect information in file: '%s'
+
+   *  Error: `1034' SQLSTATE: `HY000' (`ER_NOT_KEYFILE')
+
+     Message: Incorrect key file for table '%s'; try to repair it
+
+   *  Error: `1035' SQLSTATE: `HY000' (`ER_OLD_KEYFILE')
+
+     Message: Old key file for table '%s'; repair it!
+
+   *  Error: `1036' SQLSTATE: `HY000' (`ER_OPEN_AS_READONLY')
+
+     Message: Table '%s' is read only
+
+   *  Error: `1037' SQLSTATE: `HY001' (`ER_OUTOFMEMORY')
+
+     Message: Out of memory; restart server and try again (needed %d
+     bytes)
+
+   *  Error: `1038' SQLSTATE: `HY001' (`ER_OUT_OF_SORTMEMORY')
+
+     Message: Out of sort memory, consider increasing server sort
+     buffer size
+
+   *  Error: `1039' SQLSTATE: `HY000' (`ER_UNEXPECTED_EOF')
+
+     Message: Unexpected EOF found when reading file '%s' (errno: %d)
+
+   *  Error: `1040' SQLSTATE: `08004' (`ER_CON_COUNT_ERROR')
+
+     Message: Too many connections
+
+   *  Error: `1041' SQLSTATE: `HY000' (`ER_OUT_OF_RESOURCES')
+
+     Message: Out of memory; check if mysqld or some other process uses
+     all available memory; if not, you may have to use 'ulimit' to
+     allow mysqld to use more memory or you can add more swap space
+
+   *  Error: `1042' SQLSTATE: `08S01' (`ER_BAD_HOST_ERROR')
+
+     Message: Can't get hostname for your address
+
+   *  Error: `1043' SQLSTATE: `08S01' (`ER_HANDSHAKE_ERROR')
+
+     Message: Bad handshake
+
+   *  Error: `1044' SQLSTATE: `42000' (`ER_DBACCESS_DENIED_ERROR')
+
+     Message: Access denied for user '%s'@'%s' to database '%s'
+
+   *  Error: `1045' SQLSTATE: `28000' (`ER_ACCESS_DENIED_ERROR')
+
+     Message: Access denied for user '%s'@'%s' (using password: %s)
+
+   *  Error: `1046' SQLSTATE: `3D000' (`ER_NO_DB_ERROR')
+
+     Message: No database selected
+
+   *  Error: `1047' SQLSTATE: `08S01' (`ER_UNKNOWN_COM_ERROR')
+
+     Message: Unknown command
+
+   *  Error: `1048' SQLSTATE: `23000' (`ER_BAD_NULL_ERROR')
+
+     Message: Column '%s' cannot be null
+
+   *  Error: `1049' SQLSTATE: `42000' (`ER_BAD_DB_ERROR')
+
+     Message: Unknown database '%s'
+
+   *  Error: `1050' SQLSTATE: `42S01' (`ER_TABLE_EXISTS_ERROR')
+
+     Message: Table '%s' already exists
+
+   *  Error: `1051' SQLSTATE: `42S02' (`ER_BAD_TABLE_ERROR')
+
+     Message: Unknown table '%s'
+
+   *  Error: `1052' SQLSTATE: `23000' (`ER_NON_UNIQ_ERROR')
+
+     Message: Column '%s' in %s is ambiguous
+
+   *  Error: `1053' SQLSTATE: `08S01' (`ER_SERVER_SHUTDOWN')
+
+     Message: Server shutdown in progress
+
+   *  Error: `1054' SQLSTATE: `42S22' (`ER_BAD_FIELD_ERROR')
+
+     Message: Unknown column '%s' in '%s'
+
+   *  Error: `1055' SQLSTATE: `42000' (`ER_WRONG_FIELD_WITH_GROUP')
+
+     Message: '%s' isn't in GROUP BY
+
+   *  Error: `1056' SQLSTATE: `42000' (`ER_WRONG_GROUP_FIELD')
+
+     Message: Can't group on '%s'
+
+   *  Error: `1057' SQLSTATE: `42000' (`ER_WRONG_SUM_SELECT')
+
+     Message: Statement has sum functions and columns in same statement
+
+   *  Error: `1058' SQLSTATE: `21S01' (`ER_WRONG_VALUE_COUNT')
+
+     Message: Column count doesn't match value count
+
+   *  Error: `1059' SQLSTATE: `42000' (`ER_TOO_LONG_IDENT')
+
+     Message: Identifier name '%s' is too long
+
+   *  Error: `1060' SQLSTATE: `42S21' (`ER_DUP_FIELDNAME')
+
+     Message: Duplicate column name '%s'
+
+   *  Error: `1061' SQLSTATE: `42000' (`ER_DUP_KEYNAME')
+
+     Message: Duplicate key name '%s'
+
+   *  Error: `1062' SQLSTATE: `23000' (`ER_DUP_ENTRY')
+
+     Message: Duplicate entry '%s' for key %d
+
+   *  Error: `1063' SQLSTATE: `42000' (`ER_WRONG_FIELD_SPEC')
+
+     Message: Incorrect column specifier for column '%s'
+
+   *  Error: `1064' SQLSTATE: `42000' (`ER_PARSE_ERROR')
+
+     Message: %s near '%s' at line %d
+
+   *  Error: `1065' SQLSTATE: `42000' (`ER_EMPTY_QUERY')
+
+     Message: Query was empty
+
+   *  Error: `1066' SQLSTATE: `42000' (`ER_NONUNIQ_TABLE')
+
+     Message: Not unique table/alias: '%s'
+
+   *  Error: `1067' SQLSTATE: `42000' (`ER_INVALID_DEFAULT')
+
+     Message: Invalid default value for '%s'
+
+   *  Error: `1068' SQLSTATE: `42000' (`ER_MULTIPLE_PRI_KEY')
+
+     Message: Multiple primary key defined
+
+   *  Error: `1069' SQLSTATE: `42000' (`ER_TOO_MANY_KEYS')
+
+     Message: Too many keys specified; max %d keys allowed
+
+   *  Error: `1070' SQLSTATE: `42000' (`ER_TOO_MANY_KEY_PARTS')
+
+     Message: Too many key parts specified; max %d parts allowed
+
+   *  Error: `1071' SQLSTATE: `42000' (`ER_TOO_LONG_KEY')
+
+     Message: Specified key was too long; max key length is %d bytes
+
+   *  Error: `1072' SQLSTATE: `42000' (`ER_KEY_COLUMN_DOES_NOT_EXITS')
+
+     Message: Key column '%s' doesn't exist in table
+
+   *  Error: `1073' SQLSTATE: `42000' (`ER_BLOB_USED_AS_KEY')
+
+     Message: BLOB column '%s' can't be used in key specification with
+     the used table type
+
+   *  Error: `1074' SQLSTATE: `42000' (`ER_TOO_BIG_FIELDLENGTH')
+
+     Message: Column length too big for column '%s' (max = %lu); use
+     BLOB or TEXT instead
+
+   *  Error: `1075' SQLSTATE: `42000' (`ER_WRONG_AUTO_KEY')
+
+     Message: Incorrect table definition; there can be only one auto
+     column and it must be defined as a key
+
+   *  Error: `1076' SQLSTATE: `HY000' (`ER_READY')
+
+     Message: %s: ready for connections. Version: '%s' socket: '%s'
+     port: %d
+
+   *  Error: `1077' SQLSTATE: `HY000' (`ER_NORMAL_SHUTDOWN')
+
+     Message: %s: Normal shutdown
+
+   *  Error: `1078' SQLSTATE: `HY000' (`ER_GOT_SIGNAL')
+
+     Message: %s: Got signal %d. Aborting!
+
+   *  Error: `1079' SQLSTATE: `HY000' (`ER_SHUTDOWN_COMPLETE')
+
+     Message: %s: Shutdown complete
+
+   *  Error: `1080' SQLSTATE: `08S01' (`ER_FORCING_CLOSE')
+
+     Message: %s: Forcing close of thread %ld user: '%s'
+
+   *  Error: `1081' SQLSTATE: `08S01' (`ER_IPSOCK_ERROR')
+
+     Message: Can't create IP socket
+
+   *  Error: `1082' SQLSTATE: `42S12' (`ER_NO_SUCH_INDEX')
+
+     Message: Table '%s' has no index like the one used in CREATE
+     INDEX; recreate the table
+
+   *  Error: `1083' SQLSTATE: `42000' (`ER_WRONG_FIELD_TERMINATORS')
+
+     Message: Field separator argument is not what is expected; check
+     the manual
+
+   *  Error: `1084' SQLSTATE: `42000' (`ER_BLOBS_AND_NO_TERMINATED')
+
+     Message: You can't use fixed rowlength with BLOBs; please use
+     'fields terminated by'
+
+   *  Error: `1085' SQLSTATE: `HY000' (`ER_TEXTFILE_NOT_READABLE')
+
+     Message: The file '%s' must be in the database directory or be
+     readable by all
+
+   *  Error: `1086' SQLSTATE: `HY000' (`ER_FILE_EXISTS_ERROR')
+
+     Message: File '%s' already exists
+
+   *  Error: `1087' SQLSTATE: `HY000' (`ER_LOAD_INFO')
+
+     Message: Records: %ld Deleted: %ld Skipped: %ld Warnings: %ld
+
+   *  Error: `1088' SQLSTATE: `HY000' (`ER_ALTER_INFO')
+
+     Message: Records: %ld Duplicates: %ld
+
+   *  Error: `1089' SQLSTATE: `HY000' (`ER_WRONG_SUB_KEY')
+
+     Message: Incorrect prefix key; the used key part isn't a string,
+     the used length is longer than the key part, or the storage engine
+     doesn't support unique prefix keys
+
+   *  Error: `1090' SQLSTATE: `42000' (`ER_CANT_REMOVE_ALL_FIELDS')
+
+     Message: You can't delete all columns with ALTER TABLE; use DROP
+     TABLE instead
+
+   *  Error: `1091' SQLSTATE: `42000' (`ER_CANT_DROP_FIELD_OR_KEY')
+
+     Message: Can't DROP '%s'; check that column/key exists
+
+   *  Error: `1092' SQLSTATE: `HY000' (`ER_INSERT_INFO')
+
+     Message: Records: %ld Duplicates: %ld Warnings: %ld
+
+   *  Error: `1093' SQLSTATE: `HY000' (`ER_UPDATE_TABLE_USED')
+
+     Message: You can't specify target table '%s' for update in FROM
+     clause
+
+   *  Error: `1094' SQLSTATE: `HY000' (`ER_NO_SUCH_THREAD')
+
+     Message: Unknown thread id: %lu
+
+   *  Error: `1095' SQLSTATE: `HY000' (`ER_KILL_DENIED_ERROR')
+
+     Message: You are not owner of thread %lu
+
+   *  Error: `1096' SQLSTATE: `HY000' (`ER_NO_TABLES_USED')
+
+     Message: No tables used
+
+   *  Error: `1097' SQLSTATE: `HY000' (`ER_TOO_BIG_SET')
+
+     Message: Too many strings for column %s and SET
+
+   *  Error: `1098' SQLSTATE: `HY000' (`ER_NO_UNIQUE_LOGFILE')
+
+     Message: Can't generate a unique log-filename %s.(1-999)
+
+   *  Error: `1099' SQLSTATE: `HY000' (`ER_TABLE_NOT_LOCKED_FOR_WRITE')
+
+     Message: Table '%s' was locked with a READ lock and can't be
+     updated
+
+   *  Error: `1100' SQLSTATE: `HY000' (`ER_TABLE_NOT_LOCKED')
+
+     Message: Table '%s' was not locked with LOCK TABLES
+
+   *  Error: `1101' SQLSTATE: `42000' (`ER_BLOB_CANT_HAVE_DEFAULT')
+
+     Message: BLOB/TEXT column '%s' can't have a default value
+
+   *  Error: `1102' SQLSTATE: `42000' (`ER_WRONG_DB_NAME')
+
+     Message: Incorrect database name '%s'
+
+   *  Error: `1103' SQLSTATE: `42000' (`ER_WRONG_TABLE_NAME')
+
+     Message: Incorrect table name '%s'
+
+   *  Error: `1104' SQLSTATE: `42000' (`ER_TOO_BIG_SELECT')
+
+     Message: The SELECT would examine more than MAX_JOIN_SIZE rows;
+     check your WHERE and use SET SQL_BIG_SELECTS=1 or SET
+     MAX_JOIN_SIZE=# if the SELECT is okay
+
+   *  Error: `1105' SQLSTATE: `HY000' (`ER_UNKNOWN_ERROR')
+
+     Message: Unknown error
+
+   *  Error: `1106' SQLSTATE: `42000' (`ER_UNKNOWN_PROCEDURE')
+
+     Message: Unknown procedure '%s'
+
+   *  Error: `1107' SQLSTATE: `42000'
+     (`ER_WRONG_PARAMCOUNT_TO_PROCEDURE')
+
+     Message: Incorrect parameter count to procedure '%s'
+
+   *  Error: `1108' SQLSTATE: `HY000'
+     (`ER_WRONG_PARAMETERS_TO_PROCEDURE')
+
+     Message: Incorrect parameters to procedure '%s'
+
+   *  Error: `1109' SQLSTATE: `42S02' (`ER_UNKNOWN_TABLE')
+
+     Message: Unknown table '%s' in %s
+
+   *  Error: `1110' SQLSTATE: `42000' (`ER_FIELD_SPECIFIED_TWICE')
+
+     Message: Column '%s' specified twice
+
+   *  Error: `1111' SQLSTATE: `HY000' (`ER_INVALID_GROUP_FUNC_USE')
+
+     Message: Invalid use of group function
+
+   *  Error: `1112' SQLSTATE: `42000' (`ER_UNSUPPORTED_EXTENSION')
+
+     Message: Table '%s' uses an extension that doesn't exist in this
+     MySQL version
+
+   *  Error: `1113' SQLSTATE: `42000' (`ER_TABLE_MUST_HAVE_COLUMNS')
+
+     Message: A table must have at least 1 column
+
+   *  Error: `1114' SQLSTATE: `HY000' (`ER_RECORD_FILE_FULL')
+
+     Message: The table '%s' is full
+
+   *  Error: `1115' SQLSTATE: `42000' (`ER_UNKNOWN_CHARACTER_SET')
+
+     Message: Unknown character set: '%s'
+
+   *  Error: `1116' SQLSTATE: `HY000' (`ER_TOO_MANY_TABLES')
+
+     Message: Too many tables; MySQL can only use %d tables in a join
+
+   *  Error: `1117' SQLSTATE: `HY000' (`ER_TOO_MANY_FIELDS')
+
+     Message: Too many columns
+
+   *  Error: `1118' SQLSTATE: `42000' (`ER_TOO_BIG_ROWSIZE')
+
+     Message: Row size too large. The maximum row size for the used
+     table type, not counting BLOBs, is %ld. You have to change some
+     columns to TEXT or BLOBs
+
+   *  Error: `1119' SQLSTATE: `HY000' (`ER_STACK_OVERRUN')
+
+     Message: Thread stack overrun: Used: %ld of a %ld stack. Use
+     'mysqld -thread_stack=#' to specify a bigger stack if needed
+
+   *  Error: `1120' SQLSTATE: `42000' (`ER_WRONG_OUTER_JOIN')
+
+     Message: Cross dependency found in OUTER JOIN; examine your ON
+     conditions
+
+   *  Error: `1121' SQLSTATE: `42000' (`ER_NULL_COLUMN_IN_INDEX')
+
+     Message: Table handler doesn't support NULL in given index. Please
+     change column '%s' to be NOT NULL or use another handler
+
+   *  Error: `1122' SQLSTATE: `HY000' (`ER_CANT_FIND_UDF')
+
+     Message: Can't load function '%s'
+
+   *  Error: `1123' SQLSTATE: `HY000' (`ER_CANT_INITIALIZE_UDF')
+
+     Message: Can't initialize function '%s'; %s
+
+   *  Error: `1124' SQLSTATE: `HY000' (`ER_UDF_NO_PATHS')
+
+     Message: No paths allowed for shared library
+
+   *  Error: `1125' SQLSTATE: `HY000' (`ER_UDF_EXISTS')
+
+     Message: Function '%s' already exists
+
+   *  Error: `1126' SQLSTATE: `HY000' (`ER_CANT_OPEN_LIBRARY')
+
+     Message: Can't open shared library '%s' (errno: %d %s)
+
+   *  Error: `1127' SQLSTATE: `HY000' (`ER_CANT_FIND_DL_ENTRY')
+
+     Message: Can't find symbol '%s' in library
+
+   *  Error: `1128' SQLSTATE: `HY000' (`ER_FUNCTION_NOT_DEFINED')
+
+     Message: Function '%s' is not defined
+
+   *  Error: `1129' SQLSTATE: `HY000' (`ER_HOST_IS_BLOCKED')
+
+     Message: Host '%s' is blocked because of many connection errors;
+     unblock with 'mysqladmin flush-hosts'
+
+   *  Error: `1130' SQLSTATE: `HY000' (`ER_HOST_NOT_PRIVILEGED')
+
+     Message: Host '%s' is not allowed to connect to this MySQL server
+
+   *  Error: `1131' SQLSTATE: `42000' (`ER_PASSWORD_ANONYMOUS_USER')
+
+     Message: You are using MySQL as an anonymous user and anonymous
+     users are not allowed to change passwords
+
+   *  Error: `1132' SQLSTATE: `42000' (`ER_PASSWORD_NOT_ALLOWED')
+
+     Message: You must have privileges to update tables in the mysql
+     database to be able to change passwords for others
+
+   *  Error: `1133' SQLSTATE: `42000' (`ER_PASSWORD_NO_MATCH')
+
+     Message: Can't find any matching row in the user table
+
+   *  Error: `1134' SQLSTATE: `HY000' (`ER_UPDATE_INFO')
+
+     Message: Rows matched: %ld Changed: %ld Warnings: %ld
+
+   *  Error: `1135' SQLSTATE: `HY000' (`ER_CANT_CREATE_THREAD')
+
+     Message: Can't create a new thread (errno %d); if you are not out
+     of available memory, you can consult the manual for a possible
+     OS-dependent bug
+
+   *  Error: `1136' SQLSTATE: `21S01' (`ER_WRONG_VALUE_COUNT_ON_ROW')
+
+     Message: Column count doesn't match value count at row %ld
+
+   *  Error: `1137' SQLSTATE: `HY000' (`ER_CANT_REOPEN_TABLE')
+
+     Message: Can't reopen table: '%s'
+
+   *  Error: `1138' SQLSTATE: `22004' (`ER_INVALID_USE_OF_NULL')
+
+     Message: Invalid use of NULL value
+
+   *  Error: `1139' SQLSTATE: `42000' (`ER_REGEXP_ERROR')
+
+     Message: Got error '%s' from regexp
+
+   *  Error: `1140' SQLSTATE: `42000'
+     (`ER_MIX_OF_GROUP_FUNC_AND_FIELDS')
+
+     Message: Mixing of GROUP columns (MIN(),MAX(),COUNT(),...) with no
+     GROUP columns is illegal if there is no GROUP BY clause
+
+   *  Error: `1141' SQLSTATE: `42000' (`ER_NONEXISTING_GRANT')
+
+     Message: There is no such grant defined for user '%s' on host '%s'
+
+   *  Error: `1142' SQLSTATE: `42000' (`ER_TABLEACCESS_DENIED_ERROR')
+
+     Message: %s command denied to user '%s'@'%s' for table '%s'
+
+   *  Error: `1143' SQLSTATE: `42000' (`ER_COLUMNACCESS_DENIED_ERROR')
+
+     Message: %s command denied to user '%s'@'%s' for column '%s' in
+     table '%s'
+
+   *  Error: `1144' SQLSTATE: `42000' (`ER_ILLEGAL_GRANT_FOR_TABLE')
+
+     Message: Illegal GRANT/REVOKE command; please consult the manual
+     to see which privileges can be used
+
+   *  Error: `1145' SQLSTATE: `42000' (`ER_GRANT_WRONG_HOST_OR_USER')
+
+     Message: The host or user argument to GRANT is too long
+
+   *  Error: `1146' SQLSTATE: `42S02' (`ER_NO_SUCH_TABLE')
+
+     Message: Table '%s.%s' doesn't exist
+
+   *  Error: `1147' SQLSTATE: `42000' (`ER_NONEXISTING_TABLE_GRANT')
+
+     Message: There is no such grant defined for user '%s' on host '%s'
+     on table '%s'
+
+   *  Error: `1148' SQLSTATE: `42000' (`ER_NOT_ALLOWED_COMMAND')
+
+     Message: The used command is not allowed with this MySQL version
+
+   *  Error: `1149' SQLSTATE: `42000' (`ER_SYNTAX_ERROR')
+
+     Message: You have an error in your SQL syntax; check the manual
+     that corresponds to your MySQL server version for the right syntax
+     to use
+
+   *  Error: `1150' SQLSTATE: `HY000' (`ER_DELAYED_CANT_CHANGE_LOCK')
+
+     Message: Delayed insert thread couldn't get requested lock for
+     table %s
+
+   *  Error: `1151' SQLSTATE: `HY000' (`ER_TOO_MANY_DELAYED_THREADS')
+
+     Message: Too many delayed threads in use
+
+   *  Error: `1152' SQLSTATE: `08S01' (`ER_ABORTING_CONNECTION')
+
+     Message: Aborted connection %ld to db: '%s' user: '%s' (%s)
+
+   *  Error: `1153' SQLSTATE: `08S01' (`ER_NET_PACKET_TOO_LARGE')
+
+     Message: Got a packet bigger than 'max_allowed_packet' bytes
+
+   *  Error: `1154' SQLSTATE: `08S01' (`ER_NET_READ_ERROR_FROM_PIPE')
+
+     Message: Got a read error from the connection pipe
+
+   *  Error: `1155' SQLSTATE: `08S01' (`ER_NET_FCNTL_ERROR')
+
+     Message: Got an error from fcntl()
+
+   *  Error: `1156' SQLSTATE: `08S01' (`ER_NET_PACKETS_OUT_OF_ORDER')
+
+     Message: Got packets out of order
+
+   *  Error: `1157' SQLSTATE: `08S01' (`ER_NET_UNCOMPRESS_ERROR')
+
+     Message: Couldn't uncompress communication packet
+
+   *  Error: `1158' SQLSTATE: `08S01' (`ER_NET_READ_ERROR')
+
+     Message: Got an error reading communication packets
+
+   *  Error: `1159' SQLSTATE: `08S01' (`ER_NET_READ_INTERRUPTED')
+
+     Message: Got timeout reading communication packets
+
+   *  Error: `1160' SQLSTATE: `08S01' (`ER_NET_ERROR_ON_WRITE')
+
+     Message: Got an error writing communication packets
+
+   *  Error: `1161' SQLSTATE: `08S01' (`ER_NET_WRITE_INTERRUPTED')
+
+     Message: Got timeout writing communication packets
+
+   *  Error: `1162' SQLSTATE: `42000' (`ER_TOO_LONG_STRING')
+
+     Message: Result string is longer than 'max_allowed_packet' bytes
+
+   *  Error: `1163' SQLSTATE: `42000' (`ER_TABLE_CANT_HANDLE_BLOB')
+
+     Message: The used table type doesn't support BLOB/TEXT columns
+
+   *  Error: `1164' SQLSTATE: `42000'
+     (`ER_TABLE_CANT_HANDLE_AUTO_INCREMENT')
+
+     Message: The used table type doesn't support AUTO_INCREMENT columns
+
+   *  Error: `1165' SQLSTATE: `HY000' (`ER_DELAYED_INSERT_TABLE_LOCKED')
+
+     Message: INSERT DELAYED can't be used with table '%s' because it
+     is locked with LOCK TABLES
+
+   *  Error: `1166' SQLSTATE: `42000' (`ER_WRONG_COLUMN_NAME')
+
+     Message: Incorrect column name '%s'
+
+   *  Error: `1167' SQLSTATE: `42000' (`ER_WRONG_KEY_COLUMN')
+
+     Message: The used storage engine can't index column '%s'
+
+   *  Error: `1168' SQLSTATE: `HY000' (`ER_WRONG_MRG_TABLE')
+
+     Message: Unable to open underlying table which is differently
+     defined or of non-MyISAM type or doesn't exist
+
+   *  Error: `1169' SQLSTATE: `23000' (`ER_DUP_UNIQUE')
+
+     Message: Can't write, because of unique constraint, to table '%s'
+
+   *  Error: `1170' SQLSTATE: `42000' (`ER_BLOB_KEY_WITHOUT_LENGTH')
+
+     Message: BLOB/TEXT column '%s' used in key specification without a
+     key length
+
+   *  Error: `1171' SQLSTATE: `42000' (`ER_PRIMARY_CANT_HAVE_NULL')
+
+     Message: All parts of a PRIMARY KEY must be NOT NULL; if you need
+     NULL in a key, use UNIQUE instead
+
+   *  Error: `1172' SQLSTATE: `42000' (`ER_TOO_MANY_ROWS')
+
+     Message: Result consisted of more than one row
+
+   *  Error: `1173' SQLSTATE: `42000' (`ER_REQUIRES_PRIMARY_KEY')
+
+     Message: This table type requires a primary key
+
+   *  Error: `1174' SQLSTATE: `HY000' (`ER_NO_RAID_COMPILED')
+
+     Message: This version of MySQL is not compiled with RAID support
+
+   *  Error: `1175' SQLSTATE: `HY000'
+     (`ER_UPDATE_WITHOUT_KEY_IN_SAFE_MODE')
+
+     Message: You are using safe update mode and you tried to update a
+     table without a WHERE that uses a KEY column
+
+   *  Error: `1176' SQLSTATE: `42000' (`ER_KEY_DOES_NOT_EXITS')
+
+     Message: Key '%s' doesn't exist in table '%s'
+
+   *  Error: `1177' SQLSTATE: `42000' (`ER_CHECK_NO_SUCH_TABLE')
+
+     Message: Can't open table
+
+   *  Error: `1178' SQLSTATE: `42000' (`ER_CHECK_NOT_IMPLEMENTED')
+
+     Message: The storage engine for the table doesn't support %s
+
+   *  Error: `1179' SQLSTATE: `25000'
+     (`ER_CANT_DO_THIS_DURING_AN_TRANSACTION')
+
+     Message: You are not allowed to execute this command in a
+     transaction
+
+   *  Error: `1180' SQLSTATE: `HY000' (`ER_ERROR_DURING_COMMIT')
+
+     Message: Got error %d during COMMIT
+
+   *  Error: `1181' SQLSTATE: `HY000' (`ER_ERROR_DURING_ROLLBACK')
+
+     Message: Got error %d during ROLLBACK
+
+   *  Error: `1182' SQLSTATE: `HY000' (`ER_ERROR_DURING_FLUSH_LOGS')
+
+     Message: Got error %d during FLUSH_LOGS
+
+   *  Error: `1183' SQLSTATE: `HY000' (`ER_ERROR_DURING_CHECKPOINT')
+
+     Message: Got error %d during CHECKPOINT
+
+   *  Error: `1184' SQLSTATE: `08S01' (`ER_NEW_ABORTING_CONNECTION')
+
+     Message: Aborted connection %ld to db: '%s' user: '%s' host: '%s'
+     (%s)
+
+   *  Error: `1185' SQLSTATE: `HY000' (`ER_DUMP_NOT_IMPLEMENTED')
+
+     Message: The storage engine for the table does not support binary
+     table dump
+
+   *  Error: `1186' SQLSTATE: `HY000' (`ER_FLUSH_MASTER_BINLOG_CLOSED')
+
+     Message: Binlog closed, cannot RESET MASTER
+
+   *  Error: `1187' SQLSTATE: `HY000' (`ER_INDEX_REBUILD')
+
+     Message: Failed rebuilding the index of dumped table '%s'
+
+   *  Error: `1188' SQLSTATE: `HY000' (`ER_MASTER')
+
+     Message: Error from master: '%s'
+
+   *  Error: `1189' SQLSTATE: `08S01' (`ER_MASTER_NET_READ')
+
+     Message: Net error reading from master
+
+   *  Error: `1190' SQLSTATE: `08S01' (`ER_MASTER_NET_WRITE')
+
+     Message: Net error writing to master
+
+   *  Error: `1191' SQLSTATE: `HY000' (`ER_FT_MATCHING_KEY_NOT_FOUND')
+
+     Message: Can't find FULLTEXT index matching the column list
+
+   *  Error: `1192' SQLSTATE: `HY000' (`ER_LOCK_OR_ACTIVE_TRANSACTION')
+
+     Message: Can't execute the given command because you have active
+     locked tables or an active transaction
+
+   *  Error: `1193' SQLSTATE: `HY000' (`ER_UNKNOWN_SYSTEM_VARIABLE')
+
+     Message: Unknown system variable '%s'
+
+   *  Error: `1194' SQLSTATE: `HY000' (`ER_CRASHED_ON_USAGE')
+
+     Message: Table '%s' is marked as crashed and should be repaired
+
+   *  Error: `1195' SQLSTATE: `HY000' (`ER_CRASHED_ON_REPAIR')
+
+     Message: Table '%s' is marked as crashed and last (automatic?)
+     repair failed
+
+   *  Error: `1196' SQLSTATE: `HY000'
+     (`ER_WARNING_NOT_COMPLETE_ROLLBACK')
+
+     Message: Some non-transactional changed tables couldn't be rolled
+     back
+
+   *  Error: `1197' SQLSTATE: `HY000' (`ER_TRANS_CACHE_FULL')
+
+     Message: Multi-statement transaction required more than
+     'max_binlog_cache_size' bytes of storage; increase this mysqld
+     variable and try again
+
+   *  Error: `1198' SQLSTATE: `HY000' (`ER_SLAVE_MUST_STOP')
+
+     Message: This operation cannot be performed with a running slave;
+     run STOP SLAVE first
+
+   *  Error: `1199' SQLSTATE: `HY000' (`ER_SLAVE_NOT_RUNNING')
+
+     Message: This operation requires a running slave; configure slave
+     and do START SLAVE
+
+   *  Error: `1200' SQLSTATE: `HY000' (`ER_BAD_SLAVE')
+
+     Message: The server is not configured as slave; fix in config file
+     or with CHANGE MASTER TO
+
+   *  Error: `1201' SQLSTATE: `HY000' (`ER_MASTER_INFO')
+
+     Message: Could not initialize master info structure; more error
+     messages can be found in the MySQL error log
+
+   *  Error: `1202' SQLSTATE: `HY000' (`ER_SLAVE_THREAD')
+
+     Message: Could not create slave thread; check system resources
+
+   *  Error: `1203' SQLSTATE: `42000' (`ER_TOO_MANY_USER_CONNECTIONS')
+
+     Message: User %s already has more than 'max_user_connections'
+     active connections
+
+   *  Error: `1204' SQLSTATE: `HY000' (`ER_SET_CONSTANTS_ONLY')
+
+     Message: You may only use constant expressions with SET
+
+   *  Error: `1205' SQLSTATE: `HY000' (`ER_LOCK_WAIT_TIMEOUT')
+
+     Message: Lock wait timeout exceeded; try restarting transaction
+
+   *  Error: `1206' SQLSTATE: `HY000' (`ER_LOCK_TABLE_FULL')
+
+     Message: The total number of locks exceeds the lock table size
+
+   *  Error: `1207' SQLSTATE: `25000' (`ER_READ_ONLY_TRANSACTION')
+
+     Message: Update locks cannot be acquired during a READ UNCOMMITTED
+     transaction
+
+   *  Error: `1208' SQLSTATE: `HY000' (`ER_DROP_DB_WITH_READ_LOCK')
+
+     Message: DROP DATABASE not allowed while thread is holding global
+     read lock
+
+   *  Error: `1209' SQLSTATE: `HY000' (`ER_CREATE_DB_WITH_READ_LOCK')
+
+     Message: CREATE DATABASE not allowed while thread is holding
+     global read lock
+
+   *  Error: `1210' SQLSTATE: `HY000' (`ER_WRONG_ARGUMENTS')
+
+     Message: Incorrect arguments to %s
+
+   *  Error: `1211' SQLSTATE: `42000'
+     (`ER_NO_PERMISSION_TO_CREATE_USER')
+
+     Message: '%s'@'%s' is not allowed to create new users
+
+   *  Error: `1212' SQLSTATE: `HY000'
+     (`ER_UNION_TABLES_IN_DIFFERENT_DIR')
+
+     Message: Incorrect table definition; all MERGE tables must be in
+     the same database
+
+   *  Error: `1213' SQLSTATE: `40001' (`ER_LOCK_DEADLOCK')
+
+     Message: Deadlock found when trying to get lock; try restarting
+     transaction
+
+   *  Error: `1214' SQLSTATE: `HY000' (`ER_TABLE_CANT_HANDLE_FT')
+
+     Message: The used table type doesn't support FULLTEXT indexes
+
+   *  Error: `1215' SQLSTATE: `HY000' (`ER_CANNOT_ADD_FOREIGN')
+
+     Message: Cannot add foreign key constraint
+
+   *  Error: `1216' SQLSTATE: `23000' (`ER_NO_REFERENCED_ROW')
+
+     Message: Cannot add or update a child row: a foreign key
+     constraint fails
+
+   *  Error: `1217' SQLSTATE: `23000' (`ER_ROW_IS_REFERENCED')
+
+     Message: Cannot delete or update a parent row: a foreign key
+     constraint fails
+
+   *  Error: `1218' SQLSTATE: `08S01' (`ER_CONNECT_TO_MASTER')
+
+     Message: Error connecting to master: %s
+
+   *  Error: `1219' SQLSTATE: `HY000' (`ER_QUERY_ON_MASTER')
+
+     Message: Error running query on master: %s
+
+   *  Error: `1220' SQLSTATE: `HY000'
+     (`ER_ERROR_WHEN_EXECUTING_COMMAND')
+
+     Message: Error when executing command %s: %s
+
+   *  Error: `1221' SQLSTATE: `HY000' (`ER_WRONG_USAGE')
+
+     Message: Incorrect usage of %s and %s
+
+   *  Error: `1222' SQLSTATE: `21000'
+     (`ER_WRONG_NUMBER_OF_COLUMNS_IN_SELECT')
+
+     Message: The used SELECT statements have a different number of
+     columns
+
+   *  Error: `1223' SQLSTATE: `HY000' (`ER_CANT_UPDATE_WITH_READLOCK')
+
+     Message: Can't execute the query because you have a conflicting
+     read lock
+
+   *  Error: `1224' SQLSTATE: `HY000' (`ER_MIXING_NOT_ALLOWED')
+
+     Message: Mixing of transactional and non-transactional tables is
+     disabled
+
+   *  Error: `1225' SQLSTATE: `HY000' (`ER_DUP_ARGUMENT')
+
+     Message: Option '%s' used twice in statement
+
+   *  Error: `1226' SQLSTATE: `42000' (`ER_USER_LIMIT_REACHED')
+
+     Message: User '%s' has exceeded the '%s' resource (current value:
+     %ld)
+
+   *  Error: `1227' SQLSTATE: `42000'
+     (`ER_SPECIFIC_ACCESS_DENIED_ERROR')
+
+     Message: Access denied; you need (at least one of) the %s
+     privilege(s) for this operation
+
+   *  Error: `1228' SQLSTATE: `HY000' (`ER_LOCAL_VARIABLE')
+
+     Message: Variable '%s' is a SESSION variable and can't be used
+     with SET GLOBAL
+
+   *  Error: `1229' SQLSTATE: `HY000' (`ER_GLOBAL_VARIABLE')
+
+     Message: Variable '%s' is a GLOBAL variable and should be set with
+     SET GLOBAL
+
+   *  Error: `1230' SQLSTATE: `42000' (`ER_NO_DEFAULT')
+
+     Message: Variable '%s' doesn't have a default value
+
+   *  Error: `1231' SQLSTATE: `42000' (`ER_WRONG_VALUE_FOR_VAR')
+
+     Message: Variable '%s' can't be set to the value of '%s'
+
+   *  Error: `1232' SQLSTATE: `42000' (`ER_WRONG_TYPE_FOR_VAR')
+
+     Message: Incorrect argument type to variable '%s'
+
+   *  Error: `1233' SQLSTATE: `HY000' (`ER_VAR_CANT_BE_READ')
+
+     Message: Variable '%s' can only be set, not read
+
+   *  Error: `1234' SQLSTATE: `42000' (`ER_CANT_USE_OPTION_HERE')
+
+     Message: Incorrect usage/placement of '%s'
+
+   *  Error: `1235' SQLSTATE: `42000' (`ER_NOT_SUPPORTED_YET')
+
+     Message: This version of MySQL doesn't yet support '%s'
+
+   *  Error: `1236' SQLSTATE: `HY000'
+     (`ER_MASTER_FATAL_ERROR_READING_BINLOG')
+
+     Message: Got fatal error %d from master when reading data from
+     binary log: '%s'
+
+   *  Error: `1237' SQLSTATE: `HY000' (`ER_SLAVE_IGNORED_TABLE')
+
+     Message: Slave SQL thread ignored the query because of
+     replicate-*-table rules
+
+   *  Error: `1238' SQLSTATE: `HY000' (`ER_INCORRECT_GLOBAL_LOCAL_VAR')
+
+     Message: Variable '%s' is a %s variable
+
+   *  Error: `1239' SQLSTATE: `42000' (`ER_WRONG_FK_DEF')
+
+     Message: Incorrect foreign key definition for '%s': %s
+
+   *  Error: `1240' SQLSTATE: `HY000'
+     (`ER_KEY_REF_DO_NOT_MATCH_TABLE_REF')
+
+     Message: Key reference and table reference don't match
+
+   *  Error: `1241' SQLSTATE: `21000' (`ER_OPERAND_COLUMNS')
+
+     Message: Operand should contain %d column(s)
+
+   *  Error: `1242' SQLSTATE: `21000' (`ER_SUBQUERY_NO_1_ROW')
+
+     Message: Subquery returns more than 1 row
+
+   *  Error: `1243' SQLSTATE: `HY000' (`ER_UNKNOWN_STMT_HANDLER')
+
+     Message: Unknown prepared statement handler (%.*s) given to %s
+
+   *  Error: `1244' SQLSTATE: `HY000' (`ER_CORRUPT_HELP_DB')
+
+     Message: Help database is corrupt or does not exist
+
+   *  Error: `1245' SQLSTATE: `HY000' (`ER_CYCLIC_REFERENCE')
+
+     Message: Cyclic reference on subqueries
+
+   *  Error: `1246' SQLSTATE: `HY000' (`ER_AUTO_CONVERT')
+
+     Message: Converting column '%s' from %s to %s
+
+   *  Error: `1247' SQLSTATE: `42S22' (`ER_ILLEGAL_REFERENCE')
+
+     Message: Reference '%s' not supported (%s)
+
+   *  Error: `1248' SQLSTATE: `42000' (`ER_DERIVED_MUST_HAVE_ALIAS')
+
+     Message: Every derived table must have its own alias
+
+   *  Error: `1249' SQLSTATE: `01000' (`ER_SELECT_REDUCED')
+
+     Message: Select %u was reduced during optimization
+
+   *  Error: `1250' SQLSTATE: `42000' (`ER_TABLENAME_NOT_ALLOWED_HERE')
+
+     Message: Table '%s' from one of the SELECTs cannot be used in %s
+
+   *  Error: `1251' SQLSTATE: `08004' (`ER_NOT_SUPPORTED_AUTH_MODE')
+
+     Message: Client does not support authentication protocol requested
+     by server; consider upgrading MySQL client
+
+   *  Error: `1252' SQLSTATE: `42000' (`ER_SPATIAL_CANT_HAVE_NULL')
+
+     Message: All parts of a SPATIAL index must be NOT NULL
+
+   *  Error: `1253' SQLSTATE: `42000' (`ER_COLLATION_CHARSET_MISMATCH')
+
+     Message: COLLATION '%s' is not valid for CHARACTER SET '%s'
+
+   *  Error: `1254' SQLSTATE: `HY000' (`ER_SLAVE_WAS_RUNNING')
+
+     Message: Slave is already running
+
+   *  Error: `1255' SQLSTATE: `HY000' (`ER_SLAVE_WAS_NOT_RUNNING')
+
+     Message: Slave already has been stopped
+
+   *  Error: `1256' SQLSTATE: `HY000' (`ER_TOO_BIG_FOR_UNCOMPRESS')
+
+     Message: Uncompressed data size too large; the maximum size is %d
+     (probably, length of uncompressed data was corrupted)
+
+   *  Error: `1257' SQLSTATE: `HY000' (`ER_ZLIB_Z_MEM_ERROR')
+
+     Message: ZLIB: Not enough memory
+
+   *  Error: `1258' SQLSTATE: `HY000' (`ER_ZLIB_Z_BUF_ERROR')
+
+     Message: ZLIB: Not enough room in the output buffer (probably,
+     length of uncompressed data was corrupted)
+
+   *  Error: `1259' SQLSTATE: `HY000' (`ER_ZLIB_Z_DATA_ERROR')
+
+     Message: ZLIB: Input data corrupted
+
+   *  Error: `1260' SQLSTATE: `HY000' (`ER_CUT_VALUE_GROUP_CONCAT')
+
+     Message: Row %u was cut by GROUP_CONCAT()
+
+   *  Error: `1261' SQLSTATE: `01000' (`ER_WARN_TOO_FEW_RECORDS')
+
+     Message: Row %ld doesn't contain data for all columns
+
+   *  Error: `1262' SQLSTATE: `01000' (`ER_WARN_TOO_MANY_RECORDS')
+
+     Message: Row %ld was truncated; it contained more data than there
+     were input columns
+
+   *  Error: `1263' SQLSTATE: `22004' (`ER_WARN_NULL_TO_NOTNULL')
+
+     Message: Column set to default value; NULL supplied to NOT NULL
+     column '%s' at row %ld
+
+   *  Error: `1264' SQLSTATE: `22003' (`ER_WARN_DATA_OUT_OF_RANGE')
+
+     Message: Out of range value for column '%s' at row %ld
+
+   *  Error: `1265' SQLSTATE: `01000' (`WARN_DATA_TRUNCATED')
+
+     Message: Data truncated for column '%s' at row %ld
+
+   *  Error: `1266' SQLSTATE: `HY000' (`ER_WARN_USING_OTHER_HANDLER')
+
+     Message: Using storage engine %s for table '%s'
+
+   *  Error: `1267' SQLSTATE: `HY000' (`ER_CANT_AGGREGATE_2COLLATIONS')
+
+     Message: Illegal mix of collations (%s,%s) and (%s,%s) for
+     operation '%s'
+
+   *  Error: `1268' SQLSTATE: `HY000' (`ER_DROP_USER')
+
+     Message: Cannot drop one or more of the requested users
+
+   *  Error: `1269' SQLSTATE: `HY000' (`ER_REVOKE_GRANTS')
+
+     Message: Can't revoke all privileges for one or more of the
+     requested users
+
+   *  Error: `1270' SQLSTATE: `HY000' (`ER_CANT_AGGREGATE_3COLLATIONS')
+
+     Message: Illegal mix of collations (%s,%s), (%s,%s), (%s,%s) for
+     operation '%s'
+
+   *  Error: `1271' SQLSTATE: `HY000' (`ER_CANT_AGGREGATE_NCOLLATIONS')
+
+     Message: Illegal mix of collations for operation '%s'
+
+   *  Error: `1272' SQLSTATE: `HY000' (`ER_VARIABLE_IS_NOT_STRUCT')
+
+     Message: Variable '%s' is not a variable component (can't be used
+     as XXXX.variable_name)
+
+   *  Error: `1273' SQLSTATE: `HY000' (`ER_UNKNOWN_COLLATION')
+
+     Message: Unknown collation: '%s'
+
+   *  Error: `1274' SQLSTATE: `HY000' (`ER_SLAVE_IGNORED_SSL_PARAMS')
+
+     Message: SSL parameters in CHANGE MASTER are ignored because this
+     MySQL slave was compiled without SSL support; they can be used
+     later if MySQL slave with SSL is started
+
+   *  Error: `1275' SQLSTATE: `HY000'
+     (`ER_SERVER_IS_IN_SECURE_AUTH_MODE')
+
+     Message: Server is running in -secure-auth mode, but '%s'@'%s' has
+     a password in the old format; please change the password to the
+     new format
+
+   *  Error: `1276' SQLSTATE: `HY000' (`ER_WARN_FIELD_RESOLVED')
+
+     Message: Field or reference '%s%s%s%s%s' of SELECT #%d was
+     resolved in SELECT #%d
+
+   *  Error: `1277' SQLSTATE: `HY000' (`ER_BAD_SLAVE_UNTIL_COND')
+
+     Message: Incorrect parameter or combination of parameters for
+     START SLAVE UNTIL
+
+   *  Error: `1278' SQLSTATE: `HY000' (`ER_MISSING_SKIP_SLAVE')
+
+     Message: It is recommended to use -skip-slave-start when doing
+     step-by-step replication with START SLAVE UNTIL; otherwise, you
+     will get problems if you get an unexpected slave's mysqld restart
+
+   *  Error: `1279' SQLSTATE: `HY000' (`ER_UNTIL_COND_IGNORED')
+
+     Message: SQL thread is not to be started so UNTIL options are
+     ignored
+
+   *  Error: `1280' SQLSTATE: `42000' (`ER_WRONG_NAME_FOR_INDEX')
+
+     Message: Incorrect index name '%s'
+
+   *  Error: `1281' SQLSTATE: `42000' (`ER_WRONG_NAME_FOR_CATALOG')
+
+     Message: Incorrect catalog name '%s'
+
+   *  Error: `1282' SQLSTATE: `HY000' (`ER_WARN_QC_RESIZE')
+
+     Message: Query cache failed to set size %lu; new query cache size
+     is %lu
+
+   *  Error: `1283' SQLSTATE: `HY000' (`ER_BAD_FT_COLUMN')
+
+     Message: Column '%s' cannot be part of FULLTEXT index
+
+   *  Error: `1284' SQLSTATE: `HY000' (`ER_UNKNOWN_KEY_CACHE')
+
+     Message: Unknown key cache '%s'
+
+   *  Error: `1285' SQLSTATE: `HY000' (`ER_WARN_HOSTNAME_WONT_WORK')
+
+     Message: MySQL is started in -skip-name-resolve mode; you must
+     restart it without this switch for this grant to work
+
+   *  Error: `1286' SQLSTATE: `42000' (`ER_UNKNOWN_STORAGE_ENGINE')
+
+     Message: Unknown storage engine '%s'
+
+   *  Error: `1287' SQLSTATE: `HY000' (`ER_WARN_DEPRECATED_SYNTAX')
+
+     Message: '%s' is deprecated and will be removed in a future
+     release. Please use %s instead
+
+   *  Error: `1288' SQLSTATE: `HY000' (`ER_NON_UPDATABLE_TABLE')
+
+     Message: The target table %s of the %s is not updatable
+
+   *  Error: `1289' SQLSTATE: `HY000' (`ER_FEATURE_DISABLED')
+
+     Message: The '%s' feature is disabled; you need MySQL built with
+     '%s' to have it working
+
+   *  Error: `1290' SQLSTATE: `HY000' (`ER_OPTION_PREVENTS_STATEMENT')
+
+     Message: The MySQL server is running with the %s option so it
+     cannot execute this statement
+
+   *  Error: `1291' SQLSTATE: `HY000' (`ER_DUPLICATED_VALUE_IN_TYPE')
+
+     Message: Column '%s' has duplicated value '%s' in %s
+
+   *  Error: `1292' SQLSTATE: `22007' (`ER_TRUNCATED_WRONG_VALUE')
+
+     Message: Truncated incorrect %s value: '%s'
+
+   *  Error: `1293' SQLSTATE: `HY000'
+     (`ER_TOO_MUCH_AUTO_TIMESTAMP_COLS')
+
+     Message: Incorrect table definition; there can be only one
+     TIMESTAMP column with CURRENT_TIMESTAMP in DEFAULT or ON UPDATE
+     clause
+
+   *  Error: `1294' SQLSTATE: `HY000' (`ER_INVALID_ON_UPDATE')
+
+     Message: Invalid ON UPDATE clause for '%s' column
+
+   *  Error: `1295' SQLSTATE: `HY000' (`ER_UNSUPPORTED_PS')
+
+     Message: This command is not supported in the prepared statement
+     protocol yet
+
+   *  Error: `1296' SQLSTATE: `HY000' (`ER_GET_ERRMSG')
+
+     Message: Got error %d '%s' from %s
+
+   *  Error: `1297' SQLSTATE: `HY000' (`ER_GET_TEMPORARY_ERRMSG')
+
+     Message: Got temporary error %d '%s' from %s
+
+   *  Error: `1298' SQLSTATE: `HY000' (`ER_UNKNOWN_TIME_ZONE')
+
+     Message: Unknown or incorrect time zone: '%s'
+
+   *  Error: `1299' SQLSTATE: `HY000' (`ER_WARN_INVALID_TIMESTAMP')
+
+     Message: Invalid TIMESTAMP value in column '%s' at row %ld
+
+   *  Error: `1300' SQLSTATE: `HY000' (`ER_INVALID_CHARACTER_STRING')
+
+     Message: Invalid %s character string: '%s'
+
+   *  Error: `1301' SQLSTATE: `HY000'
+     (`ER_WARN_ALLOWED_PACKET_OVERFLOWED')
+
+     Message: Result of %s() was larger than max_allowed_packet (%ld) -
+     truncated
+
+   *  Error: `1302' SQLSTATE: `HY000' (`ER_CONFLICTING_DECLARATIONS')
+
+     Message: Conflicting declarations: '%s%s' and '%s%s'
+
+   *  Error: `1303' SQLSTATE: `2F003' (`ER_SP_NO_RECURSIVE_CREATE')
+
+     Message: Can't create a %s from within another stored routine
+
+   *  Error: `1304' SQLSTATE: `42000' (`ER_SP_ALREADY_EXISTS')
+
+     Message: %s %s already exists
+
+   *  Error: `1305' SQLSTATE: `42000' (`ER_SP_DOES_NOT_EXIST')
+
+     Message: %s %s does not exist
+
+   *  Error: `1306' SQLSTATE: `HY000' (`ER_SP_DROP_FAILED')
+
+     Message: Failed to DROP %s %s
+
+   *  Error: `1307' SQLSTATE: `HY000' (`ER_SP_STORE_FAILED')
+
+     Message: Failed to CREATE %s %s
+
+   *  Error: `1308' SQLSTATE: `42000' (`ER_SP_LILABEL_MISMATCH')
+
+     Message: %s with no matching label: %s
+
+   *  Error: `1309' SQLSTATE: `42000' (`ER_SP_LABEL_REDEFINE')
+
+     Message: Redefining label %s
+
+   *  Error: `1310' SQLSTATE: `42000' (`ER_SP_LABEL_MISMATCH')
+
+     Message: End-label %s without match
+
+   *  Error: `1311' SQLSTATE: `01000' (`ER_SP_UNINIT_VAR')
+
+     Message: Referring to uninitialized variable %s
+
+   *  Error: `1312' SQLSTATE: `0A000' (`ER_SP_BADSELECT')
+
+     Message: PROCEDURE %s can't return a result set in the given
+     context
+
+   *  Error: `1313' SQLSTATE: `42000' (`ER_SP_BADRETURN')
+
+     Message: RETURN is only allowed in a FUNCTION
+
+   *  Error: `1314' SQLSTATE: `0A000' (`ER_SP_BADSTATEMENT')
+
+     Message: %s is not allowed in stored procedures
+
+   *  Error: `1315' SQLSTATE: `42000'
+     (`ER_UPDATE_LOG_DEPRECATED_IGNORED')
+
+     Message: The update log is deprecated and replaced by the binary
+     log; SET SQL_LOG_UPDATE has been ignored. This option will be
+     removed in MySQL 5.6.
+
+   *  Error: `1316' SQLSTATE: `42000'
+     (`ER_UPDATE_LOG_DEPRECATED_TRANSLATED')
+
+     Message: The update log is deprecated and replaced by the binary
+     log; SET SQL_LOG_UPDATE has been translated to SET SQL_LOG_BIN.
+     This option will be removed in MySQL 5.6.
+
+   *  Error: `1317' SQLSTATE: `70100' (`ER_QUERY_INTERRUPTED')
+
+     Message: Query execution was interrupted
+
+   *  Error: `1318' SQLSTATE: `42000' (`ER_SP_WRONG_NO_OF_ARGS')
+
+     Message: Incorrect number of arguments for %s %s; expected %u, got
+     %u
+
+   *  Error: `1319' SQLSTATE: `42000' (`ER_SP_COND_MISMATCH')
+
+     Message: Undefined CONDITION: %s
+
+   *  Error: `1320' SQLSTATE: `42000' (`ER_SP_NORETURN')
+
+     Message: No RETURN found in FUNCTION %s
+
+   *  Error: `1321' SQLSTATE: `2F005' (`ER_SP_NORETURNEND')
+
+     Message: FUNCTION %s ended without RETURN
+
+   *  Error: `1322' SQLSTATE: `42000' (`ER_SP_BAD_CURSOR_QUERY')
+
+     Message: Cursor statement must be a SELECT
+
+   *  Error: `1323' SQLSTATE: `42000' (`ER_SP_BAD_CURSOR_SELECT')
+
+     Message: Cursor SELECT must not have INTO
+
+   *  Error: `1324' SQLSTATE: `42000' (`ER_SP_CURSOR_MISMATCH')
+
+     Message: Undefined CURSOR: %s
+
+   *  Error: `1325' SQLSTATE: `24000' (`ER_SP_CURSOR_ALREADY_OPEN')
+
+     Message: Cursor is already open
+
+   *  Error: `1326' SQLSTATE: `24000' (`ER_SP_CURSOR_NOT_OPEN')
+
+     Message: Cursor is not open
+
+   *  Error: `1327' SQLSTATE: `42000' (`ER_SP_UNDECLARED_VAR')
+
+     Message: Undeclared variable: %s
+
+   *  Error: `1328' SQLSTATE: `HY000' (`ER_SP_WRONG_NO_OF_FETCH_ARGS')
+
+     Message: Incorrect number of FETCH variables
+
+   *  Error: `1329' SQLSTATE: `02000' (`ER_SP_FETCH_NO_DATA')
+
+     Message: No data - zero rows fetched, selected, or processed
+
+   *  Error: `1330' SQLSTATE: `42000' (`ER_SP_DUP_PARAM')
+
+     Message: Duplicate parameter: %s
+
+   *  Error: `1331' SQLSTATE: `42000' (`ER_SP_DUP_VAR')
+
+     Message: Duplicate variable: %s
+
+   *  Error: `1332' SQLSTATE: `42000' (`ER_SP_DUP_COND')
+
+     Message: Duplicate condition: %s
+
+   *  Error: `1333' SQLSTATE: `42000' (`ER_SP_DUP_CURS')
+
+     Message: Duplicate cursor: %s
+
+   *  Error: `1334' SQLSTATE: `HY000' (`ER_SP_CANT_ALTER')
+
+     Message: Failed to ALTER %s %s
+
+   *  Error: `1335' SQLSTATE: `0A000' (`ER_SP_SUBSELECT_NYI')
+
+     Message: Subquery value not supported
+
+   *  Error: `1336' SQLSTATE: `0A000'
+     (`ER_STMT_NOT_ALLOWED_IN_SF_OR_TRG')
+
+     Message: %s is not allowed in stored function or trigger
+
+   *  Error: `1337' SQLSTATE: `42000' (`ER_SP_VARCOND_AFTER_CURSHNDLR')
+
+     Message: Variable or condition declaration after cursor or handler
+     declaration
+
+   *  Error: `1338' SQLSTATE: `42000' (`ER_SP_CURSOR_AFTER_HANDLER')
+
+     Message: Cursor declaration after handler declaration
+
+   *  Error: `1339' SQLSTATE: `20000' (`ER_SP_CASE_NOT_FOUND')
+
+     Message: Case not found for CASE statement
+
+   *  Error: `1340' SQLSTATE: `HY000' (`ER_FPARSER_TOO_BIG_FILE')
+
+     Message: Configuration file '%s' is too big
+
+   *  Error: `1341' SQLSTATE: `HY000' (`ER_FPARSER_BAD_HEADER')
+
+     Message: Malformed file type header in file '%s'
+
+   *  Error: `1342' SQLSTATE: `HY000' (`ER_FPARSER_EOF_IN_COMMENT')
+
+     Message: Unexpected end of file while parsing comment '%s'
+
+   *  Error: `1343' SQLSTATE: `HY000' (`ER_FPARSER_ERROR_IN_PARAMETER')
+
+     Message: Error while parsing parameter '%s' (line: '%s')
+
+   *  Error: `1344' SQLSTATE: `HY000'
+     (`ER_FPARSER_EOF_IN_UNKNOWN_PARAMETER')
+
+     Message: Unexpected end of file while skipping unknown parameter
+     '%s'
+
+   *  Error: `1345' SQLSTATE: `HY000' (`ER_VIEW_NO_EXPLAIN')
+
+     Message: EXPLAIN/SHOW can not be issued; lacking privileges for
+     underlying table
+
+   *  Error: `1346' SQLSTATE: `HY000' (`ER_FRM_UNKNOWN_TYPE')
+
+     Message: File '%s' has unknown type '%s' in its header
+
+   *  Error: `1347' SQLSTATE: `HY000' (`ER_WRONG_OBJECT')
+
+     Message: '%s.%s' is not %s
+
+   *  Error: `1348' SQLSTATE: `HY000' (`ER_NONUPDATEABLE_COLUMN')
+
+     Message: Column '%s' is not updatable
+
+   *  Error: `1349' SQLSTATE: `HY000' (`ER_VIEW_SELECT_DERIVED')
+
+     Message: View's SELECT contains a subquery in the FROM clause
+
+   *  Error: `1350' SQLSTATE: `HY000' (`ER_VIEW_SELECT_CLAUSE')
+
+     Message: View's SELECT contains a '%s' clause
+
+   *  Error: `1351' SQLSTATE: `HY000' (`ER_VIEW_SELECT_VARIABLE')
+
+     Message: View's SELECT contains a variable or parameter
+
+   *  Error: `1352' SQLSTATE: `HY000' (`ER_VIEW_SELECT_TMPTABLE')
+
+     Message: View's SELECT refers to a temporary table '%s'
+
+   *  Error: `1353' SQLSTATE: `HY000' (`ER_VIEW_WRONG_LIST')
+
+     Message: View's SELECT and view's field list have different column
+     counts
+
+   *  Error: `1354' SQLSTATE: `HY000' (`ER_WARN_VIEW_MERGE')
+
+     Message: View merge algorithm can't be used here for now (assumed
+     undefined algorithm)
+
+   *  Error: `1355' SQLSTATE: `HY000' (`ER_WARN_VIEW_WITHOUT_KEY')
+
+     Message: View being updated does not have complete key of
+     underlying table in it
+
+   *  Error: `1356' SQLSTATE: `HY000' (`ER_VIEW_INVALID')
+
+     Message: View '%s.%s' references invalid table(s) or column(s) or
+     function(s) or definer/invoker of view lack rights to use them
+
+   *  Error: `1357' SQLSTATE: `HY000' (`ER_SP_NO_DROP_SP')
+
+     Message: Can't drop or alter a %s from within another stored
+     routine
+
+   *  Error: `1358' SQLSTATE: `HY000' (`ER_SP_GOTO_IN_HNDLR')
+
+     Message: GOTO is not allowed in a stored procedure handler
+
+   *  Error: `1359' SQLSTATE: `HY000' (`ER_TRG_ALREADY_EXISTS')
+
+     Message: Trigger already exists
+
+   *  Error: `1360' SQLSTATE: `HY000' (`ER_TRG_DOES_NOT_EXIST')
+
+     Message: Trigger does not exist
+
+   *  Error: `1361' SQLSTATE: `HY000' (`ER_TRG_ON_VIEW_OR_TEMP_TABLE')
+
+     Message: Trigger's '%s' is view or temporary table
+
+   *  Error: `1362' SQLSTATE: `HY000' (`ER_TRG_CANT_CHANGE_ROW')
+
+     Message: Updating of %s row is not allowed in %strigger
+
+   *  Error: `1363' SQLSTATE: `HY000' (`ER_TRG_NO_SUCH_ROW_IN_TRG')
+
+     Message: There is no %s row in %s trigger
+
+   *  Error: `1364' SQLSTATE: `HY000' (`ER_NO_DEFAULT_FOR_FIELD')
+
+     Message: Field '%s' doesn't have a default value
+
+   *  Error: `1365' SQLSTATE: `22012' (`ER_DIVISION_BY_ZERO')
+
+     Message: Division by 0
+
+   *  Error: `1366' SQLSTATE: `HY000'
+     (`ER_TRUNCATED_WRONG_VALUE_FOR_FIELD')
+
+     Message: Incorrect %s value: '%s' for column '%s' at row %ld
+
+   *  Error: `1367' SQLSTATE: `22007' (`ER_ILLEGAL_VALUE_FOR_TYPE')
+
+     Message: Illegal %s '%s' value found during parsing
+
+   *  Error: `1368' SQLSTATE: `HY000' (`ER_VIEW_NONUPD_CHECK')
+
+     Message: CHECK OPTION on non-updatable view '%s.%s'
+
+   *  Error: `1369' SQLSTATE: `HY000' (`ER_VIEW_CHECK_FAILED')
+
+     Message: CHECK OPTION failed '%s.%s'
+
+   *  Error: `1370' SQLSTATE: `42000' (`ER_PROCACCESS_DENIED_ERROR')
+
+     Message: %s command denied to user '%s'@'%s' for routine '%s'
+
+   *  Error: `1371' SQLSTATE: `HY000' (`ER_RELAY_LOG_FAIL')
+
+     Message: Failed purging old relay logs: %s
+
+   *  Error: `1372' SQLSTATE: `HY000' (`ER_PASSWD_LENGTH')
+
+     Message: Password hash should be a %d-digit hexadecimal number
+
+   *  Error: `1373' SQLSTATE: `HY000' (`ER_UNKNOWN_TARGET_BINLOG')
+
+     Message: Target log not found in binlog index
+
+   *  Error: `1374' SQLSTATE: `HY000' (`ER_IO_ERR_LOG_INDEX_READ')
+
+     Message: I/O error reading log index file
+
+   *  Error: `1375' SQLSTATE: `HY000' (`ER_BINLOG_PURGE_PROHIBITED')
+
+     Message: Server configuration does not permit binlog purge
+
+   *  Error: `1376' SQLSTATE: `HY000' (`ER_FSEEK_FAIL')
+
+     Message: Failed on fseek()
+
+   *  Error: `1377' SQLSTATE: `HY000' (`ER_BINLOG_PURGE_FATAL_ERR')
+
+     Message: Fatal error during log purge
+
+   *  Error: `1378' SQLSTATE: `HY000' (`ER_LOG_IN_USE')
+
+     Message: A purgeable log is in use, will not purge
+
+   *  Error: `1379' SQLSTATE: `HY000' (`ER_LOG_PURGE_UNKNOWN_ERR')
+
+     Message: Unknown error during log purge
+
+   *  Error: `1380' SQLSTATE: `HY000' (`ER_RELAY_LOG_INIT')
+
+     Message: Failed initializing relay log position: %s
+
+   *  Error: `1381' SQLSTATE: `HY000' (`ER_NO_BINARY_LOGGING')
+
+     Message: You are not using binary logging
+
+   *  Error: `1382' SQLSTATE: `HY000' (`ER_RESERVED_SYNTAX')
+
+     Message: The '%s' syntax is reserved for purposes internal to the
+     MySQL server
+
+   *  Error: `1383' SQLSTATE: `HY000' (`ER_WSAS_FAILED')
+
+     Message: WSAStartup Failed
+
+   *  Error: `1384' SQLSTATE: `HY000' (`ER_DIFF_GROUPS_PROC')
+
+     Message: Can't handle procedures with different groups yet
+
+   *  Error: `1385' SQLSTATE: `HY000' (`ER_NO_GROUP_FOR_PROC')
+
+     Message: Select must have a group with this procedure
+
+   *  Error: `1386' SQLSTATE: `HY000' (`ER_ORDER_WITH_PROC')
+
+     Message: Can't use ORDER clause with this procedure
+
+   *  Error: `1387' SQLSTATE: `HY000'
+     (`ER_LOGGING_PROHIBIT_CHANGING_OF')
+
+     Message: Binary logging and replication forbid changing the global
+     server %s
+
+   *  Error: `1388' SQLSTATE: `HY000' (`ER_NO_FILE_MAPPING')
+
+     Message: Can't map file: %s, errno: %d
+
+   *  Error: `1389' SQLSTATE: `HY000' (`ER_WRONG_MAGIC')
+
+     Message: Wrong magic in %s
+
+   *  Error: `1390' SQLSTATE: `HY000' (`ER_PS_MANY_PARAM')
+
+     Message: Prepared statement contains too many placeholders
+
+   *  Error: `1391' SQLSTATE: `HY000' (`ER_KEY_PART_0')
+
+     Message: Key part '%s' length cannot be 0
+
+   *  Error: `1392' SQLSTATE: `HY000' (`ER_VIEW_CHECKSUM')
+
+     Message: View text checksum failed
+
+   *  Error: `1393' SQLSTATE: `HY000' (`ER_VIEW_MULTIUPDATE')
+
+     Message: Can not modify more than one base table through a join
+     view '%s.%s'
+
+   *  Error: `1394' SQLSTATE: `HY000' (`ER_VIEW_NO_INSERT_FIELD_LIST')
+
+     Message: Can not insert into join view '%s.%s' without fields list
+
+   *  Error: `1395' SQLSTATE: `HY000' (`ER_VIEW_DELETE_MERGE_VIEW')
+
+     Message: Can not delete from join view '%s.%s'
+
+   *  Error: `1396' SQLSTATE: `HY000' (`ER_CANNOT_USER')
+
+     Message: Operation %s failed for %s
+
+   *  Error: `1397' SQLSTATE: `XAE04' (`ER_XAER_NOTA')
+
+     Message: XAER_NOTA: Unknown XID
+
+   *  Error: `1398' SQLSTATE: `XAE05' (`ER_XAER_INVAL')
+
+     Message: XAER_INVAL: Invalid arguments (or unsupported command)
+
+   *  Error: `1399' SQLSTATE: `XAE07' (`ER_XAER_RMFAIL')
+
+     Message: XAER_RMFAIL: The command cannot be executed when global
+     transaction is in the %s state
+
+   *  Error: `1400' SQLSTATE: `XAE09' (`ER_XAER_OUTSIDE')
+
+     Message: XAER_OUTSIDE: Some work is done outside global transaction
+
+   *  Error: `1401' SQLSTATE: `XAE03' (`ER_XAER_RMERR')
+
+     Message: XAER_RMERR: Fatal error occurred in the transaction
+     branch - check your data for consistency
+
+   *  Error: `1402' SQLSTATE: `XA100' (`ER_XA_RBROLLBACK')
+
+     Message: XA_RBROLLBACK: Transaction branch was rolled back
+
+   *  Error: `1403' SQLSTATE: `42000' (`ER_NONEXISTING_PROC_GRANT')
+
+     Message: There is no such grant defined for user '%s' on host '%s'
+     on routine '%s'
+
+   *  Error: `1404' SQLSTATE: `HY000' (`ER_PROC_AUTO_GRANT_FAIL')
+
+     Message: Failed to grant EXECUTE and ALTER ROUTINE privileges
+
+   *  Error: `1405' SQLSTATE: `HY000' (`ER_PROC_AUTO_REVOKE_FAIL')
+
+     Message: Failed to revoke all privileges to dropped routine
+
+   *  Error: `1406' SQLSTATE: `22001' (`ER_DATA_TOO_LONG')
+
+     Message: Data too long for column '%s' at row %ld
+
+   *  Error: `1407' SQLSTATE: `42000' (`ER_SP_BAD_SQLSTATE')
+
+     Message: Bad SQLSTATE: '%s'
+
+   *  Error: `1408' SQLSTATE: `HY000' (`ER_STARTUP')
+
+     Message: %s: ready for connections. Version: '%s' socket: '%s'
+     port: %d %s
+
+   *  Error: `1409' SQLSTATE: `HY000'
+     (`ER_LOAD_FROM_FIXED_SIZE_ROWS_TO_VAR')
+
+     Message: Can't load value from file with fixed size rows to
+     variable
+
+   *  Error: `1410' SQLSTATE: `42000' (`ER_CANT_CREATE_USER_WITH_GRANT')
+
+     Message: You are not allowed to create a user with GRANT
+
+   *  Error: `1411' SQLSTATE: `HY000' (`ER_WRONG_VALUE_FOR_TYPE')
+
+     Message: Incorrect %s value: '%s' for function %s
+
+   *  Error: `1412' SQLSTATE: `HY000' (`ER_TABLE_DEF_CHANGED')
+
+     Message: Table definition has changed, please retry transaction
+
+   *  Error: `1413' SQLSTATE: `42000' (`ER_SP_DUP_HANDLER')
+
+     Message: Duplicate handler declared in the same block
+
+   *  Error: `1414' SQLSTATE: `42000' (`ER_SP_NOT_VAR_ARG')
+
+     Message: OUT or INOUT argument %d for routine %s is not a variable
+     or NEW pseudo-variable in BEFORE trigger
+
+   *  Error: `1415' SQLSTATE: `0A000' (`ER_SP_NO_RETSET')
+
+     Message: Not allowed to return a result set from a %s
+
+   *  Error: `1416' SQLSTATE: `22003' (`ER_CANT_CREATE_GEOMETRY_OBJECT')
+
+     Message: Cannot get geometry object from data you send to the
+     GEOMETRY field
+
+   *  Error: `1417' SQLSTATE: `HY000' (`ER_FAILED_ROUTINE_BREAK_BINLOG')
+
+     Message: A routine failed and has neither NO SQL nor READS SQL
+     DATA in its declaration and binary logging is enabled; if
+     non-transactional tables were updated, the binary log will miss
+     their changes
+
+   *  Error: `1418' SQLSTATE: `HY000' (`ER_BINLOG_UNSAFE_ROUTINE')
+
+     Message: This function has none of DETERMINISTIC, NO SQL, or READS
+     SQL DATA in its declaration and binary logging is enabled (you
+     *might* want to use the less safe log_bin_trust_function_creators
+     variable)
+
+   *  Error: `1419' SQLSTATE: `HY000'
+     (`ER_BINLOG_CREATE_ROUTINE_NEED_SUPER')
+
+     Message: You do not have the SUPER privilege and binary logging is
+     enabled (you *might* want to use the less safe
+     log_bin_trust_function_creators variable)
+
+   *  Error: `1420' SQLSTATE: `HY000' (`ER_EXEC_STMT_WITH_OPEN_CURSOR')
+
+     Message: You can't execute a prepared statement which has an open
+     cursor associated with it. Reset the statement to re-execute it.
+
+   *  Error: `1421' SQLSTATE: `HY000' (`ER_STMT_HAS_NO_OPEN_CURSOR')
+
+     Message: The statement (%lu) has no open cursor.
+
+   *  Error: `1422' SQLSTATE: `HY000'
+     (`ER_COMMIT_NOT_ALLOWED_IN_SF_OR_TRG')
+
+     Message: Explicit or implicit commit is not allowed in stored
+     function or trigger.
+
+   *  Error: `1423' SQLSTATE: `HY000' (`ER_NO_DEFAULT_FOR_VIEW_FIELD')
+
+     Message: Field of view '%s.%s' underlying table doesn't have a
+     default value
+
+   *  Error: `1424' SQLSTATE: `HY000' (`ER_SP_NO_RECURSION')
+
+     Message: Recursive stored functions and triggers are not allowed.
+
+   *  Error: `1425' SQLSTATE: `42000' (`ER_TOO_BIG_SCALE')
+
+     Message: Too big scale %d specified for column '%s'. Maximum is
+     %lu.
+
+   *  Error: `1426' SQLSTATE: `42000' (`ER_TOO_BIG_PRECISION')
+
+     Message: Too big precision %d specified for column '%s'. Maximum
+     is %lu.
+
+   *  Error: `1427' SQLSTATE: `42000' (`ER_M_BIGGER_THAN_D')
+
+     Message: For float(M,D), double(M,D) or decimal(M,D), M must be >=
+     D (column '%s').
+
+   *  Error: `1428' SQLSTATE: `HY000' (`ER_WRONG_LOCK_OF_SYSTEM_TABLE')
+
+     Message: You can't combine write-locking of system tables with
+     other tables or lock types
+
+   *  Error: `1429' SQLSTATE: `HY000'
+     (`ER_CONNECT_TO_FOREIGN_DATA_SOURCE')
+
+     Message: Unable to connect to foreign data source: %s
+
+   *  Error: `1430' SQLSTATE: `HY000'
+     (`ER_QUERY_ON_FOREIGN_DATA_SOURCE')
+
+     Message: There was a problem processing the query on the foreign
+     data source. Data source error: %s
+
+   *  Error: `1431' SQLSTATE: `HY000'
+     (`ER_FOREIGN_DATA_SOURCE_DOESNT_EXIST')
+
+     Message: The foreign data source you are trying to reference does
+     not exist. Data source error: %s
+
+   *  Error: `1432' SQLSTATE: `HY000'
+     (`ER_FOREIGN_DATA_STRING_INVALID_CANT_CREATE')
+
+     Message: Can't create federated table. The data source connection
+     string '%s' is not in the correct format
+
+   *  Error: `1433' SQLSTATE: `HY000' (`ER_FOREIGN_DATA_STRING_INVALID')
+
+     Message: The data source connection string '%s' is not in the
+     correct format
+
+   *  Error: `1434' SQLSTATE: `HY000' (`ER_CANT_CREATE_FEDERATED_TABLE')
+
+     Message: Can't create federated table. Foreign data src error: %s
+
+   *  Error: `1435' SQLSTATE: `HY000' (`ER_TRG_IN_WRONG_SCHEMA')
+
+     Message: Trigger in wrong schema
+
+   *  Error: `1436' SQLSTATE: `HY000' (`ER_STACK_OVERRUN_NEED_MORE')
+
+     Message: Thread stack overrun: %ld bytes used of a %ld byte stack,
+     and %ld bytes needed. Use 'mysqld -thread_stack=#' to specify a
+     bigger stack.
+
+   *  Error: `1437' SQLSTATE: `42000' (`ER_TOO_LONG_BODY')
+
+     Message: Routine body for '%s' is too long
+
+   *  Error: `1438' SQLSTATE: `HY000'
+     (`ER_WARN_CANT_DROP_DEFAULT_KEYCACHE')
+
+     Message: Cannot drop default keycache
+
+   *  Error: `1439' SQLSTATE: `42000' (`ER_TOO_BIG_DISPLAYWIDTH')
+
+     Message: Display width out of range for column '%s' (max = %lu)
+
+   *  Error: `1440' SQLSTATE: `XAE08' (`ER_XAER_DUPID')
+
+     Message: XAER_DUPID: The XID already exists
+
+   *  Error: `1441' SQLSTATE: `22008' (`ER_DATETIME_FUNCTION_OVERFLOW')
+
+     Message: Datetime function: %s field overflow
+
+   *  Error: `1442' SQLSTATE: `HY000'
+     (`ER_CANT_UPDATE_USED_TABLE_IN_SF_OR_TRG')
+
+     Message: Can't update table '%s' in stored function/trigger
+     because it is already used by statement which invoked this stored
+     function/trigger.
+
+   *  Error: `1443' SQLSTATE: `HY000' (`ER_VIEW_PREVENT_UPDATE')
+
+     Message: The definition of table '%s' prevents operation %s on
+     table '%s'.
+
+   *  Error: `1444' SQLSTATE: `HY000' (`ER_PS_NO_RECURSION')
+
+     Message: The prepared statement contains a stored routine call
+     that refers to that same statement. It's not allowed to execute a
+     prepared statement in such a recursive manner
+
+   *  Error: `1445' SQLSTATE: `HY000' (`ER_SP_CANT_SET_AUTOCOMMIT')
+
+     Message: Not allowed to set autocommit from a stored function or
+     trigger
+
+   *  Error: `1446' SQLSTATE: `HY000' (`ER_MALFORMED_DEFINER')
+
+     Message: Definer is not fully qualified
+
+   *  Error: `1447' SQLSTATE: `HY000' (`ER_VIEW_FRM_NO_USER')
+
+     Message: View '%s'.'%s' has no definer information (old table
+     format). Current user is used as definer. Please recreate the view!
+
+   *  Error: `1448' SQLSTATE: `HY000' (`ER_VIEW_OTHER_USER')
+
+     Message: You need the SUPER privilege for creation view with
+     '%s'@'%s' definer
+
+   *  Error: `1449' SQLSTATE: `HY000' (`ER_NO_SUCH_USER')
+
+     Message: The user specified as a definer ('%s'@'%s') does not exist
+
+   *  Error: `1450' SQLSTATE: `HY000' (`ER_FORBID_SCHEMA_CHANGE')
+
+     Message: Changing schema from '%s' to '%s' is not allowed.
+
+   *  Error: `1451' SQLSTATE: `23000' (`ER_ROW_IS_REFERENCED_2')
+
+     Message: Cannot delete or update a parent row: a foreign key
+     constraint fails (%s)
+
+   *  Error: `1452' SQLSTATE: `23000' (`ER_NO_REFERENCED_ROW_2')
+
+     Message: Cannot add or update a child row: a foreign key
+     constraint fails (%s)
+
+   *  Error: `1453' SQLSTATE: `42000' (`ER_SP_BAD_VAR_SHADOW')
+
+     Message: Variable '%s' must be quoted with `...`, or renamed
+
+   *  Error: `1454' SQLSTATE: `HY000' (`ER_TRG_NO_DEFINER')
+
+     Message: No definer attribute for trigger '%s'.'%s'. The trigger
+     will be activated under the authorization of the invoker, which
+     may have insufficient privileges. Please recreate the trigger.
+
+   *  Error: `1455' SQLSTATE: `HY000' (`ER_OLD_FILE_FORMAT')
+
+     Message: '%s' has an old format, you should re-create the '%s'
+     object(s)
+
+   *  Error: `1456' SQLSTATE: `HY000' (`ER_SP_RECURSION_LIMIT')
+
+     Message: Recursive limit %d (as set by the max_sp_recursion_depth
+     variable) was exceeded for routine %s
+
+   *  Error: `1457' SQLSTATE: `HY000' (`ER_SP_PROC_TABLE_CORRUPT')
+
+     Message: Failed to load routine %s. The table mysql.proc is
+     missing, corrupt, or contains bad data (internal code %d)
+
+   *  Error: `1458' SQLSTATE: `42000' (`ER_SP_WRONG_NAME')
+
+     Message: Incorrect routine name '%s'
+
+   *  Error: `1459' SQLSTATE: `HY000' (`ER_TABLE_NEEDS_UPGRADE')
+
+     Message: Table upgrade required. Please do "REPAIR TABLE `%s`" or
+     dump/reload to fix it!
+
+   *  Error: `1460' SQLSTATE: `42000' (`ER_SP_NO_AGGREGATE')
+
+     Message: AGGREGATE is not supported for stored functions
+
+   *  Error: `1461' SQLSTATE: `42000'
+     (`ER_MAX_PREPARED_STMT_COUNT_REACHED')
+
+     Message: Can't create more than max_prepared_stmt_count statements
+     (current value: %lu)
+
+   *  Error: `1462' SQLSTATE: `HY000' (`ER_VIEW_RECURSIVE')
+
+     Message: `%s`.`%s` contains view recursion
+
+   *  Error: `1463' SQLSTATE: `42000' (`ER_NON_GROUPING_FIELD_USED')
+
+     Message: Non-grouping field '%s' is used in %s clause
+
+   *  Error: `1464' SQLSTATE: `HY000' (`ER_TABLE_CANT_HANDLE_SPKEYS')
+
+     Message: The used table type doesn't support SPATIAL indexes
+
+   *  Error: `1465' SQLSTATE: `HY000'
+     (`ER_NO_TRIGGERS_ON_SYSTEM_SCHEMA')
+
+     Message: Triggers can not be created on system tables
+
+   *  Error: `1466' SQLSTATE: `HY000' (`ER_REMOVED_SPACES')
+
+     Message: Leading spaces are removed from name '%s'
+
+   *  Error: `1467' SQLSTATE: `HY000' (`ER_AUTOINC_READ_FAILED')
+
+     Message: Failed to read auto-increment value from storage engine
+
+   *  Error: `1468' SQLSTATE: `HY000' (`ER_USERNAME')
+
+     Message: user name
+
+   *  Error: `1469' SQLSTATE: `HY000' (`ER_HOSTNAME')
+
+     Message: host name
+
+   *  Error: `1470' SQLSTATE: `HY000' (`ER_WRONG_STRING_LENGTH')
+
+     Message: String '%s' is too long for %s (should be no longer than
+     %d)
+
+   *  Error: `1471' SQLSTATE: `HY000' (`ER_NON_INSERTABLE_TABLE')
+
+     Message: The target table %s of the %s is not insertable-into
+
+   *  Error: `1472' SQLSTATE: `HY000' (`ER_ADMIN_WRONG_MRG_TABLE')
+
+     Message: Table '%s' is differently defined or of non-MyISAM type
+     or doesn't exist
+
+   *  Error: `1473' SQLSTATE: `HY000'
+     (`ER_TOO_HIGH_LEVEL_OF_NESTING_FOR_SELECT')
+
+     Message: Too high level of nesting for select
+
+   *  Error: `1474' SQLSTATE: `HY000' (`ER_NAME_BECOMES_EMPTY')
+
+     Message: Name '%s' has become "
+
+   *  Error: `1475' SQLSTATE: `HY000' (`ER_AMBIGUOUS_FIELD_TERM')
+
+     Message: First character of the FIELDS TERMINATED string is
+     ambiguous; please use non-optional and non-empty FIELDS ENCLOSED BY
+
+   *  Error: `1476' SQLSTATE: `HY000' (`ER_FOREIGN_SERVER_EXISTS')
+
+     Message: The foreign server, %s, you are trying to create already
+     exists.
+
+   *  Error: `1477' SQLSTATE: `HY000' (`ER_FOREIGN_SERVER_DOESNT_EXIST')
+
+     Message: The foreign server name you are trying to reference does
+     not exist. Data source error: %s
+
+   *  Error: `1478' SQLSTATE: `HY000' (`ER_ILLEGAL_HA_CREATE_OPTION')
+
+     Message: Table storage engine '%s' does not support the create
+     option '%s'
+
+   *  Error: `1479' SQLSTATE: `HY000'
+     (`ER_PARTITION_REQUIRES_VALUES_ERROR')
+
+     Message: Syntax error: %s PARTITIONING requires definition of
+     VALUES %s for each partition
+
+   *  Error: `1480' SQLSTATE: `HY000'
+     (`ER_PARTITION_WRONG_VALUES_ERROR')
+
+     Message: Only %s PARTITIONING can use VALUES %s in partition
+     definition
+
+   *  Error: `1481' SQLSTATE: `HY000' (`ER_PARTITION_MAXVALUE_ERROR')
+
+     Message: MAXVALUE can only be used in last partition definition
+
+   *  Error: `1482' SQLSTATE: `HY000'
+     (`ER_PARTITION_SUBPARTITION_ERROR')
+
+     Message: Subpartitions can only be hash partitions and by key
+
+   *  Error: `1483' SQLSTATE: `HY000' (`ER_PARTITION_SUBPART_MIX_ERROR')
+
+     Message: Must define subpartitions on all partitions if on one
+     partition
+
+   *  Error: `1484' SQLSTATE: `HY000'
+     (`ER_PARTITION_WRONG_NO_PART_ERROR')
+
+     Message: Wrong number of partitions defined, mismatch with
+     previous setting
+
+   *  Error: `1485' SQLSTATE: `HY000'
+     (`ER_PARTITION_WRONG_NO_SUBPART_ERROR')
+
+     Message: Wrong number of subpartitions defined, mismatch with
+     previous setting
+
+   *  Error: `1486' SQLSTATE: `HY000'
+     (`ER_WRONG_EXPR_IN_PARTITION_FUNC_ERROR')
+
+     Message: Constant, random or timezone-dependent expressions in
+     (sub)partitioning function are not allowed
+
+   *  Error: `1487' SQLSTATE: `HY000'
+     (`ER_NO_CONST_EXPR_IN_RANGE_OR_LIST_ERROR')
+
+     Message: Expression in RANGE/LIST VALUES must be constant
+
+   *  Error: `1488' SQLSTATE: `HY000' (`ER_FIELD_NOT_FOUND_PART_ERROR')
+
+     Message: Field in list of fields for partition function not found
+     in table
+
+   *  Error: `1489' SQLSTATE: `HY000'
+     (`ER_LIST_OF_FIELDS_ONLY_IN_HASH_ERROR')
+
+     Message: List of fields is only allowed in KEY partitions
+
+   *  Error: `1490' SQLSTATE: `HY000'
+     (`ER_INCONSISTENT_PARTITION_INFO_ERROR')
+
+     Message: The partition info in the frm file is not consistent with
+     what can be written into the frm file
+
+   *  Error: `1491' SQLSTATE: `HY000'
+     (`ER_PARTITION_FUNC_NOT_ALLOWED_ERROR')
+
+     Message: The %s function returns the wrong type
+
+   *  Error: `1492' SQLSTATE: `HY000'
+     (`ER_PARTITIONS_MUST_BE_DEFINED_ERROR')
+
+     Message: For %s partitions each partition must be defined
+
+   *  Error: `1493' SQLSTATE: `HY000' (`ER_RANGE_NOT_INCREASING_ERROR')
+
+     Message: VALUES LESS THAN value must be strictly increasing for
+     each partition
+
+   *  Error: `1494' SQLSTATE: `HY000'
+     (`ER_INCONSISTENT_TYPE_OF_FUNCTIONS_ERROR')
+
+     Message: VALUES value must be of same type as partition function
+
+   *  Error: `1495' SQLSTATE: `HY000'
+     (`ER_MULTIPLE_DEF_CONST_IN_LIST_PART_ERROR')
+
+     Message: Multiple definition of same constant in list partitioning
+
+   *  Error: `1496' SQLSTATE: `HY000' (`ER_PARTITION_ENTRY_ERROR')
+
+     Message: Partitioning can not be used stand-alone in query
+
+   *  Error: `1497' SQLSTATE: `HY000' (`ER_MIX_HANDLER_ERROR')
+
+     Message: The mix of handlers in the partitions is not allowed in
+     this version of MySQL
+
+   *  Error: `1498' SQLSTATE: `HY000' (`ER_PARTITION_NOT_DEFINED_ERROR')
+
+     Message: For the partitioned engine it is necessary to define all
+     %s
+
+   *  Error: `1499' SQLSTATE: `HY000' (`ER_TOO_MANY_PARTITIONS_ERROR')
+
+     Message: Too many partitions (including subpartitions) were defined
+
+   *  Error: `1500' SQLSTATE: `HY000' (`ER_SUBPARTITION_ERROR')
+
+     Message: It is only possible to mix RANGE/LIST partitioning with
+     HASH/KEY partitioning for subpartitioning
+
+   *  Error: `1501' SQLSTATE: `HY000' (`ER_CANT_CREATE_HANDLER_FILE')
+
+     Message: Failed to create specific handler file
+
+   *  Error: `1502' SQLSTATE: `HY000'
+     (`ER_BLOB_FIELD_IN_PART_FUNC_ERROR')
+
+     Message: A BLOB field is not allowed in partition function
+
+   *  Error: `1503' SQLSTATE: `HY000'
+     (`ER_UNIQUE_KEY_NEED_ALL_FIELDS_IN_PF')
+
+     Message: A %s must include all columns in the table's partitioning
+     function
+
+   *  Error: `1504' SQLSTATE: `HY000' (`ER_NO_PARTS_ERROR')
+
+     Message: Number of %s = 0 is not an allowed value
+
+   *  Error: `1505' SQLSTATE: `HY000'
+     (`ER_PARTITION_MGMT_ON_NONPARTITIONED')
+
+     Message: Partition management on a not partitioned table is not
+     possible
+
+   *  Error: `1506' SQLSTATE: `HY000' (`ER_FOREIGN_KEY_ON_PARTITIONED')
+
+     Message: Foreign key clause is not yet supported in conjunction
+     with partitioning
+
+   *  Error: `1507' SQLSTATE: `HY000' (`ER_DROP_PARTITION_NON_EXISTENT')
+
+     Message: Error in list of partitions to %s
+
+   *  Error: `1508' SQLSTATE: `HY000' (`ER_DROP_LAST_PARTITION')
+
+     Message: Cannot remove all partitions, use DROP TABLE instead
+
+   *  Error: `1509' SQLSTATE: `HY000'
+     (`ER_COALESCE_ONLY_ON_HASH_PARTITION')
+
+     Message: COALESCE PARTITION can only be used on HASH/KEY partitions
+
+   *  Error: `1510' SQLSTATE: `HY000' (`ER_REORG_HASH_ONLY_ON_SAME_NO')
+
+     Message: REORGANIZE PARTITION can only be used to reorganize
+     partitions not to change their numbers
+
+   *  Error: `1511' SQLSTATE: `HY000' (`ER_REORG_NO_PARAM_ERROR')
+
+     Message: REORGANIZE PARTITION without parameters can only be used
+     on auto-partitioned tables using HASH PARTITIONs
+
+   *  Error: `1512' SQLSTATE: `HY000'
+     (`ER_ONLY_ON_RANGE_LIST_PARTITION')
+
+     Message: %s PARTITION can only be used on RANGE/LIST partitions
+
+   *  Error: `1513' SQLSTATE: `HY000' (`ER_ADD_PARTITION_SUBPART_ERROR')
+
+     Message: Trying to Add partition(s) with wrong number of
+     subpartitions
+
+   *  Error: `1514' SQLSTATE: `HY000'
+     (`ER_ADD_PARTITION_NO_NEW_PARTITION')
+
+     Message: At least one partition must be added
+
+   *  Error: `1515' SQLSTATE: `HY000'
+     (`ER_COALESCE_PARTITION_NO_PARTITION')
+
+     Message: At least one partition must be coalesced
+
+   *  Error: `1516' SQLSTATE: `HY000' (`ER_REORG_PARTITION_NOT_EXIST')
+
+     Message: More partitions to reorganize than there are partitions
+
+   *  Error: `1517' SQLSTATE: `HY000' (`ER_SAME_NAME_PARTITION')
+
+     Message: Duplicate partition name %s
+
+   *  Error: `1518' SQLSTATE: `HY000' (`ER_NO_BINLOG_ERROR')
+
+     Message: It is not allowed to shut off binlog on this command
+
+   *  Error: `1519' SQLSTATE: `HY000'
+     (`ER_CONSECUTIVE_REORG_PARTITIONS')
+
+     Message: When reorganizing a set of partitions they must be in
+     consecutive order
+
+   *  Error: `1520' SQLSTATE: `HY000' (`ER_REORG_OUTSIDE_RANGE')
+
+     Message: Reorganize of range partitions cannot change total ranges
+     except for last partition where it can extend the range
+
+   *  Error: `1521' SQLSTATE: `HY000' (`ER_PARTITION_FUNCTION_FAILURE')
+
+     Message: Partition function not supported in this version for this
+     handler
+
+   *  Error: `1522' SQLSTATE: `HY000' (`ER_PART_STATE_ERROR')
+
+     Message: Partition state cannot be defined from CREATE/ALTER TABLE
+
+   *  Error: `1523' SQLSTATE: `HY000' (`ER_LIMITED_PART_RANGE')
+
+     Message: The %s handler only supports 32 bit integers in VALUES
+
+   *  Error: `1524' SQLSTATE: `HY000' (`ER_PLUGIN_IS_NOT_LOADED')
+
+     Message: Plugin '%s' is not loaded
+
+   *  Error: `1525' SQLSTATE: `HY000' (`ER_WRONG_VALUE')
+
+     Message: Incorrect %s value: '%s'
+
+   *  Error: `1526' SQLSTATE: `HY000'
+     (`ER_NO_PARTITION_FOR_GIVEN_VALUE')
+
+     Message: Table has no partition for value %s
+
+   *  Error: `1527' SQLSTATE: `HY000' (`ER_FILEGROUP_OPTION_ONLY_ONCE')
+
+     Message: It is not allowed to specify %s more than once
+
+   *  Error: `1528' SQLSTATE: `HY000' (`ER_CREATE_FILEGROUP_FAILED')
+
+     Message: Failed to create %s
+
+   *  Error: `1529' SQLSTATE: `HY000' (`ER_DROP_FILEGROUP_FAILED')
+
+     Message: Failed to drop %s
+
+   *  Error: `1530' SQLSTATE: `HY000'
+     (`ER_TABLESPACE_AUTO_EXTEND_ERROR')
+
+     Message: The handler doesn't support autoextend of tablespaces
+
+   *  Error: `1531' SQLSTATE: `HY000' (`ER_WRONG_SIZE_NUMBER')
+
+     Message: A size parameter was incorrectly specified, either number
+     or on the form 10M
+
+   *  Error: `1532' SQLSTATE: `HY000' (`ER_SIZE_OVERFLOW_ERROR')
+
+     Message: The size number was correct but we don't allow the digit
+     part to be more than 2 billion
+
+   *  Error: `1533' SQLSTATE: `HY000' (`ER_ALTER_FILEGROUP_FAILED')
+
+     Message: Failed to alter: %s
+
+   *  Error: `1534' SQLSTATE: `HY000' (`ER_BINLOG_ROW_LOGGING_FAILED')
+
+     Message: Writing one row to the row-based binary log failed
+
+   *  Error: `1535' SQLSTATE: `HY000' (`ER_BINLOG_ROW_WRONG_TABLE_DEF')
+
+     Message: Table definition on master and slave does not match: %s
+
+   *  Error: `1536' SQLSTATE: `HY000' (`ER_BINLOG_ROW_RBR_TO_SBR')
+
+     Message: Slave running with -log-slave-updates must use row-based
+     binary logging to be able to replicate row-based binary log events
+
+   *  Error: `1537' SQLSTATE: `HY000' (`ER_EVENT_ALREADY_EXISTS')
+
+     Message: Event '%s' already exists
+
+   *  Error: `1538' SQLSTATE: `HY000' (`ER_EVENT_STORE_FAILED')
+
+     Message: Failed to store event %s. Error code %d from storage
+     engine.
+
+   *  Error: `1539' SQLSTATE: `HY000' (`ER_EVENT_DOES_NOT_EXIST')
+
+     Message: Unknown event '%s'
+
+   *  Error: `1540' SQLSTATE: `HY000' (`ER_EVENT_CANT_ALTER')
+
+     Message: Failed to alter event '%s'
+
+   *  Error: `1541' SQLSTATE: `HY000' (`ER_EVENT_DROP_FAILED')
+
+     Message: Failed to drop %s
+
+   *  Error: `1542' SQLSTATE: `HY000'
+     (`ER_EVENT_INTERVAL_NOT_POSITIVE_OR_TOO_BIG')
+
+     Message: INTERVAL is either not positive or too big
+
+   *  Error: `1543' SQLSTATE: `HY000' (`ER_EVENT_ENDS_BEFORE_STARTS')
+
+     Message: ENDS is either invalid or before STARTS
+
+   *  Error: `1544' SQLSTATE: `HY000' (`ER_EVENT_EXEC_TIME_IN_THE_PAST')
+
+     Message: Event execution time is in the past. Event has been
+     disabled
+
+   *  Error: `1545' SQLSTATE: `HY000' (`ER_EVENT_OPEN_TABLE_FAILED')
+
+     Message: Failed to open mysql.event
+
+   *  Error: `1546' SQLSTATE: `HY000'
+     (`ER_EVENT_NEITHER_M_EXPR_NOR_M_AT')
+
+     Message: No datetime expression provided
+
+   *  Error: `1547' SQLSTATE: `HY000'
+     (`ER_COL_COUNT_DOESNT_MATCH_CORRUPTED')
+
+     Message: Column count of mysql.%s is wrong. Expected %d, found %d.
+     The table is probably corrupted
+
+   *  Error: `1548' SQLSTATE: `HY000' (`ER_CANNOT_LOAD_FROM_TABLE')
+
+     Message: Cannot load from mysql.%s. The table is probably corrupted
+
+   *  Error: `1549' SQLSTATE: `HY000' (`ER_EVENT_CANNOT_DELETE')
+
+     Message: Failed to delete the event from mysql.event
+
+   *  Error: `1550' SQLSTATE: `HY000' (`ER_EVENT_COMPILE_ERROR')
+
+     Message: Error during compilation of event's body
+
+   *  Error: `1551' SQLSTATE: `HY000' (`ER_EVENT_SAME_NAME')
+
+     Message: Same old and new event name
+
+   *  Error: `1552' SQLSTATE: `HY000' (`ER_EVENT_DATA_TOO_LONG')
+
+     Message: Data for column '%s' too long
+
+   *  Error: `1553' SQLSTATE: `HY000' (`ER_DROP_INDEX_FK')
+
+     Message: Cannot drop index '%s': needed in a foreign key constraint
+
+   *  Error: `1554' SQLSTATE: `HY000'
+     (`ER_WARN_DEPRECATED_SYNTAX_WITH_VER')
+
+     Message: The syntax '%s' is deprecated and will be removed in
+     MySQL %s. Please use %s instead
+
+   *  Error: `1555' SQLSTATE: `HY000' (`ER_CANT_WRITE_LOCK_LOG_TABLE')
+
+     Message: You can't write-lock a log table. Only read access is
+     possible
+
+   *  Error: `1556' SQLSTATE: `HY000' (`ER_CANT_LOCK_LOG_TABLE')
+
+     Message: You can't use locks with log tables.
+
+   *  Error: `1557' SQLSTATE: `23000' (`ER_FOREIGN_DUPLICATE_KEY')
+
+     Message: Upholding foreign key constraints for table '%s', entry
+     '%s', key %d would lead to a duplicate entry
+
+   *  Error: `1558' SQLSTATE: `HY000'
+     (`ER_COL_COUNT_DOESNT_MATCH_PLEASE_UPDATE')
+
+     Message: Column count of mysql.%s is wrong. Expected %d, found %d.
+     Created with MySQL %d, now running %d. Please use mysql_upgrade to
+     fix this error.
+
+   *  Error: `1559' SQLSTATE: `HY000'
+     (`ER_TEMP_TABLE_PREVENTS_SWITCH_OUT_OF_RBR')
+
+     Message: Cannot switch out of the row-based binary log format when
+     the session has open temporary tables
+
+   *  Error: `1560' SQLSTATE: `HY000'
+     (`ER_STORED_FUNCTION_PREVENTS_SWITCH_BINLOG_FORMAT')
+
+     Message: Cannot change the binary logging format inside a stored
+     function or trigger
+
+   *  Error: `1561' SQLSTATE: `HY000'
+     (`ER_NDB_CANT_SWITCH_BINLOG_FORMAT')
+
+     Message: The NDB cluster engine does not support changing the
+     binlog format on the fly yet
+
+   *  Error: `1562' SQLSTATE: `HY000' (`ER_PARTITION_NO_TEMPORARY')
+
+     Message: Cannot create temporary table with partitions
+
+   *  Error: `1563' SQLSTATE: `HY000'
+     (`ER_PARTITION_CONST_DOMAIN_ERROR')
+
+     Message: Partition constant is out of partition function domain
+
+   *  Error: `1564' SQLSTATE: `HY000'
+     (`ER_PARTITION_FUNCTION_IS_NOT_ALLOWED')
+
+     Message: This partition function is not allowed
+
+   *  Error: `1565' SQLSTATE: `HY000' (`ER_DDL_LOG_ERROR')
+
+     Message: Error in DDL log
+
+   *  Error: `1566' SQLSTATE: `HY000' (`ER_NULL_IN_VALUES_LESS_THAN')
+
+     Message: Not allowed to use NULL value in VALUES LESS THAN
+
+   *  Error: `1567' SQLSTATE: `HY000' (`ER_WRONG_PARTITION_NAME')
+
+     Message: Incorrect partition name
+
+   *  Error: `1568' SQLSTATE: `25001' (`ER_CANT_CHANGE_TX_ISOLATION')
+
+     Message: Transaction isolation level can't be changed while a
+     transaction is in progress
+
+   *  Error: `1569' SQLSTATE: `HY000'
+     (`ER_DUP_ENTRY_AUTOINCREMENT_CASE')
+
+     Message: ALTER TABLE causes auto_increment resequencing, resulting
+     in duplicate entry '%s' for key '%s'
+
+   *  Error: `1570' SQLSTATE: `HY000' (`ER_EVENT_MODIFY_QUEUE_ERROR')
+
+     Message: Internal scheduler error %d
+
+   *  Error: `1571' SQLSTATE: `HY000' (`ER_EVENT_SET_VAR_ERROR')
+
+     Message: Error during starting/stopping of the scheduler. Error
+     code %u
+
+   *  Error: `1572' SQLSTATE: `HY000' (`ER_PARTITION_MERGE_ERROR')
+
+     Message: Engine cannot be used in partitioned tables
+
+   *  Error: `1573' SQLSTATE: `HY000' (`ER_CANT_ACTIVATE_LOG')
+
+     Message: Cannot activate '%s' log
+
+   *  Error: `1574' SQLSTATE: `HY000' (`ER_RBR_NOT_AVAILABLE')
+
+     Message: The server was not built with row-based replication
+
+   *  Error: `1575' SQLSTATE: `HY000' (`ER_BASE64_DECODE_ERROR')
+
+     Message: Decoding of base64 string failed
+
+   *  Error: `1576' SQLSTATE: `HY000' (`ER_EVENT_RECURSION_FORBIDDEN')
+
+     Message: Recursion of EVENT DDL statements is forbidden when body
+     is present
+
+   *  Error: `1577' SQLSTATE: `HY000' (`ER_EVENTS_DB_ERROR')
+
+     Message: Cannot proceed because system tables used by Event
+     Scheduler were found damaged at server start
+
+   *  Error: `1578' SQLSTATE: `HY000' (`ER_ONLY_INTEGERS_ALLOWED')
+
+     Message: Only integers allowed as number here
+
+   *  Error: `1579' SQLSTATE: `HY000' (`ER_UNSUPORTED_LOG_ENGINE')
+
+     Message: This storage engine cannot be used for log tables"
+
+   *  Error: `1580' SQLSTATE: `HY000' (`ER_BAD_LOG_STATEMENT')
+
+     Message: You cannot '%s' a log table if logging is enabled
+
+   *  Error: `1581' SQLSTATE: `HY000' (`ER_CANT_RENAME_LOG_TABLE')
+
+     Message: Cannot rename '%s'. When logging enabled, rename to/from
+     log table must rename two tables: the log table to an archive
+     table and another table back to '%s'
+
+   *  Error: `1582' SQLSTATE: `42000'
+     (`ER_WRONG_PARAMCOUNT_TO_NATIVE_FCT')
+
+     Message: Incorrect parameter count in the call to native function
+     '%s'
+
+   *  Error: `1583' SQLSTATE: `42000'
+     (`ER_WRONG_PARAMETERS_TO_NATIVE_FCT')
+
+     Message: Incorrect parameters in the call to native function '%s'
+
+   *  Error: `1584' SQLSTATE: `42000'
+     (`ER_WRONG_PARAMETERS_TO_STORED_FCT')
+
+     Message: Incorrect parameters in the call to stored function '%s'
+
+   *  Error: `1585' SQLSTATE: `HY000' (`ER_NATIVE_FCT_NAME_COLLISION')
+
+     Message: This function '%s' has the same name as a native function
+
+   *  Error: `1586' SQLSTATE: `23000' (`ER_DUP_ENTRY_WITH_KEY_NAME')
+
+     Message: Duplicate entry '%s' for key '%s'
+
+   *  Error: `1587' SQLSTATE: `HY000' (`ER_BINLOG_PURGE_EMFILE')
+
+     Message: Too many files opened, please execute the command again
+
+   *  Error: `1588' SQLSTATE: `HY000'
+     (`ER_EVENT_CANNOT_CREATE_IN_THE_PAST')
+
+     Message: Event execution time is in the past and ON COMPLETION NOT
+     PRESERVE is set. The event was dropped immediately after creation.
+
+   *  Error: `1589' SQLSTATE: `HY000'
+     (`ER_EVENT_CANNOT_ALTER_IN_THE_PAST')
+
+     Message: Event execution time is in the past and ON COMPLETION NOT
+     PRESERVE is set. The event was dropped immediately after creation.
+
+   *  Error: `1590' SQLSTATE: `HY000' (`ER_SLAVE_INCIDENT')
+
+     Message: The incident %s occured on the master. Message: %s
+
+   *  Error: `1591' SQLSTATE: `HY000'
+     (`ER_NO_PARTITION_FOR_GIVEN_VALUE_SILENT')
+
+     Message: Table has no partition for some existing values
+
+   *  Error: `1592' SQLSTATE: `HY000' (`ER_BINLOG_UNSAFE_STATEMENT')
+
+     Message: Unsafe statement written to the binary log using
+     statement format since BINLOG_FORMAT = STATEMENT. %s
+
+   *  Error: `1593' SQLSTATE: `HY000' (`ER_SLAVE_FATAL_ERROR')
+
+     Message: Fatal error: %s
+
+   *  Error: `1594' SQLSTATE: `HY000'
+     (`ER_SLAVE_RELAY_LOG_READ_FAILURE')
+
+     Message: Relay log read failure: %s
+
+   *  Error: `1595' SQLSTATE: `HY000'
+     (`ER_SLAVE_RELAY_LOG_WRITE_FAILURE')
+
+     Message: Relay log write failure: %s
+
+   *  Error: `1596' SQLSTATE: `HY000' (`ER_SLAVE_CREATE_EVENT_FAILURE')
+
+     Message: Failed to create %s
+
+   *  Error: `1597' SQLSTATE: `HY000' (`ER_SLAVE_MASTER_COM_FAILURE')
+
+     Message: Master command %s failed: %s
+
+   *  Error: `1598' SQLSTATE: `HY000' (`ER_BINLOG_LOGGING_IMPOSSIBLE')
+
+     Message: Binary logging not possible. Message: %s
+
+   *  Error: `1599' SQLSTATE: `HY000' (`ER_VIEW_NO_CREATION_CTX')
+
+     Message: View `%s`.`%s` has no creation context
+
+   *  Error: `1600' SQLSTATE: `HY000' (`ER_VIEW_INVALID_CREATION_CTX')
+
+     Message: Creation context of view `%s`.`%s' is invalid
+
+   *  Error: `1601' SQLSTATE: `HY000' (`ER_SR_INVALID_CREATION_CTX')
+
+     Message: Creation context of stored routine `%s`.`%s` is invalid
+
+   *  Error: `1602' SQLSTATE: `HY000' (`ER_TRG_CORRUPTED_FILE')
+
+     Message: Corrupted TRG file for table `%s`.`%s`
+
+   *  Error: `1603' SQLSTATE: `HY000' (`ER_TRG_NO_CREATION_CTX')
+
+     Message: Triggers for table `%s`.`%s` have no creation context
+
+   *  Error: `1604' SQLSTATE: `HY000' (`ER_TRG_INVALID_CREATION_CTX')
+
+     Message: Trigger creation context of table `%s`.`%s` is invalid
+
+   *  Error: `1605' SQLSTATE: `HY000' (`ER_EVENT_INVALID_CREATION_CTX')
+
+     Message: Creation context of event `%s`.`%s` is invalid
+
+   *  Error: `1606' SQLSTATE: `HY000' (`ER_TRG_CANT_OPEN_TABLE')
+
+     Message: Cannot open table for trigger `%s`.`%s`
+
+   *  Error: `1607' SQLSTATE: `HY000' (`ER_CANT_CREATE_SROUTINE')
+
+     Message: Cannot create stored routine `%s`. Check warnings
+
+   *  Error: `1608' SQLSTATE: `HY000' (`ER_NEVER_USED')
+
+     Message: Ambiguous slave modes combination. %s
+
+   *  Error: `1609' SQLSTATE: `HY000'
+     (`ER_NO_FORMAT_DESCRIPTION_EVENT_BEFORE_BINLOG_STATEMENT')
+
+     Message: The BINLOG statement of type `%s` was not preceded by a
+     format description BINLOG statement.
+
+   *  Error: `1610' SQLSTATE: `HY000' (`ER_SLAVE_CORRUPT_EVENT')
+
+     Message: Corrupted replication event was detected
+
+   *  Error: `1611' SQLSTATE: `HY000' (`ER_LOAD_DATA_INVALID_COLUMN')
+
+     Message: Invalid column reference (%s) in LOAD DATA
+
+   *  Error: `1612' SQLSTATE: `HY000' (`ER_LOG_PURGE_NO_FILE')
+
+     Message: Being purged log %s was not found
+
+   *  Error: `1613' SQLSTATE: `XA106' (`ER_XA_RBTIMEOUT')
+
+     Message: XA_RBTIMEOUT: Transaction branch was rolled back: took
+     too long
+
+   *  Error: `1614' SQLSTATE: `XA102' (`ER_XA_RBDEADLOCK')
+
+     Message: XA_RBDEADLOCK: Transaction branch was rolled back:
+     deadlock was detected
+
+   *  Error: `1615' SQLSTATE: `HY000' (`ER_NEED_REPREPARE')
+
+     Message: Prepared statement needs to be re-prepared
+
+   *  Error: `1616' SQLSTATE: `HY000' (`ER_DELAYED_NOT_SUPPORTED')
+
+     Message: DELAYED option not supported for table '%s'
+
+   *  Error: `1617' SQLSTATE: `HY000' (`WARN_NO_MASTER_INFO')
+
+     Message: The master info structure does not exist
+
+   *  Error: `1618' SQLSTATE: `HY000' (`WARN_OPTION_IGNORED')
+
+     Message: <%s> option ignored
+
+   *  Error: `1619' SQLSTATE: `HY000' (`WARN_PLUGIN_DELETE_BUILTIN')
+
+     Message: Built-in plugins cannot be deleted
+
+   *  Error: `1620' SQLSTATE: `HY000' (`WARN_PLUGIN_BUSY')
+
+     Message: Plugin is busy and will be uninstalled on shutdown
+
+   *  Error: `1621' SQLSTATE: `HY000' (`ER_VARIABLE_IS_READONLY')
+
+     Message: %s variable '%s' is read-only. Use SET %s to assign the
+     value
+
+   *  Error: `1622' SQLSTATE: `HY000'
+     (`ER_WARN_ENGINE_TRANSACTION_ROLLBACK')
+
+     Message: Storage engine %s does not support rollback for this
+     statement. Transaction rolled back and must be restarted
+
+   *  Error: `1623' SQLSTATE: `HY000' (`ER_SLAVE_HEARTBEAT_FAILURE')
+
+     Message: Unexpected master's heartbeat data: %s
+
+   *  Error: `1624' SQLSTATE: `HY000'
+     (`ER_SLAVE_HEARTBEAT_VALUE_OUT_OF_RANGE')
+
+     Message: The requested value for the heartbeat period is either
+     negative or exceeds the maximum allowed (%s seconds).
+
+   *  Error: `1625' SQLSTATE: `HY000'
+     (`ER_NDB_REPLICATION_SCHEMA_ERROR')
+
+     Message: Bad schema for mysql.ndb_replication table. Message: %s
+
+   *  Error: `1626' SQLSTATE: `HY000' (`ER_CONFLICT_FN_PARSE_ERROR')
+
+     Message: Error in parsing conflict function. Message: %s
+
+   *  Error: `1627' SQLSTATE: `HY000' (`ER_EXCEPTIONS_WRITE_ERROR')
+
+     Message: Write to exceptions table failed. Message: %s"
+
+   *  Error: `1628' SQLSTATE: `HY000' (`ER_TOO_LONG_TABLE_COMMENT')
+
+     Message: Comment for table '%s' is too long (max = %lu)
+
+   *  Error: `1629' SQLSTATE: `HY000' (`ER_TOO_LONG_FIELD_COMMENT')
+
+     Message: Comment for field '%s' is too long (max = %lu)
+
+   *  Error: `1630' SQLSTATE: `42000'
+     (`ER_FUNC_INEXISTENT_NAME_COLLISION')
+
+     Message: FUNCTION %s does not exist. Check the 'Function Name
+     Parsing and Resolution' section in the Reference Manual
+
+   *  Error: `1631' SQLSTATE: `HY000' (`ER_DATABASE_NAME')
+
+     Message: Database
+
+   *  Error: `1632' SQLSTATE: `HY000' (`ER_TABLE_NAME')
+
+     Message: Table
+
+   *  Error: `1633' SQLSTATE: `HY000' (`ER_PARTITION_NAME')
+
+     Message: Partition
+
+   *  Error: `1634' SQLSTATE: `HY000' (`ER_SUBPARTITION_NAME')
+
+     Message: Subpartition
+
+   *  Error: `1635' SQLSTATE: `HY000' (`ER_TEMPORARY_NAME')
+
+     Message: Temporary
+
+   *  Error: `1636' SQLSTATE: `HY000' (`ER_RENAMED_NAME')
+
+     Message: Renamed
+
+   *  Error: `1637' SQLSTATE: `HY000' (`ER_TOO_MANY_CONCURRENT_TRXS')
+
+     Message: Too many active concurrent transactions
+
+   *  Error: `1638' SQLSTATE: `HY000'
+     (`WARN_NON_ASCII_SEPARATOR_NOT_IMPLEMENTED')
+
+     Message: Non-ASCII separator arguments are not fully supported
+
+   *  Error: `1639' SQLSTATE: `HY000' (`ER_DEBUG_SYNC_TIMEOUT')
+
+     Message: debug sync point wait timed out
+
+   *  Error: `1640' SQLSTATE: `HY000' (`ER_DEBUG_SYNC_HIT_LIMIT')
+
+     Message: debug sync point hit limit reached
+
+   *  Error: `1641' SQLSTATE: `42000' (`ER_DUP_SIGNAL_SET')
+
+     Message: Duplicate condition information item '%s'
+
+   *  Error: `1642' SQLSTATE: `01000' (`ER_SIGNAL_WARN')
+
+     Message: Unhandled user-defined warning condition
+
+   *  Error: `1643' SQLSTATE: `02000' (`ER_SIGNAL_NOT_FOUND')
+
+     Message: Unhandled user-defined not found condition
+
+   *  Error: `1644' SQLSTATE: `HY000' (`ER_SIGNAL_EXCEPTION')
+
+     Message: Unhandled user-defined exception condition
+
+   *  Error: `1645' SQLSTATE: `0K000'
+     (`ER_RESIGNAL_WITHOUT_ACTIVE_HANDLER')
+
+     Message: RESIGNAL when handler not active
+
+   *  Error: `1646' SQLSTATE: `HY000' (`ER_SIGNAL_BAD_CONDITION_TYPE')
+
+     Message: SIGNAL/RESIGNAL can only use a CONDITION defined with
+     SQLSTATE
+
+   *  Error: `1647' SQLSTATE: `HY000' (`WARN_COND_ITEM_TRUNCATED')
+
+     Message: Data truncated for condition item '%s'
+
+   *  Error: `1648' SQLSTATE: `HY000' (`ER_COND_ITEM_TOO_LONG')
+
+     Message: Data too long for condition item '%s'
+
+   *  Error: `1649' SQLSTATE: `HY000' (`ER_UNKNOWN_LOCALE')
+
+     Message: Unknown locale: '%s'
+
+   *  Error: `1650' SQLSTATE: `HY000' (`ER_SLAVE_IGNORE_SERVER_IDS')
+
+     Message: The requested server id %d clashes with the slave startup
+     option -replicate-same-server-id
+
+   *  Error: `1651' SQLSTATE: `HY000' (`ER_QUERY_CACHE_DISABLED')
+
+     Message: Query cache is disabled; restart the server with
+     query_cache_type=1 to enable it
+
+   *  Error: `1652' SQLSTATE: `HY000' (`ER_SAME_NAME_PARTITION_FIELD')
+
+     Message: Duplicate partition field name '%s'
+
+   *  Error: `1653' SQLSTATE: `HY000' (`ER_PARTITION_COLUMN_LIST_ERROR')
+
+     Message: Inconsistency in usage of column lists for partitioning
+
+   *  Error: `1654' SQLSTATE: `HY000'
+     (`ER_WRONG_TYPE_COLUMN_VALUE_ERROR')
+
+     Message: Partition column values of incorrect type
+
+   *  Error: `1655' SQLSTATE: `HY000'
+     (`ER_TOO_MANY_PARTITION_FUNC_FIELDS_ERROR')
+
+     Message: Too many fields in '%s'
+
+   *  Error: `1656' SQLSTATE: `HY000' (`ER_MAXVALUE_IN_VALUES_IN')
+
+     Message: Cannot use MAXVALUE as value in VALUES IN
+
+   *  Error: `1657' SQLSTATE: `HY000' (`ER_TOO_MANY_VALUES_ERROR')
+
+     Message: Cannot have more than one value for this type of %s
+     partitioning
+
+   *  Error: `1658' SQLSTATE: `HY000'
+     (`ER_ROW_SINGLE_PARTITION_FIELD_ERROR')
+
+     Message: Row expressions in VALUES IN only allowed for multi-field
+     column partitioning
+
+   *  Error: `1659' SQLSTATE: `HY000'
+     (`ER_FIELD_TYPE_NOT_ALLOWED_AS_PARTITION_FIELD')
+
+     Message: Field '%s' is of a not allowed type for this type of
+     partitioning
+
+   *  Error: `1660' SQLSTATE: `HY000' (`ER_PARTITION_FIELDS_TOO_LONG')
+
+     Message: The total length of the partitioning fields is too large
+
+   *  Error: `1661' SQLSTATE: `HY000'
+     (`ER_BINLOG_ROW_ENGINE_AND_STMT_ENGINE')
+
+     Message: Cannot execute statement: impossible to write to binary
+     log since both row-incapable engines and statement-incapable
+     engines are involved.
+
+   *  Error: `1662' SQLSTATE: `HY000'
+     (`ER_BINLOG_ROW_MODE_AND_STMT_ENGINE')
+
+     Message: Cannot execute statement: impossible to write to binary
+     log since BINLOG_FORMAT = ROW and at least one table uses a
+     storage engine limited to statement-based logging.
+
+   *  Error: `1663' SQLSTATE: `HY000'
+     (`ER_BINLOG_UNSAFE_AND_STMT_ENGINE')
+
+     Message: Cannot execute statement: impossible to write to binary
+     log since statement is unsafe, storage engine is limited to
+     statement-based logging, and BINLOG_FORMAT = MIXED. %s
+
+   *  Error: `1664' SQLSTATE: `HY000'
+     (`ER_BINLOG_ROW_INJECTION_AND_STMT_ENGINE')
+
+     Message: Cannot execute statement: impossible to write to binary
+     log since statement is in row format and at least one table uses a
+     storage engine limited to statement-based logging.
+
+   *  Error: `1665' SQLSTATE: `HY000'
+     (`ER_BINLOG_STMT_MODE_AND_ROW_ENGINE')
+
+     Message: Cannot execute statement: impossible to write to binary
+     log since BINLOG_FORMAT = STATEMENT and at least one table uses a
+     storage engine limited to row-based logging.%s
+
+   *  Error: `1666' SQLSTATE: `HY000'
+     (`ER_BINLOG_ROW_INJECTION_AND_STMT_MODE')
+
+     Message: Cannot execute statement: impossible to write to binary
+     log since statement is in row format and BINLOG_FORMAT = STATEMENT.
+
+   *  Error: `1667' SQLSTATE: `HY000'
+     (`ER_BINLOG_MULTIPLE_ENGINES_AND_SELF_LOGGING_ENGINE')
+
+     Message: Cannot execute statement: impossible to write to binary
+     log since more than one engine is involved and at least one engine
+     is self-logging.
+
+   *  Error: `1668' SQLSTATE: `HY000' (`ER_BINLOG_UNSAFE_LIMIT')
+
+     Message: The statement is unsafe because it uses a LIMIT clause.
+     This is unsafe because the set of rows included cannot be
+     predicted.
+
+   *  Error: `1669' SQLSTATE: `HY000'
+     (`ER_BINLOG_UNSAFE_INSERT_DELAYED')
+
+     Message: The statement is unsafe because it uses INSERT DELAYED.
+     This is unsafe because the times when rows are inserted cannot be
+     predicted.
+
+   *  Error: `1670' SQLSTATE: `HY000' (`ER_BINLOG_UNSAFE_SYSTEM_TABLE')
+
+     Message: The statement is unsafe because it uses the general log,
+     slow query log, or performance_schema table(s). This is unsafe
+     because system tables may differ on slaves.
+
+   *  Error: `1671' SQLSTATE: `HY000'
+     (`ER_BINLOG_UNSAFE_AUTOINC_COLUMNS')
+
+     Message: Statement is unsafe because it invokes a trigger or a
+     stored function that inserts into an AUTO_INCREMENT column.
+     Inserted values cannot be logged correctly.
+
+   *  Error: `1672' SQLSTATE: `HY000' (`ER_BINLOG_UNSAFE_UDF')
+
+     Message: Statement is unsafe because it uses a UDF which may not
+     return the same value on the slave.
+
+   *  Error: `1673' SQLSTATE: `HY000'
+     (`ER_BINLOG_UNSAFE_SYSTEM_VARIABLE')
+
+     Message: Statement is unsafe because it uses a system variable
+     that may have a different value on the slave.
+
+   *  Error: `1674' SQLSTATE: `HY000'
+     (`ER_BINLOG_UNSAFE_SYSTEM_FUNCTION')
+
+     Message: Statement is unsafe because it uses a system function
+     that may return a different value on the slave.
+
+   *  Error: `1675' SQLSTATE: `HY000'
+     (`ER_BINLOG_UNSAFE_NONTRANS_AFTER_TRANS')
+
+     Message: Statement is unsafe because it accesses a
+     non-transactional table after accessing a transactional table
+     within the same transaction.
+
+   *  Error: `1676' SQLSTATE: `HY000' (`ER_MESSAGE_AND_STATEMENT')
+
+     Message: %s Statement: %s
+
+   *  Error: `1677' SQLSTATE: `HY000' (`ER_SLAVE_CONVERSION_FAILED')
+
+     Message: Column %d of table '%s.%s' cannot be converted from type
+     '%s' to type '%s'
+
+   *  Error: `1678' SQLSTATE: `HY000'
+     (`ER_SLAVE_CANT_CREATE_CONVERSION')
+
+     Message: Can't create conversion table for table '%s.%s'
+
+   *  Error: `1679' SQLSTATE: `HY000'
+     (`ER_INSIDE_TRANSACTION_PREVENTS_SWITCH_BINLOG_FORMAT')
+
+     Message: Cannot modify @@session.binlog_format inside a transaction
+
+   *  Error: `1680' SQLSTATE: `HY000' (`ER_PATH_LENGTH')
+
+     Message: The path specified for %s is too long.
+
+   *  Error: `1681' SQLSTATE: `HY000'
+     (`ER_WARN_DEPRECATED_SYNTAX_NO_REPLACEMENT')
+
+     Message: The syntax '%s' is deprecated and will be removed in
+     MySQL %s.
+
+   *  Error: `1682' SQLSTATE: `HY000'
+     (`ER_WRONG_NATIVE_TABLE_STRUCTURE')
+
+     Message: Native table '%s'.'%s' has the wrong structure
+
+   *  Error: `1683' SQLSTATE: `HY000' (`ER_WRONG_PERFSCHEMA_USAGE')
+
+     Message: Invalid performance_schema usage.
+
+   *  Error: `1684' SQLSTATE: `HY000' (`ER_WARN_I_S_SKIPPED_TABLE')
+
+     Message: Table '%s'.'%s' was skipped since its definition is being
+     modified by concurrent DDL statement
+
+   *  Error: `1685' SQLSTATE: `HY000'
+     (`ER_INSIDE_TRANSACTION_PREVENTS_SWITCH_BINLOG_DIRECT')
+
+     Message: Cannot modify
+     @@session.binlog_direct_non_transactional_updates inside a
+     transaction
+
+   *  Error: `1686' SQLSTATE: `HY000'
+     (`ER_STORED_FUNCTION_PREVENTS_SWITCH_BINLOG_DIRECT')
+
+     Message: Cannot change the binlog direct flag inside a stored
+     function or trigger
+
+   *  Error: `1687' SQLSTATE: `42000' (`ER_SPATIAL_MUST_HAVE_GEOM_COL')
+
+     Message: A SPATIAL index may only contain a geometrical type column
+
+   *  Error: `1688' SQLSTATE: `HY000' (`ER_TOO_LONG_INDEX_COMMENT')
+
+     Message: Comment for index '%s' is too long (max = %lu)
+
+   *  Error: `1689' SQLSTATE: `HY000' (`ER_LOCK_ABORTED')
+
+     Message: Wait on a lock was aborted due to a pending exclusive lock
+
+   *  Error: `1690' SQLSTATE: `22003' (`ER_DATA_OUT_OF_RANGE')
+
+     Message: %s value is out of range in '%s'
+
+   *  Error: `1691' SQLSTATE: `HY000' (`ER_WRONG_SPVAR_TYPE_IN_LIMIT')
+
+     Message: A variable of a non-integer based type in LIMIT clause
+
+   *  Error: `1692' SQLSTATE: `HY000'
+     (`ER_BINLOG_UNSAFE_MULTIPLE_ENGINES_AND_SELF_LOGGING_ENGINE')
+
+     Message: Mixing self-logging and non-self-logging engines in a
+     statement is unsafe.
+
+   *  Error: `1693' SQLSTATE: `HY000'
+     (`ER_BINLOG_UNSAFE_MIXED_STATEMENT')
+
+     Message: Statement accesses nontransactional table as well as
+     transactional or temporary table, and writes to any of them.
+
+   *  Error: `1694' SQLSTATE: `HY000'
+     (`ER_INSIDE_TRANSACTION_PREVENTS_SWITCH_SQL_LOG_BIN')
+
+     Message: Cannot modify @@session.sql_log_bin inside a transaction
+
+   *  Error: `1695' SQLSTATE: `HY000'
+     (`ER_STORED_FUNCTION_PREVENTS_SWITCH_SQL_LOG_BIN')
+
+     Message: Cannot change the sql_log_bin inside a stored function or
+     trigger
+
+   *  Error: `1696' SQLSTATE: `HY000' (`ER_FAILED_READ_FROM_PAR_FILE')
+
+     Message: Failed to read from the .par file
+
+   *  Error: `1697' SQLSTATE: `HY000'
+     (`ER_VALUES_IS_NOT_INT_TYPE_ERROR')
+
+     Message: VALUES value for partition '%s' must have type INT
+
+   *  Error: `1698' SQLSTATE: `28000'
+     (`ER_ACCESS_DENIED_NO_PASSWORD_ERROR')
+
+     Message: Access denied for user '%s'@'%s'
+
+   *  Error: `1699' SQLSTATE: `HY000' (`ER_SET_PASSWORD_AUTH_PLUGIN')
+
+     Message: SET PASSWORD has no significance for users authenticating
+     via plugins
+
+   *  Error: `1700' SQLSTATE: `HY000' (`ER_GRANT_PLUGIN_USER_EXISTS')
+
+     Message: GRANT with IDENTIFIED WITH is illegal because the user
+     %-.*s already exists
+
+   *  Error: `1701' SQLSTATE: `42000' (`ER_TRUNCATE_ILLEGAL_FK')
+
+     Message: Cannot truncate a table referenced in a foreign key
+     constraint (%s)
+
+   *  Error: `1702' SQLSTATE: `HY000' (`ER_PLUGIN_IS_PERMANENT')
+
+     Message: Plugin '%s' is force_plus_permanent and can not be
+     unloaded
+
+   *  Error: `1703' SQLSTATE: `HY000'
+     (`ER_SLAVE_HEARTBEAT_VALUE_OUT_OF_RANGE_MIN')
+
+     Message: The requested value for the heartbeat period is less than
+     1 millisecond. The value is reset to 0, meaning that heartbeating
+     will effectively be disabled.
+
+   *  Error: `1704' SQLSTATE: `HY000'
+     (`ER_SLAVE_HEARTBEAT_VALUE_OUT_OF_RANGE_MAX')
+
+     Message: The requested value for the heartbeat period exceeds the
+     value of `slave_net_timeout' seconds. A sensible value for the
+     period should be less than the timeout.
+
+   *  Error: `1705' SQLSTATE: `HY000' (`ER_STMT_CACHE_FULL')
+
+     Message: Multi-row statements required more than
+     'max_binlog_stmt_cache_size' bytes of storage; increase this
+     mysqld variable and try again
+
+   *  Error: `1706' SQLSTATE: `HY000' (`ER_MULTI_UPDATE_KEY_CONFLICT')
+
+     Message: Primary key/partition key update is not allowed since the
+     table is updated both as '%s' and '%s'.
+
+   *  Error: `1707' SQLSTATE: `HY000' (`ER_TABLE_NEEDS_REBUILD')
+
+     Message: Table rebuild required. Please do "ALTER TABLE `%s`
+     FORCE" or dump/reload to fix it!
+
+   *  Error: `1708' SQLSTATE: `HY000' (`WARN_OPTION_BELOW_LIMIT')
+
+     Message: The value of '%s' should be no less than the value of '%s'
+
+   *  Error: `1709' SQLSTATE: `HY000' (`ER_INDEX_COLUMN_TOO_LONG')
+
+     Message: Index column size too large. The maximum column size is
+     %lu bytes.
+
+   *  Error: `1710' SQLSTATE: `HY000' (`ER_ERROR_IN_TRIGGER_BODY')
+
+     Message: Trigger '%s' has an error in its body: '%s'
+
+   *  Error: `1711' SQLSTATE: `HY000'
+     (`ER_ERROR_IN_UNKNOWN_TRIGGER_BODY')
+
+     Message: Unknown trigger has an error in its body: '%s'
+
+   *  Error: `1712' SQLSTATE: `HY000' (`ER_INDEX_CORRUPT')
+
+     Message: Index %s is corrupted
+
+   *  Error: `1713' SQLSTATE: `HY000' (`ER_UNDO_RECORD_TOO_BIG')
+
+     Message: Undo log record is too big.
+
+   *  Error: `1714' SQLSTATE: `HY000'
+     (`ER_BINLOG_UNSAFE_INSERT_IGNORE_SELECT')
+
+     Message: INSERT IGNORE... SELECT is unsafe because the order in
+     which rows are retrieved by the SELECT determines which (if any)
+     rows are ignored. This order cannot be predicted and may differ on
+     master and the slave.
+
+   *  Error: `1715' SQLSTATE: `HY000'
+     (`ER_BINLOG_UNSAFE_INSERT_SELECT_UPDATE')
+
+     Message: INSERT... SELECT... ON DUPLICATE KEY UPDATE is unsafe
+     because the order in which rows are retrieved by the SELECT
+     determines which (if any) rows are updated. This order cannot be
+     predicted and may differ on master and the slave.
+
+   *  Error: `1716' SQLSTATE: `HY000'
+     (`ER_BINLOG_UNSAFE_REPLACE_SELECT')
+
+     Message: REPLACE... SELECT is unsafe because the order in which
+     rows are retrieved by the SELECT determines which (if any) rows
+     are replaced. This order cannot be predicted and may differ on
+     master and the slave.
+
+   *  Error: `1717' SQLSTATE: `HY000'
+     (`ER_BINLOG_UNSAFE_CREATE_IGNORE_SELECT')
+
+     Message: CREATE... IGNORE SELECT is unsafe because the order in
+     which rows are retrieved by the SELECT determines which (if any)
+     rows are ignored. This order cannot be predicted and may differ on
+     master and the slave.
+
+   *  Error: `1718' SQLSTATE: `HY000'
+     (`ER_BINLOG_UNSAFE_CREATE_REPLACE_SELECT')
+
+     Message: CREATE... REPLACE SELECT is unsafe because the order in
+     which rows are retrieved by the SELECT determines which (if any)
+     rows are replaced. This order cannot be predicted and may differ
+     on master and the slave.
+
+   *  Error: `1719' SQLSTATE: `HY000' (`ER_BINLOG_UNSAFE_UPDATE_IGNORE')
+
+     Message: UPDATE IGNORE is unsafe because the order in which rows
+     are updated determines which (if any) rows are ignored. This order
+     cannot be predicted and may differ on master and the slave.
+
+   *  Error: `1720' SQLSTATE: `HY000' (`ER_PLUGIN_NO_UNINSTALL')
+
+     Message: Plugin '%s' is marked as not dynamically uninstallable.
+     You have to stop the server to uninstall it.
+
+   *  Error: `1721' SQLSTATE: `HY000' (`ER_PLUGIN_NO_INSTALL')
+
+     Message: Plugin '%s' is marked as not dynamically installable. You
+     have to stop the server to install it.
+
+   *  Error: `1722' SQLSTATE: `HY000'
+     (`ER_BINLOG_UNSAFE_WRITE_AUTOINC_SELECT')
+
+     Message: Statements writing to a table with an auto-increment
+     column after selecting from another table are unsafe because the
+     order in which rows are retrieved determines what (if any) rows
+     will be written. This order cannot be predicted and may differ on
+     master and the slave.
+
+   *  Error: `1723' SQLSTATE: `HY000'
+     (`ER_BINLOG_UNSAFE_CREATE_SELECT_AUTOINC')
+
+     Message: CREATE TABLE... SELECT... on a table with an
+     auto-increment column is unsafe because the order in which rows
+     are retrieved by the SELECT determines which (if any) rows are
+     inserted. This order cannot be predicted and may differ on master
+     and the slave.
+
+   *  Error: `1724' SQLSTATE: `HY000'
+     (`ER_BINLOG_UNSAFE_INSERT_TWO_KEYS')
+
+     Message: INSERT... ON DUPLICATE KEY UPDATE on a table with more
+     than one UNIQUE KEY is unsafe
+
+   *  Error: `1725' SQLSTATE: `HY000' (`ER_UNSUPPORTED_ENGINE')
+
+     Message: Storage engine '%s' does not support system tables.
+     [%s.%s]
+
+
+File: manual.info,  Node: error-messages-client,  Next: problems,  Prev: error-messages-server,  Up: error-handling
+
+C.4 Client Error Codes and Messages
+===================================
+
+Client error information comes from the following source files:
+
+   * The Error values and the symbols in parentheses correspond to
+     definitions in the `include/errmsg.h' MySQL source file.
+
+   * The Message values correspond to the error messages that are
+     listed in the `libmysql/errmsg.c' file.  `%d' and `%s' represent
+     numbers and strings, respectively, that are substituted into the
+     messages when they are displayed.
+
+Because updates are frequent, it is possible that those files will
+contain additional error information not listed here.
+
+   *  Error: `2000' (`CR_UNKNOWN_ERROR')
+
+     Message: Unknown MySQL error
+
+   *  Error: `2001' (`CR_SOCKET_CREATE_ERROR')
+
+     Message: Can't create UNIX socket (%d)
+
+   *  Error: `2002' (`CR_CONNECTION_ERROR')
+
+     Message: Can't connect to local MySQL server through socket '%s'
+     (%d)
+
+   *  Error: `2003' (`CR_CONN_HOST_ERROR')
+
+     Message: Can't connect to MySQL server on '%s' (%d)
+
+   *  Error: `2004' (`CR_IPSOCK_ERROR')
+
+     Message: Can't create TCP/IP socket (%d)
+
+   *  Error: `2005' (`CR_UNKNOWN_HOST')
+
+     Message: Unknown MySQL server host '%s' (%d)
+
+   *  Error: `2006' (`CR_SERVER_GONE_ERROR')
+
+     Message: MySQL server has gone away
+
+   *  Error: `2007' (`CR_VERSION_ERROR')
+
+     Message: Protocol mismatch; server version = %d, client version =
+     %d
+
+   *  Error: `2008' (`CR_OUT_OF_MEMORY')
+
+     Message: MySQL client ran out of memory
+
+   *  Error: `2009' (`CR_WRONG_HOST_INFO')
+
+     Message: Wrong host info
+
+   *  Error: `2010' (`CR_LOCALHOST_CONNECTION')
+
+     Message: Localhost via UNIX socket
+
+   *  Error: `2011' (`CR_TCP_CONNECTION')
+
+     Message: %s via TCP/IP
+
+   *  Error: `2012' (`CR_SERVER_HANDSHAKE_ERR')
+
+     Message: Error in server handshake
+
+   *  Error: `2013' (`CR_SERVER_LOST')
+
+     Message: Lost connection to MySQL server during query
+
+   *  Error: `2014' (`CR_COMMANDS_OUT_OF_SYNC')
+
+     Message: Commands out of sync; you can't run this command now
+
+   *  Error: `2015' (`CR_NAMEDPIPE_CONNECTION')
+
+     Message: Named pipe: %s
+
+   *  Error: `2016' (`CR_NAMEDPIPEWAIT_ERROR')
+
+     Message: Can't wait for named pipe to host: %s pipe: %s (%lu)
+
+   *  Error: `2017' (`CR_NAMEDPIPEOPEN_ERROR')
+
+     Message: Can't open named pipe to host: %s pipe: %s (%lu)
+
+   *  Error: `2018' (`CR_NAMEDPIPESETSTATE_ERROR')
+
+     Message: Can't set state of named pipe to host: %s pipe: %s (%lu)
+
+   *  Error: `2019' (`CR_CANT_READ_CHARSET')
+
+     Message: Can't initialize character set %s (path: %s)
+
+   *  Error: `2020' (`CR_NET_PACKET_TOO_LARGE')
+
+     Message: Got packet bigger than 'max_allowed_packet' bytes
+
+   *  Error: `2021' (`CR_EMBEDDED_CONNECTION')
+
+     Message: Embedded server
+
+   *  Error: `2022' (`CR_PROBE_SLAVE_STATUS')
+
+     Message: Error on SHOW SLAVE STATUS:
+
+   *  Error: `2023' (`CR_PROBE_SLAVE_HOSTS')
+
+     Message: Error on SHOW SLAVE HOSTS:
+
+   *  Error: `2024' (`CR_PROBE_SLAVE_CONNECT')
+
+     Message: Error connecting to slave:
+
+   *  Error: `2025' (`CR_PROBE_MASTER_CONNECT')
+
+     Message: Error connecting to master:
+
+   *  Error: `2026' (`CR_SSL_CONNECTION_ERROR')
+
+     Message: SSL connection error: %s
+
+   *  Error: `2027' (`CR_MALFORMED_PACKET')
+
+     Message: Malformed packet
+
+   *  Error: `2028' (`CR_WRONG_LICENSE')
+
+     Message: This client library is licensed only for use with MySQL
+     servers having '%s' license
+
+   *  Error: `2029' (`CR_NULL_POINTER')
+
+     Message: Invalid use of null pointer
+
+   *  Error: `2030' (`CR_NO_PREPARE_STMT')
+
+     Message: Statement not prepared
+
+   *  Error: `2031' (`CR_PARAMS_NOT_BOUND')
+
+     Message: No data supplied for parameters in prepared statement
+
+   *  Error: `2032' (`CR_DATA_TRUNCATED')
+
+     Message: Data truncated
+
+   *  Error: `2033' (`CR_NO_PARAMETERS_EXISTS')
+
+     Message: No parameters exist in the statement
+
+   *  Error: `2034' (`CR_INVALID_PARAMETER_NO')
+
+     Message: Invalid parameter number
+
+   *  Error: `2035' (`CR_INVALID_BUFFER_USE')
+
+     Message: Can't send long data for non-string/non-binary data types
+     (parameter: %d)
+
+   *  Error: `2036' (`CR_UNSUPPORTED_PARAM_TYPE')
+
+     Message: Using unsupported buffer type: %d (parameter: %d)
+
+   *  Error: `2037' (`CR_SHARED_MEMORY_CONNECTION')
+
+     Message: Shared memory: %s
+
+   *  Error: `2038' (`CR_SHARED_MEMORY_CONNECT_REQUEST_ERROR')
+
+     Message: Can't open shared memory; client could not create request
+     event (%lu)
+
+   *  Error: `2039' (`CR_SHARED_MEMORY_CONNECT_ANSWER_ERROR')
+
+     Message: Can't open shared memory; no answer event received from
+     server (%lu)
+
+   *  Error: `2040' (`CR_SHARED_MEMORY_CONNECT_FILE_MAP_ERROR')
+
+     Message: Can't open shared memory; server could not allocate file
+     mapping (%lu)
+
+   *  Error: `2041' (`CR_SHARED_MEMORY_CONNECT_MAP_ERROR')
+
+     Message: Can't open shared memory; server could not get pointer to
+     file mapping (%lu)
+
+   *  Error: `2042' (`CR_SHARED_MEMORY_FILE_MAP_ERROR')
+
+     Message: Can't open shared memory; client could not allocate file
+     mapping (%lu)
+
+   *  Error: `2043' (`CR_SHARED_MEMORY_MAP_ERROR')
+
+     Message: Can't open shared memory; client could not get pointer to
+     file mapping (%lu)
+
+   *  Error: `2044' (`CR_SHARED_MEMORY_EVENT_ERROR')
+
+     Message: Can't open shared memory; client could not create %s
+     event (%lu)
+
+   *  Error: `2045' (`CR_SHARED_MEMORY_CONNECT_ABANDONED_ERROR')
+
+     Message: Can't open shared memory; no answer from server (%lu)
+
+   *  Error: `2046' (`CR_SHARED_MEMORY_CONNECT_SET_ERROR')
+
+     Message: Can't open shared memory; cannot send request event to
+     server (%lu)
+
+   *  Error: `2047' (`CR_CONN_UNKNOW_PROTOCOL')
+
+     Message: Wrong or unknown protocol
+
+   *  Error: `2048' (`CR_INVALID_CONN_HANDLE')
+
+     Message: Invalid connection handle
+
+   *  Error: `2049' (`CR_SECURE_AUTH')
+
+     Message: Connection using old (pre-4.1.1) authentication protocol
+     refused (client option 'secure_auth' enabled)
+
+   *  Error: `2050' (`CR_FETCH_CANCELED')
+
+     Message: Row retrieval was canceled by mysql_stmt_close() call
+
+   *  Error: `2051' (`CR_NO_DATA')
+
+     Message: Attempt to read column without prior row fetch
+
+   *  Error: `2052' (`CR_NO_STMT_METADATA')
+
+     Message: Prepared statement contains no metadata
+
+   *  Error: `2053' (`CR_NO_RESULT_SET')
+
+     Message: Attempt to read a row while there is no result set
+     associated with the statement
+
+   *  Error: `2054' (`CR_NOT_IMPLEMENTED')
+
+     Message: This feature is not implemented yet
+
+   *  Error: `2055' (`CR_SERVER_LOST_EXTENDED')
+
+     Message: Lost connection to MySQL server at '%s', system error: %d
+
+   *  Error: `2056' (`CR_STMT_CLOSED')
+
+     Message: Statement closed indirectly because of a preceeding %s()
+     call
+
+   *  Error: `2057' (`CR_NEW_STMT_METADATA')
+
+     Message: The number of columns in the result set differs from the
+     number of bound buffers. You must reset the statement, rebind the
+     result set columns, and execute the statement again
+
+   *  Error: `2058' (`CR_ALREADY_CONNECTED')
+
+     Message: This handle is already connected. Use a separate handle
+     for each connection.
+
+   *  Error: `2059' (`CR_AUTH_PLUGIN_CANNOT_LOAD')
+
+     Message: Authentication plugin '%s' cannot be loaded: %s
+
+
+File: manual.info,  Node: problems,  Prev: error-messages-client,  Up: error-handling
+
+

@@ -1,8 +1,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "fxmy_read.h"
 #include "fxmy_common.h"
+#include "fxmy_core.h"
+#include "fxmy_read.h"
 
 uint8_t
 fxmy_read_u8(struct fxmy_xfer_buffer_t *buffer)
@@ -57,7 +58,9 @@ fxmy_read_lcb(struct fxmy_xfer_buffer_t *buffer)
         value = ((uint64_t)ptr[1])
             | ((uint64_t)ptr[2] << 8);
     case 251:
-        /* 251 signifies a NULL column value and will never be read. */
+        /*
+         * 251 signifies a NULL column value and will never be read.
+         */
     default:
         ++buffer->cursor;
         value = (uint64_t)byte;
