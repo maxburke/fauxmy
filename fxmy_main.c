@@ -343,11 +343,6 @@ fxmy_worker(struct fxmy_connection_t *conn)
     struct fxmy_odbc_t odbc_storage;
     struct fxmy_odbc_t *odbc = &odbc_storage;
 
-<<<<<<< HEAD
-    VERIFY(SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &environment_handle) == SQL_SUCCESS);
-    VERIFY(SQLAllocHandle(SQL_HANDLE_DBC, environment_handle, &database_connection_handle) == SQL_SUCCESS);
-    VERIFY(SQLDriverConnect(database_connection_handle, NULL, context->connection_string, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_NOPROMPT) == SQL_SUCCESS);
-=======
     conn->odbc = odbc;
 
     memset(odbc, 0, sizeof *odbc);
@@ -355,7 +350,6 @@ fxmy_worker(struct fxmy_connection_t *conn)
     VERIFY_ODBC(SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &odbc->environment_handle), SQL_HANDLE_ENV, odbc->environment_handle);
     VERIFY_ODBC(SQLSetEnvAttr(odbc->environment_handle, SQL_ATTR_ODBC_VERSION, (SQLPOINTER)SQL_OV_ODBC3, SQL_IS_UINTEGER), SQL_HANDLE_ENV, odbc->environment_handle);
     VERIFY_ODBC(SQLAllocHandle(SQL_HANDLE_DBC, odbc->environment_handle, &odbc->database_connection_handle), SQL_HANDLE_ENV, odbc->environment_handle);
->>>>>>> 8d6f2f55e94f571dda71400e8cd23019dea56b70
 
     VERIFY(!fxmy_send_handshake(conn));
     VERIFY(!fxmy_recv_auth_packet(conn));
