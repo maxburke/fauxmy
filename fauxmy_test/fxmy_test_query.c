@@ -9,7 +9,7 @@ static const char *test_queries[] = {
     "SELECT option_name, option_value FROM wp_options WHERE autoload = 'yes'",
     "SELECT option_name, option_value FROM wp_options",
     "SELECT option_value FROM wp_options WHERE option_name = 'siteurl'",
-    "SELECT foo FROM bar WHERE baz = 'hello how are you\' today'",
+    "SELECT foo FROM bar WHERE baz = 'hello how are you\\' today'",
     "DESCRIBE wp_users;"
 };
 
@@ -32,7 +32,7 @@ test_next_token(void)
     const char *expected0[] = { "SELECT", "option_name", ",", "option_value", "FROM", "wp_options", "WHERE", "autoload", "=", "'yes'" };
     const char *expected1[] = { "SELECT", "option_name", ",", "option_value", "FROM", "wp_options" };
     const char *expected2[] = { "SELECT", "option_value", "FROM", "wp_options", "WHERE", "option_name", "=", "'siteurl'" };
-    const char *expected3[] = { "SELECT", "foo", "FROM", "bar", "WHERE", "baz", "=", "'hello how are you\' today'" };
+    const char *expected3[] = { "SELECT", "foo", "FROM", "bar", "WHERE", "baz", "=", "'hello how are you\\' today'" };
     const char *expected4[] = { "DESCRIBE", "wp_users", ";" };
 
     struct expected_tokens_t expected_tokens[FXMY_ARRAY_COUNT(test_queries)];

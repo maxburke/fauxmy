@@ -83,6 +83,21 @@ NO_TOKEN:                                                       \
     *end_ptr = NULL;                                            \
     return NULL;
 
+#define FXMY_FIND_END_OF_STRING_BODY(type)                      \
+    type c;                                                     \
+    type prev;                                                  \
+                                                                \
+    prev = *start;                                              \
+    while ((c = *++start) != 0)                                 \
+    {                                                           \
+        if (c == string_char && prev != C('\\'))                \
+            return start + 1;                                   \
+                                                                \
+        prev = c;                                               \
+    }                                                           \
+                                                                \
+    return start;                                               \
+
 #ifdef _MSC_VER
 
     static fxmy_char
@@ -191,14 +206,7 @@ NO_TOKEN:                                                       \
     const fxmy_char *
     fxmy_ffind_end_of_string(const fxmy_char *start, fxmy_char string_char)
     {
-        fxmy_char c;
-        while ((c = *++start) != 0)
-        {
-            if (c == string_char)
-                return start;
-        }
-
-        return NULL;
+        FXMY_FIND_END_OF_STRING_BODY(fxmy_char)
     }
 
     const fxmy_char *
@@ -248,14 +256,7 @@ fxmy_consume_whitespace(const char *ptr)
 const char *
 fxmy_find_end_of_string(const char *start, char string_char)
 {
-    char c;
-    while ((c = *++start) != 0)
-    {
-        if (c == string_char)
-            return start;
-    }
-
-    return NULL;
+    FXMY_FIND_END_OF_STRING_BODY(char)
 }
 
 const char *
