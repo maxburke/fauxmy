@@ -53,7 +53,7 @@ fxmy_begin_send(struct fxmy_connection_t *conn, const void *data, size_t size)
         dest[2] = (unsigned char)((packet_size >> 16) & 0xFF);
         dest[3] = (unsigned char)packet_number;
 
-        memcpy(dest + 4, src, packet_size);
+        memmove(dest + 4, src, packet_size);
         dest += packet_size + 4;
         src += packet_size;
     }

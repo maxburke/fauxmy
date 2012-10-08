@@ -102,7 +102,7 @@ fxmy_serialize_terminated_string(struct fxmy_xfer_buffer_t *buffer, const char *
     string_bytes = strlen(value) + 1;
 
     fxmy_ensure_buffer_room(buffer, string_bytes);
-    memcpy((char *)buffer->memory + buffer->cursor, value, string_bytes);
+    memmove((char *)buffer->memory + buffer->cursor, value, string_bytes);
     buffer->cursor += string_bytes;
 }
 
@@ -117,7 +117,7 @@ fxmy_serialize_string(struct fxmy_xfer_buffer_t *buffer, const char *value)
     string_length = strlen(value);
 
     fxmy_ensure_buffer_room(buffer, string_length);
-    memcpy((char *)buffer->memory + buffer->cursor, value, string_length);
+    memmove((char *)buffer->memory + buffer->cursor, value, string_length);
     buffer->cursor += string_length;
 }
 

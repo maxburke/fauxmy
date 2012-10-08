@@ -78,7 +78,7 @@ fxmy_read_lcs(struct fxmy_xfer_buffer_t *buffer)
     size_t size = (size_t)fxmy_read_lcb(buffer);
 
     memory = calloc(size + 1, 1);
-    memcpy(buffer->memory, ptr, size);
+    memmove(buffer->memory, ptr, size);
     buffer->cursor += size;
     VERIFY(buffer->cursor <= buffer->size);
 
@@ -91,7 +91,7 @@ fxmy_read_string(struct fxmy_xfer_buffer_t *buffer)
     const char *ptr = (const char *)buffer->memory + buffer->cursor;
     size_t size = strlen(ptr) + 1;
     char *string = calloc(size, 1);
-    memcpy(string, ptr, size);
+    memmove(string, ptr, size);
 
     buffer->cursor += size;
     VERIFY(buffer->cursor <= buffer->size);
