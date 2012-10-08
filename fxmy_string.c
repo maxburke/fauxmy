@@ -46,6 +46,9 @@
     const type *end;                                            \
     type c;                                                     \
                                                                 \
+    if (str == NULL)                                            \
+        goto NO_TOKEN;                                          \
+                                                                \
     start = consume_whitespace_func(str);                       \
     end = NULL;                                                 \
                                                                 \
