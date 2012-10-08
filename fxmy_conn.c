@@ -10,6 +10,7 @@
 #include "fxmy_common.h"
 #include "fxmy_conn.h"
 #include "fxmy_core.h"
+#include "fxmy_mem.h"
 
 /* 
  * Before the data can be sent it has to be broken up into packets that are
@@ -39,7 +40,7 @@ fxmy_begin_send(struct fxmy_connection_t *conn, const void *data, size_t size)
 
     VERIFY(num_packets <= 256);
 
-    dest = malloc(alloc_size);
+    dest = fxmy_malloc(alloc_size);
     buffer->memory = dest;
     buffer->size = alloc_size;
     buffer->cursor = 0;
@@ -106,7 +107,7 @@ fxmy_begin_recv(struct fxmy_connection_t *conn)
      * always be a null terminator and we can (relatively) safely use the C
      * string operators.
      */
-    conn->xfer_buffer.memory = malloc(packet_size + 1);
+    conn->xfer_buffer.memory = fxmy_malloc(packet_size + 1);
     conn->xfer_buffer.size = packet_size;
 }
 

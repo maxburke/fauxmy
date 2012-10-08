@@ -14,6 +14,7 @@
 #include "fxmy_conn.h"
 #include "fxmy_core.h"
 #include "fxmy_main.h"
+#include "fxmy_mem.h"
 #include "fxmy_read.h"
 #include "fxmy_write.h"
 
@@ -81,7 +82,7 @@ fxmy_add_new_connection(struct fxmy_connection_t *conn, HANDLE thread_handle)
         if (current_connection->done)
         {
             WaitForSingleObject(context_array[i].thread_handle, INFINITE);
-            free(current_connection);
+            fxmy_free(current_connection);
 
             memset(&context_array[i], 0, sizeof(struct fxmy_connection_thread_info_t));
             --num_active_context_array_entries;
@@ -95,7 +96,7 @@ fxmy_add_new_connection(struct fxmy_connection_t *conn, HANDLE thread_handle)
     {
         const size_t ALLOCATION_DELTA = 10;
         const size_t new_num_entries = num_context_array_entries + ALLOCATION_DELTA;
-        context_array = realloc(context_array, new_num_entries * sizeof(struct fxmy_connection_thread_info_t));
+        context_array = fxmy_realloc(context_array, new_num_entries * sizeof(struct fxmy_connection_thread_info_t));
 
         /*
          * The code below that inserts the connection into the connection array
@@ -126,7 +127,7 @@ fxmy_add_new_connection(struct fxmy_connection_t *conn, HANDLE thread_handle)
 static struct fxmy_connection_t *
 fxmy_create_connection(SOCKET new_connection, const fxmy_char *connection_string)
 {
-    struct fxmy_connection_t *conn = calloc(1, sizeof(struct fxmy_connection_t));
+    struct fxmy_connection_t *conn = fxmy_calloc(1, sizeof(struct fxmy_connection_t));
     conn->socket = new_connection;
     conn->connection_string = connection_string;
 

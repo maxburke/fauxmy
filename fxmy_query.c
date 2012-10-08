@@ -2,6 +2,7 @@
 
 #include "fxmy_common.h"
 #include "fxmy_core.h"
+#include "fxmy_mem.h"
 #include "fxmy_odbc.h"
 #include "fxmy_query.h"
 #include "fxmy_string.h"
@@ -71,7 +72,7 @@ fxmy_describe(struct fxmy_connection_t *conn, const fxmy_char *query)
     fxmy_fnext_token(&describe_end, query);
     table_begin = fxmy_fnext_token(&table_end, describe_end);
 
-    wide_buf = calloc(1024, sizeof(fxmy_char));
+    wide_buf = fxmy_calloc(1024, sizeof(fxmy_char));
 
     fxmy_fstrncpy(wide_buf, columns, 1024);
     fxmy_fstrncat(wide_buf, 1024, table_begin);
@@ -113,7 +114,7 @@ cleanup:
     VERIFY_ODBC(SQLFreeHandle(SQL_HANDLE_STMT, query_handle), SQL_HANDLE_DBC, odbc->database_connection_handle);
 
 column_query_failed:
-    free(wide_buf);
+    fxmy_free(wide_buf);
 
     return 0;
 }
@@ -226,7 +227,7 @@ fxmy_rearrange_limit(fxmy_char *query)
      * space for the string itself, a space character, and a null
      * terminator.
      */
-    num_storage = calloc(number_string_length + 2, sizeof(fxmy_char));
+    num_storage = fxmy_calloc(number_string_length + 2, sizeof(fxmy_char));
     memmove(num_storage, num_begin, number_string_length * sizeof(fxmy_char));
 
     /*
@@ -257,7 +258,7 @@ fxmy_rearrange_limit(fxmy_char *query)
      * At this point our num_storage buffer is no longer needed and can be
      * returned to the general heap.
      */
-    free(num_storage);
+    fxmy_free(num_storage);
     return 0;
 }
 
@@ -275,7 +276,7 @@ fxmy_handle_query(struct fxmy_connection_t *conn, uint8_t *query_string, size_t 
     query = (const char *)query_string;
     odbc = conn->odbc;
 
-    wide_query = calloc(query_num_bytes + 1, sizeof(fxmy_char));
+    wide_query = fxmy_calloc(query_num_bytes + 1, sizeof(fxmy_char));
     fxmy_fstrfromchar(wide_query, query, query_num_bytes);
     wide_query[query_num_bytes] = 0;
 
@@ -338,6 +339,6 @@ fxmy_handle_query(struct fxmy_connection_t *conn, uint8_t *query_string, size_t 
 
     */
 
-    free(wide_query);
+    fxmy_free(wide_query);
     return 0;
 }

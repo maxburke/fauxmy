@@ -2,6 +2,8 @@
 #include <stdarg.h>
 
 #include "fxmy_core.h"
+#include "fxmy_test.h"
+#include "fxmy_mem.h"
 
 #ifdef _MSC_VER
 #define WIN32_LEAN_AND_MEAN
@@ -89,11 +91,20 @@ test_string(void);
 int
 main(void)
 {
+    int num_allocations;
+
     if (IsDebuggerPresent())
         fxmy_test_set_break_on_fail(1);
 
+    num_allocations = fxmy_get_num_allocations();
+
     test_query();
+
+    TEST(fxmy_get_num_allocations() == num_allocations);
+
     test_string();
+
+    TEST(fxmy_get_num_allocations() == num_allocations);
 
     fxmy_test_print("%d / %d failed\n", fxmy_num_tests_failed, fxmy_num_tests_run);
 

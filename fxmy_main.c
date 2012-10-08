@@ -6,6 +6,7 @@
 #include "fxmy_core.h"
 #include "fxmy_error.h"
 #include "fxmy_main.h"
+#include "fxmy_mem.h"
 #include "fxmy_odbc.h"
 #include "fxmy_query.h"
 #include "fxmy_read.h"
@@ -195,7 +196,7 @@ fxmy_parse_auth_packet(struct fxmy_connection_t *conn)
     if (conn->client_flags & CLIENT_CONNECT_WITH_DB)
     {
         size_t size = strlen(buffer->memory) + 1;
-        conn->database = calloc(size, sizeof(fxmy_char));
+        conn->database = fxmy_calloc(size, sizeof(fxmy_char));
         fxmy_fstrfromchar(conn->database, buffer->memory, size);
         return fxmy_connect(conn);
     }
@@ -276,8 +277,8 @@ fxmy_handle_command_packet(struct fxmy_connection_t *conn)
 
     case COM_INIT_DB:
         if (conn->database)
-            free(conn->database);
-        conn->database = calloc(packet_size_less_command + 1, sizeof(fxmy_char));
+            fxmy_free(conn->database);
+        conn->database = fxmy_calloc(packet_size_less_command + 1, sizeof(fxmy_char));
         fxmy_fstrfromchar(conn->database, (const char *)ptr, packet_size_less_command);
         return fxmy_connect(conn);
 

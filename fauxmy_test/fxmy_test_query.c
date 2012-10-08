@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "fxmy_core.h"
+#include "fxmy_mem.h"
 #include "fxmy_query.h"
 #include "fxmy_string.h"
 #include "fxmy_test.h"
@@ -101,13 +102,13 @@ test_rearrange_limit(void)
 
         TEST(test_string_length == fxmy_fstrlen(limit_expected_strings[i]));
 
-        test_buffer = calloc(test_string_length_incl_null, sizeof(fxmy_char));
+        test_buffer = fxmy_calloc(test_string_length_incl_null, sizeof(fxmy_char));
         memcpy(test_buffer, test_string, test_string_length * sizeof(fxmy_char));
 
         TEST(!fxmy_rearrange_limit(test_buffer));
         TEST(memcmp(test_buffer, expected_string, test_string_length_incl_null) == 0);
 
-        free(test_buffer);
+        fxmy_free(test_buffer);
     }
 }
 

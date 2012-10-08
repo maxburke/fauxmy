@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "fxmy_common.h"
+#include "fxmy_mem.h"
 #include "fxmy_write.h"
 
 static void
@@ -14,7 +15,7 @@ fxmy_ensure_buffer_room(struct fxmy_xfer_buffer_t *buffer, size_t size)
     if (size < headroom)
         return;
 
-    buffer->memory = realloc(buffer->memory, new_size);
+    buffer->memory = fxmy_realloc(buffer->memory, new_size);
     buffer->size = new_size;
 }
 
