@@ -5,6 +5,10 @@
 #include "fxmy_string.h"
 #include "fxmy_test.h"
 
+#ifndef MAX
+#define MAX(a, b) ((a)>(b)?(a):(b))
+#endif
+
 static const char *test_queries[] = {
     "SELECT option_name, option_value FROM wp_options WHERE autoload = 'yes'",
     "SELECT option_name, option_value FROM wp_options",
@@ -69,8 +73,14 @@ test_next_token(void)
 static void
 test_rearrange_limit(void)
 {
-    const char *test_query = "SELECT option_name, option_value FROM wp_options WHERE autoload = 'yes' LIMIT 100";
+    const fxmy_char test[] =     C("SELECT option_name, option_value FROM wp_options WHERE autoload = 'yes' LIMIT 100");
+    const fxmy_char expected[] = C("SELECT TOP  100 option_name, option_value FROM wp_options WHERE autoload = 'yes' ");
+    fxmy_char test_buffer[FXMY_ARRAY_COUNT(test)];
 
+    memcpy(test_buffer, test, sizeof test);
+    TEST(sizeof test == sizeof expected);
+    TEST(fxmy_rearrange_limit(test_buffer));
+    TEST(memcmp(test_buffer, expected, MAX(sizeof expected, sizeof test_buffer)) == 0);
 }
 
 void

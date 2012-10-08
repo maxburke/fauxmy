@@ -119,8 +119,12 @@ column_query_failed:
 }
 
 static int
-fxmy_show_tables(struct fxmy_connection_t *conn, const char *query)
+fxmy_show_tables(struct fxmy_connection_t *conn, const fxmy_char *query)
 {
+    UNUSED(conn);
+    UNUSED(query);
+    return 0;
+    /*
     const fxmy_char *wildcard_begin;
     fxmy_char *tables_buf;
     fxmy_char *wildcard_buf;
@@ -133,6 +137,7 @@ fxmy_show_tables(struct fxmy_connection_t *conn, const char *query)
         return 0;
         //wildcard_begin = fxmy_next_token(
     }
+    */
 }
 
 /*
@@ -302,7 +307,7 @@ fxmy_handle_query(struct fxmy_connection_t *conn, uint8_t *query_string, size_t 
              * fxmy_rearrange_limit returns an error condition if it can't
              * find the appropriate bounds of the LIMIT clause.
              */
-            if (fxmy_rearrange_limit(conn, wide_query))
+            if (fxmy_rearrange_limit(wide_query))
             {
                 conn->status = fxmy_get_status(FXMY_ERROR_DEFAULT);
                 return 0;
