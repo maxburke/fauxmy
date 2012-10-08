@@ -227,7 +227,7 @@ fxmy_rearrange_limit(fxmy_char *query)
      * terminator.
      */
     num_storage = calloc(number_string_length + 2, sizeof(fxmy_char));
-    memmove(num_storage, num_begin, number_string_length);
+    memmove(num_storage, num_begin, number_string_length * sizeof(fxmy_char));
 
     /*
      * The number string has a space appended as we need to separate

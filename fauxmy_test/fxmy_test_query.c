@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdlib.h>
 
 #include "fxmy_core.h"
 #include "fxmy_query.h"
@@ -70,17 +71,44 @@ test_next_token(void)
     }
 }
 
+static const fxmy_char *limit_test_strings[] = {
+    C("SELECT option_name, option_value FROM wp_options WHERE autoload = 'yes' LIMIT 100"),
+    C("SELECT option_name, option_value FROM wp_options WHERE autoload = 'yes' LIMIT 100;"),
+};
+
+static const fxmy_char *limit_expected_strings[] = {
+    C("SELECT TOP  100 option_name, option_value FROM wp_options WHERE autoload = 'yes' "),
+    C("SELECT TOP  100 option_name, option_value FROM wp_options WHERE autoload = 'yes' ;"),
+};
+
 static void
 test_rearrange_limit(void)
 {
-    const fxmy_char test[] =     C("SELECT option_name, option_value FROM wp_options WHERE autoload = 'yes' LIMIT 100");
-    const fxmy_char expected[] = C("SELECT TOP  100 option_name, option_value FROM wp_options WHERE autoload = 'yes' ");
-    fxmy_char test_buffer[FXMY_ARRAY_COUNT(test)];
+    size_t i;
 
-    memcpy(test_buffer, test, sizeof test);
-    TEST(sizeof test == sizeof expected);
-    TEST(fxmy_rearrange_limit(test_buffer));
-    TEST(memcmp(test_buffer, expected, MAX(sizeof expected, sizeof test_buffer)) == 0);
+    for (i = 0; i < FXMY_ARRAY_COUNT(limit_test_strings); ++i)
+    {
+        const fxmy_char *test_string;
+        const fxmy_char *expected_string;
+        fxmy_char *test_buffer;
+        size_t test_string_length;
+        size_t test_string_length_incl_null;
+        
+        test_string = limit_test_strings[i];
+        expected_string = limit_expected_strings[i];
+        test_string_length = fxmy_fstrlen(test_string);
+        test_string_length_incl_null = test_string_length + 1;
+
+        TEST(test_string_length == fxmy_fstrlen(limit_expected_strings[i]));
+
+        test_buffer = calloc(test_string_length_incl_null, sizeof(fxmy_char));
+        memcpy(test_buffer, test_string, test_string_length * sizeof(fxmy_char));
+
+        TEST(!fxmy_rearrange_limit(test_buffer));
+        TEST(memcmp(test_buffer, expected_string, test_string_length_incl_null) == 0);
+
+        free(test_buffer);
+    }
 }
 
 void

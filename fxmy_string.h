@@ -32,9 +32,9 @@
     int
     fxmy_fstrnicmp(const fxmy_char *a, const fxmy_char *b, size_t length);
 #else
-    #define fxmy_strstr strstr
-    #define fxmy_strlen strlen
-    #define fxmy_strcpy strncpy
+    #define fxmy_fstrstr strstr
+    #define fxmy_fstrlen strlen
+    #define fxmy_fstrcpy strncpy
 
     /*
      * This is unsafe as strfromchar should ensure that the destination is 
