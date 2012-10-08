@@ -140,8 +140,8 @@ fxmy_show_tables(struct fxmy_connection_t *conn, const char *query)
  * query whereas MSSQL uses a "SELECT TOP x ..." style query. This function,
  * fxmy_rearrange_limit, converts the former to the latter.
  */
-static int
-fxmy_rearrange_limit(struct fxmy_connection_t *conn, fxmy_char *query)
+int
+fxmy_rearrange_limit(fxmy_char *query)
 {
     const fxmy_char *limit_begin;
     const fxmy_char *limit_end;
@@ -205,10 +205,7 @@ fxmy_rearrange_limit(struct fxmy_connection_t *conn, fxmy_char *query)
      * If we can't find a limit_begin, bail.
      */
     if (!limit_begin)
-    {
-        conn->status = fxmy_get_status(FXMY_ERROR_DEFAULT);
         return 1;
-    }
 
     /*
      * Determine the bounds and length of the number string.
@@ -300,8 +297,17 @@ fxmy_handle_query(struct fxmy_connection_t *conn, uint8_t *query_string, size_t 
          */
 
         if (fxmy_fstristr(wide_query, C("LIMIT ")))
+        {
+            /*
+             * fxmy_rearrange_limit returns an error condition if it can't
+             * find the appropriate bounds of the LIMIT clause.
+             */
             if (fxmy_rearrange_limit(conn, wide_query))
+            {
+                conn->status = fxmy_get_status(FXMY_ERROR_DEFAULT);
                 return 0;
+            }
+        }
 
         VERIFY_ODBC(SQLAllocHandle(SQL_HANDLE_STMT, odbc->database_connection_handle, &query_handle), SQL_HANDLE_DBC, odbc->database_connection_handle);
         status = fxmy_verify_and_log_odbc(SQLExecDirect(query_handle, wide_query, SQL_NTS), SQL_HANDLE_STMT, query_handle);
