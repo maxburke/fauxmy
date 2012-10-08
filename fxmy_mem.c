@@ -42,13 +42,13 @@ void *
 fxmy_realloc(void *ptr, size_t size)
 {
     HANDLE heap_handle;
-    void *mem;
 
     heap_handle = GetProcessHeap();
 
-    mem = HeapReAlloc(heap_handle, HEAP_GENERATE_EXCEPTIONS, ptr, size);
+    if (ptr != NULL)
+        return HeapReAlloc(heap_handle, HEAP_GENERATE_EXCEPTIONS, ptr, size);
 
-    return mem;
+    return fxmy_malloc(size);
 }
 
 void
