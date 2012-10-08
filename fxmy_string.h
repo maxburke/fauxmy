@@ -8,6 +8,10 @@
 #include "fxmy_string_type.h"
 
 #ifdef _MSC_VER
+    #pragma warning(push, 0)
+    #include <wchar.h>
+    #pragma warning(pop)
+
     #define fxmy_fstrstr wcsstr
     #define fxmy_fstrlen wcslen
     #define fxmy_fstrncpy wcsncpy
@@ -15,9 +19,6 @@
 
     fxmy_char *
     fxmy_fstrfromchar(fxmy_char *dest, const char *src, size_t num_chars);
-
-    fxmy_char *
-    fxmy_fstrncatfromchar(fxmy_char *dest, size_t size, const char *src, size_t num_chars);
 
     size_t
     fxmy_fstrlenfromchar(const char *src, size_t size);
@@ -47,13 +48,16 @@
      */
     /* #define fxmy_strncatfromchar strncat */
 
-    #define fxmy_snprintf snprintf
+    #define fxmy_fsnprintf snprintf
     #define fxmy_fstristr fxmy_stristr
     #define fxmy_fnext_token fxmy_next_token
 
     size_t
     fxmy_strlenfromchar(const char *src, size_t size);
 #endif
+
+fxmy_char *
+fxmy_fstrncat(fxmy_char *dest, size_t size, const fxmy_char *src);
 
 const char *
 fxmy_stristr(const char *haystack, const char * const needle);

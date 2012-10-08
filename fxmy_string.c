@@ -162,27 +162,12 @@ NO_TOKEN:                                                       \
     }
 
     fxmy_char *
-    fxmy_fstrncatfromchar(fxmy_char *dest, size_t size, const char *src, size_t num_chars)
+    fxmy_fstrncat(fxmy_char *dest, size_t size, const fxmy_char *src)
     {
-        fxmy_char *p;
-        size_t i;
-        size_t amount_to_copy;
-
-        for (i = 0, p = dest; i < (size - 1) && *p != 0; ++i, ++p)
-            ;
-
-        if (i == (size - 1))
-        {
-            dest[size - 1] = 0;
-            return NULL;
-        }
-
-        amount_to_copy = MIN(size - i, num_chars);
-
-        p = fxmy_fstrfromchar(dest + i, src, amount_to_copy);
+        wcsncat(dest, src, size);
 
         dest[size - 1] = 0;
-        return p;
+        return dest;
     }
 
     const fxmy_char *
@@ -233,6 +218,15 @@ NO_TOKEN:                                                       \
     }
 
 
+#else
+    fxmy_char *
+    fxmy_fstrncat(fxmy_char *dest, size_t size, const fxmy_char *src)
+    {
+        strncat(dest, src, size);
+
+        dest[size - 1] = 0;
+        return dest;
+    }
 #endif
 
 const char *

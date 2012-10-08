@@ -55,26 +55,26 @@ fxmy_destroy_query_string(fxmy_char *query)
 #endif
 
 static int
-fxmy_describe(struct fxmy_connection_t *conn, const char *query)
+fxmy_describe(struct fxmy_connection_t *conn, const fxmy_char *query)
 {
     SQLHANDLE query_handle;
     struct fxmy_odbc_t *odbc;
     const struct fxmy_status_t *status;
-    const char *describe_end;
-    const char *table_begin;
-    const char *table_end;
+    const fxmy_char *describe_end;
+    const fxmy_char *table_begin;
+    const fxmy_char *table_end;
     fxmy_char *wide_buf;
-    fxmy_char columns[] = C("sp_columns ");
+    const fxmy_char columns[] = C("sp_columns ");
     
     odbc = conn->odbc;
 
-    fxmy_next_token(&describe_end, query);
-    table_begin = fxmy_next_token(&table_end, describe_end);
+    fxmy_fnext_token(&describe_end, query);
+    table_begin = fxmy_fnext_token(&table_end, describe_end);
 
     wide_buf = calloc(1024, sizeof(fxmy_char));
 
     fxmy_fstrncpy(wide_buf, columns, 1024);
-    fxmy_fstrncatfromchar(wide_buf, 1024, table_begin, table_end - table_begin);
+    fxmy_fstrncat(wide_buf, 1024, table_begin);
 
     VERIFY_ODBC(SQLAllocHandle(
             SQL_HANDLE_STMT,
@@ -116,6 +116,23 @@ column_query_failed:
     free(wide_buf);
 
     return 0;
+}
+
+static int
+fxmy_show_tables(struct fxmy_connection_t *conn, const char *query)
+{
+    const fxmy_char *wildcard_begin;
+    fxmy_char *tables_buf;
+    fxmy_char *wildcard_buf;
+
+    UNUSED(conn);
+    UNUSED(query);
+
+    for (;;)
+    {
+        return 0;
+        //wildcard_begin = fxmy_next_token(
+    }
 }
 
 /*
@@ -247,6 +264,7 @@ fxmy_handle_query(struct fxmy_connection_t *conn, uint8_t *query_string, size_t 
 {
     const char *query;
     struct fxmy_odbc_t *odbc;
+    fxmy_char *wide_query;
 
     /* 
      * Query strings are guaranteed to be null terminated by fxmy_recv.
@@ -255,31 +273,27 @@ fxmy_handle_query(struct fxmy_connection_t *conn, uint8_t *query_string, size_t 
     query = (const char *)query_string;
     odbc = conn->odbc;
 
-    UNUSED(conn);
-    UNUSED(query_num_bytes);
+    wide_query = calloc(query_num_bytes + 1, sizeof(fxmy_char));
+    fxmy_fstrfromchar(wide_query, query, query_num_bytes);
+    wide_query[query_num_bytes] = 0;
 
-    if (fxmy_stristr(query, "SET NAMES") != NULL)
+    if (fxmy_fstristr(wide_query, C("SET NAMES")) != NULL)
     {
-        VERIFY(fxmy_stristr(query, "utf8") != NULL);
+        VERIFY(fxmy_fstristr(wide_query, C("utf8")) != NULL);
         return 0;
     }
-    else if (fxmy_stristr(query, "DESCRIBE") != NULL)
+    else if (fxmy_fstristr(wide_query, C("DESCRIBE")) != NULL)
     {
-        return fxmy_describe(conn, query);
+        return fxmy_describe(conn, wide_query);
     }
-    else if (fxmy_stristr(query, "SHOW TABLES") != NULL)
+    else if (fxmy_fstristr(wide_query, C("SHOW TABLES")) != NULL)
     {
-        __debugbreak();
+        return fxmy_show_tables(conn, wide_query);
     }
     else
     {
         SQLHANDLE query_handle;
-        fxmy_char *wide_query;
         const struct fxmy_status_t *status;
-
-        wide_query = calloc(query_num_bytes + 1, sizeof(fxmy_char));
-        fxmy_fstrfromchar(wide_query, query, query_num_bytes);
-        wide_query[query_num_bytes] = 0;
 
         /*
          * SELECT xxx LIMIT y must be transformed into SELECT TOP y xxx
@@ -302,7 +316,6 @@ fxmy_handle_query(struct fxmy_connection_t *conn, uint8_t *query_string, size_t 
         }
 
         VERIFY_ODBC(SQLFreeHandle(SQL_HANDLE_STMT, query_handle), SQL_HANDLE_DBC, odbc->database_connection_handle);
-        free(wide_query);
     }
 
     /*
@@ -313,5 +326,7 @@ fxmy_handle_query(struct fxmy_connection_t *conn, uint8_t *query_string, size_t 
     fxmy_destroy_query_string(query);
 
     */
+
+    free(wide_query);
     return 0;
 }
