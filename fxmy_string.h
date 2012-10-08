@@ -16,6 +16,7 @@
     #define fxmy_fstrlen wcslen
     #define fxmy_fstrncpy wcsncpy
     #define fxmy_fsnprintf _snwprintf
+    #define fxmy_fstrncmp wcsncmp
 
     fxmy_char *
     fxmy_fstrfromchar(fxmy_char *dest, const char *src, size_t num_chars);
