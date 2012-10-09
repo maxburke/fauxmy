@@ -14,47 +14,12 @@
 #include <sqlext.h>
 #include <Windows.h>
 #pragma warning(pop)
-
-fxmy_char *
-fxmy_create_query_string(uint8_t *query_bytes, size_t query_num_bytes)
-{
-    LPVOID memory;
-    size_t wide_string_length;
-    size_t alloc_size;
-    const char *query_string = (const char *)query_bytes;
-    fxmy_char *string;
-
-    wide_string_length = fxmy_fstrlenfromchar(query_string, query_num_bytes);
-    alloc_size = (wide_string_length + 1) * sizeof(fxmy_char);
-    memory = VirtualAlloc(NULL, alloc_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
-
-    string = fxmy_fstrfromchar(memory, query_string, query_num_bytes);
-    string[wide_string_length] = 0;
-
-    return string;
-}
-
-void
-fxmy_destroy_query_string(fxmy_char *query)
-{
-    VirtualFree(query, 0, MEM_RELEASE);
-}
-
-#else
-
-static fxmy_char *
-fxmy_create_query_string(uint8_t *query_bytes, size_t query_num_bytes)
-{
-    return (fxmy_char *)query_bytes;
-}
-
-static void
-fxmy_destroy_query_string(fxmy_char *query)
-{
-}
-
 #endif
 
+/*
+ * Convenience function that allocates a statement handle and executes a 
+ * statement.
+ */
 static const struct fxmy_status_t *
 fxmy_exec(SQLHANDLE *query_handle, struct fxmy_connection_t *conn, const fxmy_char *query)
 {
@@ -123,6 +88,9 @@ fxmy_describe(struct fxmy_connection_t *conn, const fxmy_char *query)
             goto cleanup;
         }
 
+        /*
+         * TODO: Actually make this work. 
+         */
         __debugbreak();
     }
 
@@ -135,6 +103,12 @@ column_query_failed:
     return 0;
 }
 
+/*
+ * MySQL has SHOW TABLES which describes the tables possibly matching a 
+ * wildcard, but MSSQL has sp_tables, a stored procedure that is a bit
+ * less SQL-y in its use. This function translates SHOW TABLES syntax to
+ * appropriate sp_tables syntax.
+ */
 static int
 fxmy_show_tables(struct fxmy_connection_t *conn, const fxmy_char *query)
 {
@@ -154,6 +128,12 @@ fxmy_show_tables(struct fxmy_connection_t *conn, const fxmy_char *query)
     wildcard_end = NULL;
     token = query;
     
+    /*
+        * Search the SHOW TABLES query to see if it has a wildcard that
+        * should be matched. The sp_tables function accepts the standard
+        * SQL wildcards so no translation has to be done on the wildcard
+        * string.
+        */
     for (;;)
     {
         const fxmy_char *token_end;
@@ -166,6 +146,9 @@ fxmy_show_tables(struct fxmy_connection_t *conn, const fxmy_char *query)
 
         token_length = token_end - token;
 
+        /*
+         * The wildcard in SHOW TABLES is preceded by the LIKE keyword.
+         */
         if (fxmy_fstrnicmp(token, C("LIKE"), token_length) == 0)
         {
             wildcard_begin = fxmy_fnext_token(&wildcard_end, token_end);
@@ -175,6 +158,12 @@ fxmy_show_tables(struct fxmy_connection_t *conn, const fxmy_char *query)
         token = token_end;
     }
 
+    /*
+     * Whether or not a wildcard is found, we search for tables where the
+     * owner is dbo. If a wildcard is found, we use a different stored 
+     * procedure syntax, "sp_tables @table_owner='dbo', @table_name='blah'"
+     * which inserts the wildcard via snprintf.
+     */
     if (wildcard_begin != NULL)
     {
         size_t wildcard_size;
@@ -191,7 +180,16 @@ fxmy_show_tables(struct fxmy_connection_t *conn, const fxmy_char *query)
         format = C("sp_tables @table_owner='dbo'");
     }
 
+    /*
+     * The length of the snprintf buffer is calculated by calling snprintf
+     * with a NULL buffer and a length of zero.
+     */
     num_elements = fxmy_fsnprintf(NULL, 0, format, wildcard);
+
+    /*
+     * Temporary buffers are allocated on the heap in case overrun happens
+     * so that the stack is saved.
+     */
     buffer = fxmy_calloc(num_elements + 1, sizeof(fxmy_char));
     fxmy_fsnprintf(buffer, num_elements, format, wildcard);
 
@@ -204,6 +202,13 @@ fxmy_show_tables(struct fxmy_connection_t *conn, const fxmy_char *query)
         if (FXMY_EMPTY_SET(status))
         {
             conn->status = fxmy_get_status(FXMY_OK);
+        }
+        else
+        {
+            /*
+             * TODO: Fill out what happens here if the table actually exists.
+             */
+            __debugbreak();
         }
     }
 
