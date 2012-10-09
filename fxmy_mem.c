@@ -58,8 +58,11 @@ fxmy_free(void *ptr)
 
     heap_handle = GetProcessHeap();
 
-    HeapFree(heap_handle, 0, ptr);
-    InterlockedDecrement(&num_allocations);
+    if (ptr != NULL)
+    {
+        HeapFree(heap_handle, 0, ptr);
+        InterlockedDecrement(&num_allocations);
+    }
 }
 
 int
