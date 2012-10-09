@@ -55,6 +55,37 @@ fxmy_destroy_query_string(fxmy_char *query)
 
 #endif
 
+static const struct fxmy_status_t *
+fxmy_exec(SQLHANDLE *query_handle, struct fxmy_connection_t *conn, const fxmy_char *query)
+{
+    struct fxmy_odbc_t *odbc;
+    const struct fxmy_status_t *status;
+
+    odbc = conn->odbc;
+
+    VERIFY_ODBC(SQLAllocHandle(
+            SQL_HANDLE_STMT,
+            odbc->database_connection_handle,
+            query_handle),
+        SQL_HANDLE_DBC,
+        odbc->database_connection_handle);
+
+    status = fxmy_verify_and_log_odbc(SQLExecDirect(
+            *query_handle,
+            (fxmy_char *)query,
+            SQL_NTS),
+        SQL_HANDLE_STMT,
+        query_handle);
+
+    if (FXMY_FAILED(status))
+    {
+        VERIFY_ODBC(SQLFreeHandle(SQL_HANDLE_STMT, *query_handle), SQL_HANDLE_DBC, odbc->database_connection_handle);
+        *query_handle = NULL;
+    }
+
+    return status;
+}
+
 static int
 fxmy_describe(struct fxmy_connection_t *conn, const fxmy_char *query)
 {
@@ -64,7 +95,7 @@ fxmy_describe(struct fxmy_connection_t *conn, const fxmy_char *query)
     const fxmy_char *describe_end;
     const fxmy_char *table_begin;
     const fxmy_char *table_end;
-    fxmy_char *wide_buf;
+    fxmy_char *buffer;
     const fxmy_char columns[] = C("sp_columns ");
     
     odbc = conn->odbc;
@@ -72,30 +103,15 @@ fxmy_describe(struct fxmy_connection_t *conn, const fxmy_char *query)
     fxmy_fnext_token(&describe_end, query);
     table_begin = fxmy_fnext_token(&table_end, describe_end);
 
-    wide_buf = fxmy_calloc(1024, sizeof(fxmy_char));
+    buffer = fxmy_calloc(1024, sizeof(fxmy_char));
 
-    fxmy_fstrncpy(wide_buf, columns, 1024);
-    fxmy_fstrncat(wide_buf, 1024, table_begin);
+    fxmy_fstrncpy(buffer, columns, 1024);
+    fxmy_fstrncat(buffer, 1024, table_begin);
 
-    VERIFY_ODBC(SQLAllocHandle(
-            SQL_HANDLE_STMT,
-            odbc->database_connection_handle,
-            &query_handle),
-        SQL_HANDLE_DBC,
-        odbc->database_connection_handle);
+    conn->status = fxmy_exec(&query_handle, conn, buffer);
 
-    status = fxmy_verify_and_log_odbc(SQLExecDirect(
-            query_handle,
-            wide_buf,
-            SQL_NTS),
-        SQL_HANDLE_STMT,
-        query_handle);
-
-    if (FXMY_FAILED(status))
-    {
-        conn->status = status;
+    if (FXMY_FAILED(conn->status))
         goto column_query_failed;
-    }
 
     for (;;)
     {
@@ -114,7 +130,7 @@ cleanup:
     VERIFY_ODBC(SQLFreeHandle(SQL_HANDLE_STMT, query_handle), SQL_HANDLE_DBC, odbc->database_connection_handle);
 
 column_query_failed:
-    fxmy_free(wide_buf);
+    fxmy_free(buffer);
 
     return 0;
 }
@@ -122,23 +138,79 @@ column_query_failed:
 static int
 fxmy_show_tables(struct fxmy_connection_t *conn, const fxmy_char *query)
 {
-    UNUSED(conn);
-    UNUSED(query);
-    return 0;
-    /*
+    SQLHANDLE query_handle;
+    const struct fxmy_status_t *status;
+
     const fxmy_char *wildcard_begin;
-    fxmy_char *tables_buf;
-    fxmy_char *wildcard_buf;
+    const fxmy_char *wildcard_end;
+    const fxmy_char *token;
+    const fxmy_char *format;
+    fxmy_char *wildcard;
+    fxmy_char *buffer;
+    size_t num_elements;
 
-    UNUSED(conn);
-    UNUSED(query);
-
+    wildcard = NULL;
+    wildcard_begin = NULL;
+    wildcard_end = NULL;
+    token = query;
+    
     for (;;)
     {
-        return 0;
-        //wildcard_begin = fxmy_next_token(
+        const fxmy_char *token_end;
+        size_t token_length;
+
+        token = fxmy_fnext_token(&token_end, token);
+
+        if (token == NULL)
+            break;
+
+        token_length = token_end - token;
+
+        if (fxmy_fstrnicmp(token, C("LIKE"), token_length) == 0)
+        {
+            wildcard_begin = fxmy_fnext_token(&wildcard_end, token_end);
+            break;
+        }
+
+        token = token_end;
     }
-    */
+
+    if (wildcard_begin != NULL)
+    {
+        size_t wildcard_size;
+
+        VERIFY(wildcard_end >= wildcard_begin);
+        wildcard_size = (wildcard_end + 1) - wildcard_begin;
+        wildcard = fxmy_calloc(wildcard_size, sizeof(fxmy_char));
+        
+        memmove(wildcard, wildcard_begin, wildcard_size * sizeof(fxmy_char));
+        format = C("sp_tables @table_owner='dbo', @table_name=%s");
+    }
+    else
+    {
+        format = C("sp_tables @table_owner='dbo'");
+    }
+
+    num_elements = fxmy_fsnprintf(NULL, 0, format, wildcard);
+    buffer = fxmy_calloc(num_elements + 1, sizeof(fxmy_char));
+    fxmy_fsnprintf(buffer, num_elements, format, wildcard);
+
+    status = fxmy_exec(&query_handle, conn, buffer);
+    
+    if (query_handle != NULL)
+    {
+        status = fxmy_verify_and_log_odbc(SQLFetch(query_handle), SQL_HANDLE_STMT, query_handle);
+
+        if (FXMY_EMPTY_SET(status))
+        {
+            conn->status = fxmy_get_status(FXMY_OK);
+        }
+    }
+
+    fxmy_free(wildcard);
+    fxmy_free(buffer);
+
+    return 0;
 }
 
 /*
@@ -171,14 +243,17 @@ fxmy_rearrange_limit(fxmy_char *query)
      */
     for (;;)
     {
+        size_t token_length;
+
         limit_begin = fxmy_fnext_token(&limit_end, limit_begin);
+        token_length = limit_end - limit_begin;
 
         /*
          * The "TOP x" bit is copied to the front of the query after the 
          * SELECT but we first need to identify where the first token
          * after the select begins.
          */
-        if (!select_begin && fxmy_fstrnicmp(limit_begin, C("SELECT"), 6) == 0)
+        if (!select_begin && fxmy_fstrnicmp(limit_begin, C("SELECT"), token_length) == 0)
         {
             select_begin = limit_begin;
         } 
@@ -198,7 +273,7 @@ fxmy_rearrange_limit(fxmy_char *query)
          * beginning of our number string to be the end of the limit clause.
          * The exact bounds of the number string are determined below.
          */
-        if (fxmy_fstrnicmp(limit_begin, C("LIMIT"), 5) == 0)
+        if (fxmy_fstrnicmp(limit_begin, C("LIMIT"), token_length) == 0)
         {
             num_begin = limit_end;
             break;
