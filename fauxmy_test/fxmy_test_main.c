@@ -60,7 +60,7 @@ fxmy_test_report_fail(const char *file, int line, const char *message)
 {
     ++fxmy_num_tests_failed;
 
-    fxmy_test_print("%s(%d): FAIL: %s\n", file, line, message);
+    fxmy_log(FXMY_LOG_CRITICAL, "%s(%d): FAIL: %s\n", file, line, message);
 
     return 0;
 }
@@ -69,7 +69,7 @@ int
 fxmy_test_report_pass(const char *file, int line, const char *message)
 {
     if (fxmy_test_verbose)
-        fxmy_test_print("%s(%d): PASS: %s\n", file, line, message);
+        fxmy_log(FXMY_LOG_CRITICAL, "%s(%d): PASS: %s\n", file, line, message);
 
     return 1;
 }
@@ -93,6 +93,8 @@ main(void)
 {
     int num_allocations;
 
+    fxmy_set_verbosity_threshold(FXMY_LOG_ALL);
+
     if (IsDebuggerPresent())
         fxmy_test_set_break_on_fail(1);
 
@@ -106,7 +108,7 @@ main(void)
 
     TEST(fxmy_get_num_allocations() == num_allocations);
 
-    fxmy_test_print("%d / %d failed\n", fxmy_num_tests_failed, fxmy_num_tests_run);
+    fxmy_log(FXMY_LOG_CRITICAL, "%d / %d failed\n", fxmy_num_tests_failed, fxmy_num_tests_run);
 
     return fxmy_num_tests_failed;
 }

@@ -355,6 +355,8 @@ fxmy_handle_query(struct fxmy_connection_t *conn, uint8_t *query_string, size_t 
     fxmy_fstrfromchar(wide_query, query, query_num_bytes);
     wide_query[query_num_bytes] = 0;
 
+    fxmy_log(FXMY_LOG_INFO, "[query] %ls\n", wide_query);
+
     if (fxmy_fstristr(wide_query, C("SET NAMES")) != NULL)
     {
         VERIFY(fxmy_fstristr(wide_query, C("utf8")) != NULL);

@@ -145,6 +145,7 @@ main(void)
 
     VERIFY(sizeof(SOCKET) == sizeof(socket_t));
 
+    fxmy_set_verbosity_threshold(FXMY_LOG_ALL);
     fxmy_socket_open(FXMY_DEFAULT_PORT);
 
     for (;;)

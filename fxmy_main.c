@@ -33,11 +33,11 @@ fxmy_perror(const char *string)
     size_t i;
     static TCHAR buffer[1024];
     
-    fprintf(stderr, "%s\n", string);
+    fxmy_log(FXMY_LOG_CRITICAL, "%s\n", string);
     string_length = strlen(string);
     for (i = 0; i < string_length; ++i)
-        fprintf(stderr, "-");
-    fprintf(stderr, "\n");
+        fxmy_log(FXMY_LOG_CRITICAL, "-");
+    fxmy_log(FXMY_LOG_CRITICAL, "\n");
 
     error = GetLastError();
     if (error != NO_ERROR)
@@ -51,7 +51,7 @@ fxmy_perror(const char *string)
             1024,
             NULL);
 
-        fwprintf(stderr, L"%s\n", buffer);
+        fxmy_wlog(FXMY_LOG_CRITICAL, L"%s\n", buffer);
     }
 
     wsa_error = WSAGetLastError();
@@ -66,7 +66,7 @@ fxmy_perror(const char *string)
             1024,
             NULL);
 
-        fwprintf(stderr, L"%s\n", buffer);
+        fxmy_wlog(FXMY_LOG_CRITICAL, L"%s\n", buffer);
     }
 }
 
@@ -88,6 +88,7 @@ fxmy_verify_and_log_odbc(SQLRETURN return_code, SQLSMALLINT handle_type, SQLHAND
     SQLSMALLINT text_length;
     SQLSMALLINT i;
     const struct fxmy_status_t *sql_status;
+    enum fxmy_log_level_t log_level;
 
     i = 1;
     sql_status = NULL;
@@ -97,6 +98,8 @@ fxmy_verify_and_log_odbc(SQLRETURN return_code, SQLSMALLINT handle_type, SQLHAND
 
     if (return_code == SQL_NO_DATA)
         return fxmy_get_status(FXMY_ERROR_NO_DATA);
+
+    log_level = return_code == SQL_SUCCESS_WITH_INFO ? FXMY_LOG_INFO : FXMY_LOG_ERROR;
 
     while (SQLGetDiagRecA(
         handle_type,
@@ -111,7 +114,7 @@ fxmy_verify_and_log_odbc(SQLRETURN return_code, SQLSMALLINT handle_type, SQLHAND
         ++i;
         sql_state_code[5] = 0;
         message_text[1023] = 0;
-        fprintf(stderr, "[fxmy] (%s) %s\n", sql_state_code, message_text);
+        fxmy_log(FXMY_LOG_CRITICAL, "(%s) %s\n", sql_state_code, message_text);
         sql_status = fxmy_get_status(native_error);
     }
 

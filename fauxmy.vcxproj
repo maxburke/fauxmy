@@ -79,6 +79,7 @@
   <ItemGroup>
     <ClCompile Include="fxmy_common.c" />
     <ClCompile Include="fxmy_conn.c" />
+    <ClCompile Include="fxmy_core.c" />
     <ClCompile Include="fxmy_error.c" />
     <ClCompile Include="fxmy_main.c" />
     <ClCompile Include="fxmy_mem.c" />
